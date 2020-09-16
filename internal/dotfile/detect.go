@@ -6,8 +6,12 @@ import (
 )
 
 type Dotfile struct {
-	name  string
-	isDir bool
+	Name  string
+	IsDir bool
+}
+
+func NewDotfile(name string, isDir bool) *Dotfile {
+	return &Dotfile{name, isDir}
 }
 
 func isDotfile(filename string) bool {
@@ -26,8 +30,8 @@ func Detect(dir string) ([]Dotfile, error) {
 		filename := fileInfo.Name()
 		if isDotfile(filename) {
 			dotfile := Dotfile{
-				name:  filename,
-				isDir: fileInfo.IsDir(),
+				Name:  filename,
+				IsDir: fileInfo.IsDir(),
 			}
 			found = append(found, dotfile)
 		}

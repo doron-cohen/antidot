@@ -1,11 +1,11 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/spf13/cobra"
 
+	"github.com/doron-cohen/antidot/internal/action"
 	"github.com/doron-cohen/antidot/internal/dirs"
 	"github.com/doron-cohen/antidot/internal/dotfile"
 )
@@ -18,7 +18,7 @@ var cleanCmd = &cobra.Command{
 	Use:   "clean",
 	Short: "Clean up dotfiles from your $HOME",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Cleaning up!")
+		log.Println("Cleaning up!")
 		userHomeDir, err := dirs.GetHomeDir()
 		if err != nil {
 			log.Fatalln(err)
@@ -29,6 +29,9 @@ var cleanCmd = &cobra.Command{
 			log.Fatalln(err)
 		}
 
-		fmt.Println(dotfiles)
+		log.Printf("Found %d dotfiles in %s\n", len(dotfiles), userHomeDir)
+		for _, dotfile := range dotfiles {
+			action.MatchActions(&dotfile)
+		}
 	},
 }
