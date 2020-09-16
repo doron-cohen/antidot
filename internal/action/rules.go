@@ -23,23 +23,23 @@ type RulesConfig struct {
 
 var rulesConfig RulesConfig
 
-func init() {
-	filename := "rules.yaml"
-	rulesBytes, err := ioutil.ReadFile(filename)
+func LoadRulesConfig(filepath string) {
+	log.Printf("Loading rules config file %s", filepath)
+	rulesBytes, err := ioutil.ReadFile(filepath)
 	if err != nil {
-		log.Fatalf("Failed to read rules file %s: #%v", filename, err)
+		log.Fatalf("Failed to read rules file %s: #%v", filepath, err)
 	}
 	err = yaml.Unmarshal(rulesBytes, &rulesConfig)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
 	}
-	log.Printf("Rule %v", rulesConfig)
+	log.Printf("Loaded %d rules", len(rulesConfig.Rules))
 }
 
 func MatchActions(dotfile *dotfile.Dotfile) {
 	for _, rule := range rulesConfig.Rules {
 		if cmp.Equal(dotfile, rule.Dotfile) {
-			log.Printf("Matched rule %s with dotfile %s", rule, dotfile)
+			log.Printf("Matched rule %s with dotfile %s", rule.Name, dotfile.Name)
 			if rule.Ignore {
 				log.Printf("Ignoring dotfile %s", dotfile.Name)
 			}

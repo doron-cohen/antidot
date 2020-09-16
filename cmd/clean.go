@@ -19,6 +19,7 @@ var cleanCmd = &cobra.Command{
 	Short: "Clean up dotfiles from your $HOME",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("Cleaning up!")
+		go action.LoadRulesConfig("rules.yaml")
 		userHomeDir, err := dirs.GetHomeDir()
 		if err != nil {
 			log.Fatalln(err)
@@ -30,6 +31,7 @@ var cleanCmd = &cobra.Command{
 		}
 
 		log.Printf("Found %d dotfiles in %s\n", len(dotfiles), userHomeDir)
+		// TODO: block here until LoadRulesConfig succeeds
 		for _, dotfile := range dotfiles {
 			action.MatchActions(&dotfile)
 		}
