@@ -6,3 +6,17 @@ rules:
       name: .ssh
       is_dir: true
     ignore: true
+  - name: aria2_dir
+    description: aria2 download utility config and cache dir
+    dotfile:
+      name: .aria2
+      is_dir: true
+    actions:
+      - type: migrate
+        source: $HOME/.aria2/aria.conf
+        dest: $XDG_CONFIG_HOME/aria2/aria2.conf
+        symlink: false
+      - type: migrate
+        source: $HOME/.aria2/dht*.dat
+        dest: $XDG_CACHE_HOME/aria2/
+        symlink: false

@@ -19,19 +19,24 @@ var cleanCmd = &cobra.Command{
 	Short: "Clean up dotfiles from your $HOME",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("Cleaning up!")
-		go action.LoadRulesConfig("rules.yaml")
+
+		err := action.LoadRulesConfig("rules.yaml")
+		if err != nil {
+			log.Fatalln("Failed to read rules file: ", err)
+		}
+
 		userHomeDir, err := dirs.GetHomeDir()
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatalln("Unable to detect user home dir: ", err)
 		}
 
 		dotfiles, err := dotfile.Detect(userHomeDir)
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatalln("Failed to detect dotfiles in home dir: ", err)
 		}
 
 		log.Printf("Found %d dotfiles in %s\n", len(dotfiles), userHomeDir)
-		// TODO: block here until LoadRulesConfig succeeds
+
 		for _, dotfile := range dotfiles {
 			action.MatchActions(&dotfile)
 		}
