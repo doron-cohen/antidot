@@ -7,7 +7,7 @@ import (
 
 type Dotfile struct {
 	Name  string
-	IsDir bool
+	IsDir bool `yaml:"is_dir"`
 }
 
 func NewDotfile(name string, isDir bool) *Dotfile {

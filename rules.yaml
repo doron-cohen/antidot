@@ -1,0 +1,8 @@
+version: 1
+rules:
+  - name: ssh_dir
+    description: SSH directory
+    dotfile:
+      name: .ssh
+      is_dir: true
+    ignore: true
