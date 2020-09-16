@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 
@@ -18,8 +19,16 @@ var cleanCmd = &cobra.Command{
 	Short: "Clean up dotfiles from your $HOME",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Cleaning up!")
-		var userHomeDir = dirs.GetHomeDir()
-		var dotfiles = dotfile.Detect(userHomeDir)
+		userHomeDir, err := dirs.GetHomeDir()
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		dotfiles, err := dotfile.Detect(userHomeDir)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
 		fmt.Println(dotfiles)
 	},
 }

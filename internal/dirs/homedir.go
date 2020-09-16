@@ -2,11 +2,11 @@ package dirs
 
 import "os/user"
 
-func GetHomeDir() string {
+func GetHomeDir() (string, error) {
 	user, err := user.Current()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	return user.HomeDir
+	return user.HomeDir, nil
 }

@@ -2,7 +2,6 @@ package dotfile
 
 import (
 	"io/ioutil"
-	"log"
 	"strings"
 )
 
@@ -15,11 +14,11 @@ func isDotfile(filename string) bool {
 	return filename != "." && strings.HasPrefix(filename, ".")
 }
 
-func Detect(dir string) []Dotfile {
+func Detect(dir string) ([]Dotfile, error) {
 	// TODO: better handle file errors
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 
 	found := make([]Dotfile, 0, len(files))
@@ -34,5 +33,5 @@ func Detect(dir string) []Dotfile {
 		}
 	}
 
-	return found
+	return found, nil
 }
