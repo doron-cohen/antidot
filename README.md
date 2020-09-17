@@ -6,6 +6,6 @@ Cleans up your `$HOME` from those pesky dotfiles.
 
 ## Intro
 
-For years I stood by and saw how coutless applications populate my home dir with dotfiles.
+For years I stood by and saw how countless applications populate my home dir with dotfiles.
 
 No more! `antidot` is a tool to automatically detect and remove dotfiles from `$HOME` without any risks. It will move files to more appropriate locations (based on [XDG base directory specifications](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html)). It will also set environment variables, declare aliases and use symlinks to ensure apps can find their files.
