@@ -12,11 +12,12 @@ rules:
       name: .aria2
       is_dir: true
     actions:
+      # TODO: remove empty ${HOME}/.aria2 directory after migrations
       - type: migrate
-        source: $HOME/.aria2/aria.conf
-        dest: $XDG_CONFIG_HOME/aria2/aria2.conf
+        source: ${HOME}/.aria2/aria.conf
+        dest: ${XDG_CONFIG_HOME}/aria2/aria2.conf
         symlink: false
       - type: migrate
-        source: $HOME/.aria2/dht*.dat
-        dest: $XDG_CACHE_HOME/aria2/
+        source: ${HOME}/.aria2/dht.dat
+        dest: ${XDG_CACHE_HOME}/aria2/dht.dat
         symlink: false

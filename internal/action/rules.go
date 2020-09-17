@@ -19,6 +19,18 @@ type Rule struct {
 	Actions     []Action
 }
 
+// TODO: use some colors
+func (r Rule) Pprint() {
+	log.Printf("Rule %s:", r.Name)
+	for _, action := range r.Actions {
+		action.Pprint()
+	}
+
+	if r.Ignore {
+		log.Println("Rule ignored")
+	}
+}
+
 type RulesConfig struct {
 	Version int
 	Rules   []Rule
@@ -58,14 +70,12 @@ func LoadRulesConfig(filepath string) error {
 	return nil
 }
 
-func MatchActions(dotfile *dotfile.Dotfile) {
+func MatchRule(dotfile *dotfile.Dotfile) *Rule {
 	for _, rule := range rulesConfig.Rules {
 		if cmp.Equal(dotfile, rule.Dotfile) {
 			log.Printf("Matched rule %s with dotfile %s", rule.Name, dotfile.Name)
-			if rule.Ignore {
-				log.Printf("Ignoring dotfile %s", dotfile.Name)
-			}
-			break
+			return &rule
 		}
 	}
+	return nil
 }
