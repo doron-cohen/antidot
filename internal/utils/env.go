@@ -1,4 +1,4 @@
-package dirs
+package utils
 
 import "os/user"
 

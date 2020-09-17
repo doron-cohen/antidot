@@ -5,9 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/doron-cohen/antidot/internal/dirs"
 	"github.com/doron-cohen/antidot/internal/dotfile"
 	"github.com/doron-cohen/antidot/internal/rules"
+	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 func init() {
@@ -25,7 +25,7 @@ var cleanCmd = &cobra.Command{
 			log.Fatalln("Failed to read rules file: ", err)
 		}
 
-		userHomeDir, err := dirs.GetHomeDir()
+		userHomeDir, err := utils.GetHomeDir()
 		if err != nil {
 			log.Fatalln("Unable to detect user home dir: ", err)
 		}
