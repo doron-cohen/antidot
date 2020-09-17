@@ -5,9 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/doron-cohen/antidot/internal/action"
 	"github.com/doron-cohen/antidot/internal/dirs"
 	"github.com/doron-cohen/antidot/internal/dotfile"
+	"github.com/doron-cohen/antidot/internal/rules"
 )
 
 func init() {
@@ -20,7 +20,7 @@ var cleanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("Cleaning up!")
 
-		err := action.LoadRulesConfig("rules.yaml")
+		err := rules.LoadRulesConfig("rules.yaml")
 		if err != nil {
 			log.Fatalln("Failed to read rules file: ", err)
 		}
@@ -39,7 +39,7 @@ var cleanCmd = &cobra.Command{
 
 		// TODO: ease eye sore
 		for _, dotfile := range dotfiles {
-			rule := action.MatchRule(&dotfile)
+			rule := rules.MatchRule(&dotfile)
 			if rule == nil {
 				continue
 			}
