@@ -75,9 +75,11 @@ func getActionByName(name string) (Action, error) {
 }
 
 func actionDecodeHook(sourceType, destType reflect.Type, raw interface{}) (interface{}, error) {
+	// TODO: find a better way to compare these types
 	if fmt.Sprintf("%s", destType) == "action.Action" {
 		var err error
 		var result Action
+
 		rawMap := raw.(map[interface{}]interface{})
 		result, err = getActionByName(rawMap["type"].(string))
 		if err != nil {

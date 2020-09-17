@@ -1,5 +1,7 @@
 package action
 
+// TODO: break this package into pieces: action/* -> rules/{action, migrate, rule, config}
+
 import (
 	"io/ioutil"
 	"log"
