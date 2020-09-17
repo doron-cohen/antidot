@@ -14,9 +14,12 @@ type Action interface {
 }
 
 func getActionByName(name string) (Action, error) {
+	// TODO: consider registering new actions on init()
 	switch name {
 	case "migrate":
 		return Migrate{}, nil
+	case "delete":
+		return Delete{}, nil
 	default:
 		errMessage := fmt.Sprintf("Unknown action type '%s'", name)
 		return nil, errors.New(errMessage)

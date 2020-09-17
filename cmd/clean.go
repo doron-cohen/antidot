@@ -37,20 +37,15 @@ var cleanCmd = &cobra.Command{
 
 		log.Printf("Found %d dotfiles in %s\n", len(dotfiles), userHomeDir)
 
-		// TODO: ease eye sore
 		for _, dotfile := range dotfiles {
 			rule := rules.MatchRule(&dotfile)
 			if rule == nil {
 				continue
 			}
 
+			// TODO: prompt before application
 			rule.Pprint()
-			// TODO: move to Rule.Apply()
-			if !rule.Ignore {
-				for _, action := range rule.Actions {
-					action.Apply()
-				}
-			}
+			rule.Apply()
 		}
 	},
 }

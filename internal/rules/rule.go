@@ -28,6 +28,15 @@ func (r Rule) Pprint() {
 	}
 }
 
+func (r Rule) Apply() {
+	// TODO: handle errors
+	if !r.Ignore {
+		for _, action := range r.Actions {
+			action.Apply()
+		}
+	}
+}
+
 func MatchRule(dotfile *dotfile.Dotfile) *Rule {
 	for _, rule := range rulesConfig.Rules {
 		if cmp.Equal(dotfile, rule.Dotfile) {
