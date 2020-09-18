@@ -10,10 +10,6 @@ type Dotfile struct {
 	IsDir bool `mapstructure:"is_dir"`
 }
 
-func NewDotfile(name string, isDir bool) *Dotfile {
-	return &Dotfile{name, isDir}
-}
-
 func isDotfile(filename string) bool {
 	return filename != "." && strings.HasPrefix(filename, ".")
 }
