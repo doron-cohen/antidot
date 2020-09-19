@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
@@ -12,7 +13,7 @@ type Delete struct {
 }
 
 func (d Delete) Apply() error {
-	path := os.ExpandEnv(d.Path)
+	path := utils.ExpandEnv(d.Path)
 	if !utils.FileExists(path) {
 		return nil
 	}
@@ -26,5 +27,5 @@ func (d Delete) Apply() error {
 }
 
 func (d Delete) Pprint() {
-	log.Printf("Delete %s", d.Path)
+	log.Printf("  %s %s", tui.ApplyStyle(tui.Red, "DELETE"), utils.ExpandEnv(d.Path))
 }

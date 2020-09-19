@@ -1,6 +1,9 @@
 package utils
 
-import "os/user"
+import (
+	"os"
+	"os/user"
+)
 
 func GetHomeDir() (string, error) {
 	user, err := user.Current()
@@ -9,4 +12,8 @@ func GetHomeDir() (string, error) {
 	}
 
 	return user.HomeDir, nil
+}
+
+func ExpandEnv(text string) string {
+	return os.ExpandEnv(text)
 }

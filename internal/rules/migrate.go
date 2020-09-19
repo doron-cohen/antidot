@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
@@ -17,7 +18,7 @@ type Migrate struct {
 }
 
 func (m Migrate) Apply() error {
-	source := os.ExpandEnv(m.Source)
+	source := utils.ExpandEnv(m.Source)
 	_, err := os.Stat(source)
 	if os.IsNotExist(err) {
 		log.Printf("File %s doesn't exist. Skipping action", source)
@@ -26,7 +27,7 @@ func (m Migrate) Apply() error {
 		return err
 	}
 
-	dest := os.ExpandEnv(m.Dest)
+	dest := utils.ExpandEnv(m.Dest)
 	if utils.FileExists(dest) {
 		errMessage := fmt.Sprintf("Destination file %s exists", dest)
 		return errors.New(errMessage)
@@ -53,5 +54,17 @@ func (m Migrate) Apply() error {
 }
 
 func (m Migrate) Pprint() {
-	log.Printf("Move %s to %s. Symlink: %v", m.Source, m.Dest, m.Symlink)
+	symlink := ""
+	if m.Symlink {
+		symlink = " (with symlink)"
+	}
+
+	// TODO: move the indentation logic elsewhere
+	log.Printf(
+		"  %s %s %s %s%s",
+		tui.ApplyStyle(tui.Green, "MOVE  "),
+		utils.ExpandEnv(m.Source),
+		tui.ApplyStyle(tui.Gray, "→"),
+		utils.ExpandEnv(m.Dest),
+		symlink)
 }

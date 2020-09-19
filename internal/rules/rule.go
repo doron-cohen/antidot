@@ -6,6 +6,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/doron-cohen/antidot/internal/dotfile"
+	"github.com/doron-cohen/antidot/internal/tui"
 )
 
 type Rule struct {
@@ -16,15 +17,14 @@ type Rule struct {
 	Actions     []Action
 }
 
-// TODO: use some colors
 func (r Rule) Pprint() {
-	log.Printf("Rule %s:", r.Name)
+	log.Println(tui.ApplyStylef(tui.Cyan, "Rule %s:", r.Name))
 	for _, action := range r.Actions {
 		action.Pprint()
 	}
 
 	if r.Ignore {
-		log.Println("Rule ignored")
+		log.Println(tui.ApplyStyle(tui.Gray, "  Rule ignored"))
 	}
 }
 
