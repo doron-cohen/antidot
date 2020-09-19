@@ -32,7 +32,11 @@ func (r Rule) Apply() {
 	// TODO: handle errors
 	if !r.Ignore {
 		for _, action := range r.Actions {
-			action.Apply()
+			err := action.Apply()
+			if err != nil {
+				log.Printf("Failed to run rule %s: %v", r.Name, err)
+				break
+			}
 		}
 	}
 }
