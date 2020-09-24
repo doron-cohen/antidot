@@ -13,16 +13,19 @@ type Action interface {
 	Pprint()
 }
 
+var actionRegistry = make(map[string]Action)
+
+func registerAction(name string, action Action) {
+	actionRegistry[name] = action
+}
+
 func getActionByName(name string) (Action, error) {
-	// TODO: consider registering new actions on init()
-	switch name {
-	case "migrate":
-		return Migrate{}, nil
-	case "delete":
-		return Delete{}, nil
-	default:
+	action, present := actionRegistry[name]
+	if !present {
 		errMessage := fmt.Sprintf("Unknown action type '%s'", name)
 		return nil, errors.New(errMessage)
+	} else {
+		return action, nil
 	}
 }
 

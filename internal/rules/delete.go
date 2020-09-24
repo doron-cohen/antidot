@@ -29,3 +29,7 @@ func (d Delete) Apply() error {
 func (d Delete) Pprint() {
 	log.Printf("  %s %s", tui.ApplyStyle(tui.Red, "DELETE"), utils.ExpandEnv(d.Path))
 }
+
+func init() {
+	registerAction("delete", Delete{})
+}

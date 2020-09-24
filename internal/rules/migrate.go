@@ -68,3 +68,7 @@ func (m Migrate) Pprint() {
 		utils.ExpandEnv(m.Dest),
 		symlink)
 }
+
+func init() {
+	registerAction("migrate", Migrate{})
+}
