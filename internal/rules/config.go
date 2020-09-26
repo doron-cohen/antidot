@@ -28,6 +28,8 @@ func LoadRulesConfig(filepath string) (RulesConfig, error) {
 		return RulesConfig{}, err
 	}
 
+	// We want to completely override the old config
+	rulesConfig = RulesConfig{}
 	config := &mapstructure.DecoderConfig{
 		DecodeHook: actionDecodeHook,
 		Result:     &rulesConfig,
