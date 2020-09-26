@@ -20,7 +20,7 @@ var cleanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("Cleaning up!")
 
-		err := rules.LoadRulesConfig("rules.yaml")
+		_, err := rules.LoadRulesConfig("rules.yaml")
 		if err != nil {
 			log.Fatalln("Failed to read rules file: ", err)
 		}
