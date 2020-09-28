@@ -38,7 +38,7 @@ jobs:
         uses: crazy-max/ghaction-xgo@v1
         with:
           xgo_version: latest
-          go_version: 1.14
+          go_version: "1.14.x"
           dest: build
           prefix: antidot
           targets: windows/*,linux/*,darwin/*
