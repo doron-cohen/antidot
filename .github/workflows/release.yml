@@ -54,3 +54,12 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/*
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: Release ${{ steps.changelog.outputs.tag }}
+          body: |
+            Automatic release of version ${{ steps.changelog.outputs.tag }}
+            Draft release: ${{ steps.create_release.outputs.html_url }}
+          reviewers: doron-cohen
