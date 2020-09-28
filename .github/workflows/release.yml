@@ -1,9 +1,7 @@
 name: Release
 
-on: 
-  push:
-    branches:
-      - release
+on:
+  workflow_dispatch:
 
 jobs:
 
@@ -13,12 +11,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: master
 
       - name: Generate Release Notes
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          git-user-name: ${{ github.actor }}
+          git-user-email: ${{ github.actor }}@users.noreply.github.com
           git-message: 'chore: release {version}'
           skip-version-file: 'true'
       
@@ -54,3 +56,14 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/*
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          base: master
+          branch: release/${{ steps.changelog.outputs.tag }}
+          title: Release ${{ steps.changelog.outputs.tag }}
+          body: |
+            Automatic release of version ${{ steps.changelog.outputs.tag }}
+            Draft release: ${{ steps.create_release.outputs.html_url }}
+          reviewers: doron-cohen
