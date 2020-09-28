@@ -1,6 +1,6 @@
 name: Release
 
-on: 
+on:
   push:
     branches:
       - release
@@ -21,7 +21,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           git-message: 'chore: release {version}'
           skip-version-file: 'true'
-      
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -41,19 +41,32 @@ jobs:
           go_version: "1.14.x"
           dest: build
           prefix: antidot
-          targets: windows/*,linux/*,darwin/*
-          v: true
+          targets: linux/386,linux/amd64
+          v: false
           ldflags: -s -w -X 'main.version=${{ steps.changelog.outputs.tag }}'
           buildmode: default
 
-      - name: Upload Releases
-        id: upload-release-asset 
+      - name: Upload X86 Release
+        id: upload-release-asset-386
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/*
+          asset_path: build/antidot-linux-386
+          asset_name: antidot-${{ steps.changelog.outputs.tag }}-linux-386
+          asset_content_type: application/octet-stream
+
+      - name: Upload AMD Release
+        id: upload-release-asset-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/antidot-linux-amd64
+          asset_name: antidot-${{ steps.changelog.outputs.tag }}-linux-amd64
+          asset_content_type: application/octet-stream
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
