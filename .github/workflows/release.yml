@@ -1,7 +1,9 @@
 name: Release
 
 on: 
-  workflow_dispatch:
+  push:
+    branches:
+      - release
 
 jobs:
 
@@ -41,7 +43,7 @@ jobs:
           prefix: antidot
           targets: windows/*,linux/*,darwin/*
           v: true
-          ldflags: -s -w -X 'main.version=v0.1.0'
+          ldflags: -s -w -X 'main.version=${{ steps.changelog.outputs.tag }}'
           buildmode: default
 
       - name: Upload Releases
