@@ -27,6 +27,9 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+# Built assets
+build/
+
 ### Go Patch ###
 /vendor/
 /Godeps/
