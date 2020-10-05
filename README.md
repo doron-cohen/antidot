@@ -1,5 +1,7 @@
 # antidot :house: :small_orange_diamond: :boom:
 
+![Pipeline](https://github.com/doron-cohen/antidot/workflows/Pipeline/badge.svg?branch=master)
+
 Cleans up your `$HOME` from those pesky dotfiles.
 
 ### :construction: This is a work in progress! :construction:
