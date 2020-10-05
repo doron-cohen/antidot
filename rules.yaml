@@ -22,3 +22,13 @@ rules:
         symlink: false
       - type: delete
         path: ${HOME}/.aria2
+  - name: tig_history
+    description: tig git explorer history file
+    dotfile:
+      name: .tig_history
+      is_dir: false
+    actions:
+      - type: migrate
+        source: ${HOME}/.tig_history
+        dest: ${XDG_DATA_HOME}/tig/history
+        symlink: false
