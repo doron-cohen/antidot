@@ -18,6 +18,7 @@ type Export struct {
 }
 
 func (e Export) Apply() error {
+	// TODO: move to utils(env).GetEnvFile()
 	envFile, err := utils.AppDirs.GetDataFile("env.sh")
 	if err != nil {
 		return err
