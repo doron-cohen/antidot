@@ -13,6 +13,7 @@ const (
 
 	Red   ctc.Color = ctc.ForegroundBrightRed
 	Cyan  ctc.Color = ctc.ForegroundBrightCyan
+	Blue  ctc.Color = ctc.ForegroundBrightBlue
 	Green ctc.Color = ctc.ForegroundBrightGreen
 	Gray  ctc.Color = ctc.ForegroundBrightBlack
 )
