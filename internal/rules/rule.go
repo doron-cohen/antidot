@@ -24,7 +24,7 @@ func (r Rule) Pprint() {
 	}
 
 	if r.Ignore {
-		log.Println(tui.ApplyStyle(tui.Gray, "  Rule ignored"))
+		log.Println(tui.ApplyStyle(tui.Gray, "  IGNORED"))
 	}
 }
 
