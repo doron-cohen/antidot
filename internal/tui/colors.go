@@ -11,11 +11,12 @@ type Style ctc.Color
 const (
 	reset ctc.Color = ctc.Reset
 
-	Red   ctc.Color = ctc.ForegroundBrightRed
-	Cyan  ctc.Color = ctc.ForegroundBrightCyan
-	Blue  ctc.Color = ctc.ForegroundBrightBlue
-	Green ctc.Color = ctc.ForegroundBrightGreen
-	Gray  ctc.Color = ctc.ForegroundBrightBlack
+	Red     ctc.Color = ctc.ForegroundBrightRed
+	Cyan    ctc.Color = ctc.ForegroundBrightCyan
+	Blue    ctc.Color = ctc.ForegroundBrightBlue
+	Magenta ctc.Color = ctc.ForegroundBrightMagenta
+	Green   ctc.Color = ctc.ForegroundBrightGreen
+	Gray    ctc.Color = ctc.ForegroundBrightBlack
 )
 
 func ApplyStyle(style ctc.Color, text string) string {

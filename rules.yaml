@@ -32,3 +32,12 @@ rules:
         source: ${HOME}/.tig_history
         dest: ${XDG_DATA_HOME}/tig/history
         symlink: false
+  - name: abook
+    description: ""
+    dotfile:
+      name: .abook
+      is_dir: true
+    actions:
+      - type: alias
+        alias: abook
+        command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook
