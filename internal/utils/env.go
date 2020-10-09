@@ -32,3 +32,11 @@ func WriteEnvToFile(envMap map[string]string, filePath string) error {
 
 	return godotenv.Write(newMap, filePath)
 }
+
+func GetAliasFile() (string, error) {
+	return AppDirs.GetDataFile("alias.sh")
+}
+
+func GetEnvFile() (string, error) {
+	return AppDirs.GetDataFile("env.sh")
+}

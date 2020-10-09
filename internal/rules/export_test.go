@@ -15,7 +15,7 @@ func TestExportNoEnv(t *testing.T) {
 	utils.AppDirs.AppName = "antidot_test"
 	defer os.RemoveAll(utils.AppDirs.DataHome())
 
-	envFilePath, err := utils.AppDirs.GetDataFile("env.sh")
+	envFilePath, err := utils.GetEnvFile()
 	if err != nil {
 		t.Fatalf("Error getting env file path: %v", err)
 	}

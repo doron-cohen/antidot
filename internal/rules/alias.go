@@ -17,8 +17,7 @@ type Alias struct {
 
 // TODO: remove code duplication with export.go
 func (a Alias) Apply() error {
-	// TODO: move to utils(env).GetAliasFile()
-	aliasFilePath, err := utils.AppDirs.GetDataFile("alias.sh")
+	aliasFilePath, err := utils.GetAliasFile()
 	if err != nil {
 		return err
 	}
