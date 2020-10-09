@@ -16,7 +16,7 @@ func TestAliasNoEnv(t *testing.T) {
 	utils.AppDirs.AppName = "antidot_test"
 	defer os.RemoveAll(utils.AppDirs.DataHome())
 
-	aliasFilePath, err := utils.AppDirs.GetDataFile("alias.sh")
+	aliasFilePath, err := utils.GetAliasFile()
 	if err != nil {
 		t.Fatalf("Error getting alias file path: %v", err)
 	}
