@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -86,13 +87,14 @@ func LoadKeyValuesFromFile(filePath, prefix string) (map[string]string, error) {
 				continue
 			}
 
-			// TODO error on default
 			switch name {
 			case "key":
-				// TODO: assert key is not an empty string
 				key = match[i]
 			case "value":
 				value = match[i]
+			default:
+				errMessage := fmt.Sprintf("Unknown RegEx group name '%s'", name)
+				return nil, errors.New(errMessage)
 			}
 		}
 		result[key] = value
