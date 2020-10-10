@@ -50,7 +50,7 @@ func (a Alias) Apply() error {
 	}
 
 	log.Printf("Writing to %s", aliasFilePath)
-	if err = utils.WriteAliasesToFile(aliasMap, aliasFilePath); err != nil {
+	if err = utils.WriteKeyValuesToFile(aliasMap, aliasFilePath); err != nil {
 		return err
 	}
 

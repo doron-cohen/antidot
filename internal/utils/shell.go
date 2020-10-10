@@ -9,6 +9,33 @@ import (
 	"strings"
 )
 
+type KeyValueMap interface {
+	String() string
+}
+
+type EnvMap map[string]string
+
+func (e EnvMap) String() string {
+	var line string
+	var builder strings.Builder
+	for key, value := range e {
+		line = fmt.Sprintf("export %s=\"%s\"\n", key, value)
+		builder.WriteString(line)
+	}
+
+	return builder.String()
+}
+
+func EnvMapFromFile(filePath string) (EnvMap, error) {
+	result, err := LoadKeyValuesFromFile(filePath, "export")
+	if err != nil {
+		return nil, err
+	}
+
+	envMap := EnvMap(result)
+	return envMap, nil
+}
+
 type AliasMap map[string]string
 
 func (a AliasMap) String() string {
@@ -23,7 +50,7 @@ func (a AliasMap) String() string {
 }
 
 func AliasMapFromFile(filePath string) (AliasMap, error) {
-	result, err := LoadKeyValuesFromFile(filePath)
+	result, err := LoadKeyValuesFromFile(filePath, "alias")
 	if err != nil {
 		return nil, err
 	}
@@ -32,8 +59,13 @@ func AliasMapFromFile(filePath string) (AliasMap, error) {
 	return aliasMap, nil
 }
 
-func LoadKeyValuesFromFile(filePath string) (map[string]string, error) {
-	lineRe := regexp.MustCompile(`^alias (?P<key>\w+)="(?P<value>.*)"`)
+func LoadKeyValuesFromFile(filePath, prefix string) (map[string]string, error) {
+	pattern := fmt.Sprintf("^%s (?P<key>\\w+)=\"(?P<value>.*)\"", prefix)
+	lineRe, err := regexp.Compile(pattern)
+	if err != nil {
+		return nil, err
+	}
+
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -73,8 +105,8 @@ func LoadKeyValuesFromFile(filePath string) (map[string]string, error) {
 	return result, nil
 }
 
-func WriteAliasesToFile(aliasMap AliasMap, filePath string) error {
-	str := aliasMap.String()
+func WriteKeyValuesToFile(keyValueMap KeyValueMap, filePath string) error {
+	str := keyValueMap.String()
 	data := []byte(str)
 	if err := ioutil.WriteFile(filePath, data, 0o644); err != nil {
 		return err

@@ -6,8 +6,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/joho/godotenv"
-
 	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
@@ -29,7 +27,7 @@ func (e Export) Apply() error {
 		}
 	}
 
-	envMap, err := godotenv.Read(envFile)
+	envMap, err := utils.EnvMapFromFile(envFile)
 	if err != nil {
 		return err
 	}
@@ -51,7 +49,7 @@ func (e Export) Apply() error {
 	}
 
 	log.Printf("Writing to %s", envFile)
-	if err = utils.WriteEnvToFile(envMap, envFile); err != nil {
+	if err = utils.WriteKeyValuesToFile(envMap, envFile); err != nil {
 		return err
 	}
 

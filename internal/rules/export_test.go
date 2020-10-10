@@ -36,7 +36,7 @@ func TestExportNoEnv(t *testing.T) {
 	}
 
 	// TODO: don't be too specific
-	if !cmp.Equal(contents, []byte("export HELLO=\"world\"")) {
+	if !cmp.Equal(contents, []byte("export HELLO=\"world\"\n")) {
 		t.Fatalf("Unexpected env file contents: %s", contents)
 	}
 }
