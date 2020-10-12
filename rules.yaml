@@ -32,6 +32,19 @@ rules:
         source: ${HOME}/.tig_history
         dest: ${XDG_DATA_HOME}/tig/history
         symlink: false
+  - name: cargo_home
+    description: Rust Cargo home dir
+    dotfile:
+      name: .cargo
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.cargo
+        dest: ${XDG_DATA_HOME}/cargo
+        symlink: false
+      - type: export
+        key: CARGO_HOME
+        value: ${XDG_DATA_HOME}/cargo
   - name: abook
     description: ""
     dotfile:

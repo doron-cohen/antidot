@@ -2,9 +2,16 @@ package tui
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/wzshiming/ctc"
 )
+
+var noColor bool
+
+func init() {
+	_, noColor = os.LookupEnv("NO_COLOR")
+}
 
 type Style ctc.Color
 
@@ -20,8 +27,11 @@ const (
 )
 
 func ApplyStyle(style ctc.Color, text string) string {
-	// TODO: respect NO_COLOR
-	return fmt.Sprintf("%s%s%s", style, text, reset)
+	if noColor {
+		return text
+	} else {
+		return fmt.Sprintf("%s%s%s", style, text, reset)
+	}
 }
 
 func ApplyStylef(style ctc.Color, template string, components ...interface{}) string {
