@@ -7,6 +7,7 @@ import (
 
 	"github.com/doron-cohen/antidot/internal/dotfile"
 	"github.com/doron-cohen/antidot/internal/rules"
+	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
@@ -37,14 +38,29 @@ var cleanCmd = &cobra.Command{
 
 		log.Printf("Found %d dotfiles in %s\n", len(dotfiles), userHomeDir)
 
+		foundRules := make([]*rules.Rule, 0)
 		for _, dotfile := range dotfiles {
 			rule := rules.MatchRule(&dotfile)
 			if rule == nil {
 				continue
 			}
 
-			// TODO: prompt before application
 			rule.Pprint()
+			foundRules = append(foundRules, rule)
+		}
+
+		confirmed, err := tui.Confirm("Apply rules?")
+		if err != nil {
+			log.Fatalf("Failed to read input from stdin: %v", err)
+		}
+
+		if !confirmed {
+			log.Println("User cancelled. No action was preformed")
+			return
+		}
+
+		log.Println("Applying rules")
+		for _, rule := range foundRules {
 			rule.Apply()
 		}
 	},
