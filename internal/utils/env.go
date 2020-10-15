@@ -38,3 +38,7 @@ func GetAliasFile() (string, error) {
 func GetEnvFile() (string, error) {
 	return AppDirs.GetDataFile("env.sh")
 }
+
+func GetRulesFilePath() string {
+	return AppDirs.GetDataFilePath("rules.yaml")
+}
