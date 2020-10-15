@@ -5,13 +5,21 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/doron-cohen/antidot/internal/utils"
 )
+
+var rulesFilePath string
 
 var rootCmd = &cobra.Command{
 	Use:   "antidot",
 	Short: "Clean your $HOME from those pesky dotfiles",
 	Run: func(cmd *cobra.Command, args []string) {
 	},
+}
+
+func init() {
+	rootCmd.PersistentFlags().StringVarP(&rulesFilePath, "rules", "r", utils.GetRulesFilePath(), "Rules file path")
 }
 
 func Execute(appVersion string) {
