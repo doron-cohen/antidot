@@ -43,7 +43,7 @@ jobs:
           go_version: "1.14.x"
           dest: build
           prefix: antidot
-          targets: linux/386,linux/amd64
+          targets: linux/386,linux/amd64,darwin/amd64
           v: false
           ldflags: -s -w -X 'main.version=${{ steps.changelog.outputs.tag }}'
           buildmode: default
