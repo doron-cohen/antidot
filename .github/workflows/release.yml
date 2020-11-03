@@ -43,40 +43,16 @@ jobs:
           go_version: "1.14.x"
           dest: build
           prefix: antidot
-          targets: linux/386,linux/amd64
+          targets: linux/386,linux/amd64,darwin/amd64
           v: false
           ldflags: -s -w -X 'main.version=${{ steps.changelog.outputs.tag }}'
           buildmode: default
 
-      - name: Upload 386 Release
-        id: upload-release-asset-386
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/antidot-linux-386
-          asset_name: antidot-${{ steps.changelog.outputs.tag }}-linux-386
-          asset_content_type: application/octet-stream
-
-      - name: Upload amd64 Release
-        id: upload-release-asset-amd64
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/antidot-linux-amd64
-          asset_name: antidot-${{ steps.changelog.outputs.tag }}-linux-amd64
-          asset_content_type: application/octet-stream
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          base: master
-          branch: release/${{ steps.changelog.outputs.tag }}
-          title: Release ${{ steps.changelog.outputs.tag }}
-          body: |
-            Automatic release of version ${{ steps.changelog.outputs.tag }}
-            Draft release: ${{ steps.create_release.outputs.html_url }}
-          reviewers: doron-cohen
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/antidot-*
+          tag: ${{ steps.changelog.outputs.tag }}
+          overwrite: true
+          file_glob: true
