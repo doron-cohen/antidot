@@ -27,7 +27,7 @@ func (a appDirs) GetDataFilePath(fileName string) string {
 }
 
 func (a appDirs) GetDataFile(fileName string) (string, error) {
-	relPath := a.GetDataFilePath(fileName)
+	relPath := filepath.Join(a.AppName, fileName)
 	return xdg.DataFile(relPath)
 }
 
