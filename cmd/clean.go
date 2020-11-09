@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -43,7 +44,6 @@ var cleanCmd = &cobra.Command{
 
 		log.Printf("Found %d dotfiles in %s\n", len(dotfiles), userHomeDir)
 
-		foundRules := make([]*rules.Rule, 0)
 		for _, dotfile := range dotfiles {
 			rule := rules.MatchRule(&dotfile)
 			if rule == nil {
@@ -51,17 +51,12 @@ var cleanCmd = &cobra.Command{
 			}
 
 			rule.Pprint()
-			foundRules = append(foundRules, rule)
-		}
+			confirmed := tui.Confirm(fmt.Sprintf("Apply rule %s?", rule.Name))
+			if !confirmed {
+				log.Println("Not applying rule")
+				continue
+			}
 
-		confirmed := tui.Confirm("Apply rules?")
-		if !confirmed {
-			log.Println("User cancelled. No action was preformed")
-			return
-		}
-
-		log.Println("Applying rules")
-		for _, rule := range foundRules {
 			rule.Apply()
 		}
 	},
