@@ -3,7 +3,6 @@ package rules
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -21,7 +20,7 @@ func (m Migrate) Apply() error {
 	source := utils.ExpandEnv(m.Source)
 	_, err := os.Stat(source)
 	if os.IsNotExist(err) {
-		log.Printf("File %s doesn't exist. Skipping action", source)
+		tui.Print("File %s doesn't exist. Skipping action", source)
 		return nil
 	} else if err != nil {
 		return err
@@ -60,7 +59,7 @@ func (m Migrate) Pprint() {
 	}
 
 	// TODO: move the indentation logic elsewhere
-	log.Printf(
+	tui.Print(
 		"  %s %s %s %s%s",
 		tui.ApplyStyle(tui.Green, "MOVE  "),
 		utils.ExpandEnv(m.Source),

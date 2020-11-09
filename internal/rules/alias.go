@@ -3,7 +3,6 @@ package rules
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/doron-cohen/antidot/internal/tui"
@@ -35,7 +34,7 @@ func (a Alias) Apply() error {
 
 	existingAlias, isAliasContained := aliasMap[a.Alias]
 	if isAliasContained {
-		log.Printf("Alias %s already exists in alias file %s", a.Alias, aliasMap)
+		tui.Debug("Alias %s already exists in alias file %s", a.Alias, aliasMap)
 		if existingAlias != a.Command {
 			errMessage := fmt.Sprintf(
 				"Current command for alias '%s' (%s) is different than the requested (%s)",
@@ -49,7 +48,7 @@ func (a Alias) Apply() error {
 		aliasMap[a.Alias] = a.Command
 	}
 
-	log.Printf("Writing to %s", aliasFilePath)
+	tui.Debug("Writing to %s", aliasFilePath)
 	if err = utils.WriteKeyValuesToFile(aliasMap, aliasFilePath); err != nil {
 		return err
 	}
@@ -58,7 +57,7 @@ func (a Alias) Apply() error {
 }
 
 func (a Alias) Pprint() {
-	log.Printf(
+	tui.Print(
 		"  %s %s%s\"%s\"",
 		tui.ApplyStyle(tui.Magenta, "ALIAS"),
 		a.Alias,

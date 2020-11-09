@@ -1,8 +1,6 @@
 package rules
 
 import (
-	"log"
-
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/doron-cohen/antidot/internal/dotfile"
@@ -18,13 +16,13 @@ type Rule struct {
 }
 
 func (r Rule) Pprint() {
-	log.Println(tui.ApplyStylef(tui.Cyan, "Rule %s:", r.Name))
+	tui.Print(tui.ApplyStylef(tui.Cyan, "Rule %s:", r.Name))
 	for _, action := range r.Actions {
 		action.Pprint()
 	}
 
 	if r.Ignore {
-		log.Println(tui.ApplyStyle(tui.Gray, "  IGNORED"))
+		tui.Print(tui.ApplyStyle(tui.Gray, "  IGNORED"))
 	}
 }
 
@@ -34,7 +32,7 @@ func (r Rule) Apply() {
 		for _, action := range r.Actions {
 			err := action.Apply()
 			if err != nil {
-				log.Printf("Failed to run rule %s: %v", r.Name, err)
+				tui.Print("Failed to run rule %s: %v", r.Name, err)
 				break
 			}
 		}
@@ -44,7 +42,7 @@ func (r Rule) Apply() {
 func MatchRule(dotfile *dotfile.Dotfile) *Rule {
 	for _, rule := range rulesConfig.Rules {
 		if cmp.Equal(dotfile, rule.Dotfile) {
-			log.Printf("Matched rule %s with dotfile %s", rule.Name, dotfile.Name)
+			tui.Debug("Matched rule %s with dotfile %s", rule.Name, dotfile.Name)
 			return &rule
 		}
 	}

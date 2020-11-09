@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"log"
-
+	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/doron-cohen/antidot/internal/utils"
 	"github.com/spf13/cobra"
 )
@@ -17,12 +16,10 @@ var updateCmd = &cobra.Command{
 	Use:   "update",
 	Short: "Update rules file",
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Printf("Updating rules...")
+		tui.Debug("Updating rules...")
 		err := utils.Download(rulesSource, rulesFilePath)
-		if err != nil {
-			log.Fatalf("Failed to update rules: %v", err)
-		}
+		tui.FatalIfError("Failed to update rules", err)
 
-		log.Printf("Rules updated")
+		tui.Print("Rules updated successfully")
 	},
 }

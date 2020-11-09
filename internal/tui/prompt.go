@@ -1,20 +1,12 @@
 package tui
 
-import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
-)
+import "github.com/AlecAivazis/survey/v2"
 
-func Confirm(text string) (bool, error) {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf("%s - enter 'yes' to proceed: ", text)
-	answer, err := reader.ReadString('\n')
-	if err != nil {
-		return false, err
+func Confirm(text string) bool {
+	var answer bool
+	prompt := &survey.Confirm{
+		Message: text,
 	}
-
-	sanitized := strings.TrimSpace(strings.ToLower(answer))
-	return sanitized == "yes", nil
+	survey.AskOne(prompt, &answer)
+	return answer
 }
