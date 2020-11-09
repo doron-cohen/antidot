@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path"
+
+	"github.com/doron-cohen/antidot/internal/tui"
 )
 
 func Download(src, dest string) error {
@@ -20,9 +21,7 @@ func Download(src, dest string) error {
 	defer resp.Body.Close()
 
 	tempFile, err := ioutil.TempFile("", "rules.*.yaml")
-	if err != nil {
-		log.Fatal(err)
-	}
+	tui.FatalIfError("Failed to create rules file", err)
 	defer os.Remove(tempFile.Name())
 
 	_, err = io.Copy(tempFile, resp.Body)

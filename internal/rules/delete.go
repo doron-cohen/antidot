@@ -1,7 +1,6 @@
 package rules
 
 import (
-	"log"
 	"os"
 
 	"github.com/doron-cohen/antidot/internal/tui"
@@ -27,7 +26,7 @@ func (d Delete) Apply() error {
 }
 
 func (d Delete) Pprint() {
-	log.Printf("  %s %s", tui.ApplyStyle(tui.Red, "DELETE"), utils.ExpandEnv(d.Path))
+	tui.Print("  %s %s", tui.ApplyStyle(tui.Red, "DELETE"), utils.ExpandEnv(d.Path))
 }
 
 func init() {

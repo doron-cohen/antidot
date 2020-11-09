@@ -3,7 +3,6 @@ package rules
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/doron-cohen/antidot/internal/tui"
@@ -34,7 +33,7 @@ func (e Export) Apply() error {
 
 	existingValue, isKeyContained := envMap[e.Key]
 	if isKeyContained {
-		log.Printf("Key %s already exists in env file %s", e.Key, envFile)
+		tui.Debug("Key %s already exists in env file %s", e.Key, envFile)
 		if existingValue != e.Value {
 			errMessage := fmt.Sprintf(
 				"Current value for key '%s' (%s) is different than the requested (%s)",
@@ -48,7 +47,7 @@ func (e Export) Apply() error {
 		envMap[e.Key] = e.Value
 	}
 
-	log.Printf("Writing to %s", envFile)
+	tui.Debug("Writing to %s", envFile)
 	if err = utils.WriteKeyValuesToFile(envMap, envFile); err != nil {
 		return err
 	}
@@ -57,7 +56,7 @@ func (e Export) Apply() error {
 }
 
 func (e Export) Pprint() {
-	log.Printf(
+	tui.Print(
 		"  %s %s%s\"%s\"",
 		tui.ApplyStyle(tui.Blue, "EXPORT"),
 		e.Key,

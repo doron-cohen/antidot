@@ -1,11 +1,9 @@
 package cmd
 
 import (
-	"fmt"
-	"log"
-
 	"github.com/spf13/cobra"
 
+	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
@@ -19,16 +17,12 @@ var initCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// TODO: detect shell and generate appropriate script
 		envFilePath, err := utils.GetEnvFile()
-		if err != nil {
-			log.Fatalf("Failed to get env file path: %v", err)
-		}
+		tui.FatalIfError("Failed to get env file path", err)
 
 		aliasFilePath, err := utils.GetAliasFile()
-		if err != nil {
-			log.Fatalf("Failed to get alias file path: %v", err)
-		}
+		tui.FatalIfError("Failed to get alias file path", err)
 
-		fmt.Printf(`if [[ "$ANTIDOT_INIT" != "1" ]]; then
+		tui.Print(`if [[ "$ANTIDOT_INIT" != "1" ]]; then
 %s
   source %s
   source %s
