@@ -54,11 +54,7 @@ var cleanCmd = &cobra.Command{
 			foundRules = append(foundRules, rule)
 		}
 
-		confirmed, err := tui.Confirm("Apply rules?")
-		if err != nil {
-			log.Fatalf("Failed to read input from stdin: %v", err)
-		}
-
+		confirmed := tui.Confirm("Apply rules?")
 		if !confirmed {
 			log.Println("User cancelled. No action was preformed")
 			return
