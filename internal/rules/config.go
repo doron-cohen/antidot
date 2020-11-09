@@ -3,10 +3,17 @@ package rules
 import (
 	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/mitchellh/mapstructure"
 	"gopkg.in/yaml.v2"
 )
+
+type MissingRulesFile struct{}
+
+func (e *MissingRulesFile) Error() string {
+	return "Rules file is missing"
+}
 
 type RulesConfig struct {
 	Version int
@@ -19,6 +26,9 @@ func LoadRulesConfig(filepath string) (RulesConfig, error) {
 	log.Printf("Loading rules config file %s", filepath)
 	rulesBytes, err := ioutil.ReadFile(filepath)
 	if err != nil {
+		if os.IsNotExist(err) {
+			return RulesConfig{}, &MissingRulesFile{}
+		}
 		return RulesConfig{}, err
 	}
 

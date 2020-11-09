@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 
@@ -23,6 +24,10 @@ var cleanCmd = &cobra.Command{
 
 		_, err := rules.LoadRulesConfig(rulesFilePath)
 		if err != nil {
+			if _, rulesMissing := err.(*rules.MissingRulesFile); rulesMissing {
+				log.Println("Couldn't find rules file. Please run `antidot update`.")
+				os.Exit(2)
+			}
 			log.Fatalln("Failed to read rules file: ", err)
 		}
 
