@@ -1,11 +1,57 @@
 version: 1
 rules:
-  - name: ssh_dir
-    description: SSH directory
+
+  - name: abook
+    description: ""
     dotfile:
-      name: .ssh
+      name: .abook
       is_dir: true
-    ignore: true
+    actions:
+      # guesswork
+      - type: migrate
+        source: ${HOME}/.abook/abookrc
+        dest: ${XDG_CONFIG_HOME}/abook/abookrc
+      - type: migrate
+        source: ${HOME}/.abook/addressbook
+        dest: ${XDG_DATA_HOME}/abook/addressbook
+      - type: alias
+        alias: abook
+        command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook
+
+  - name: ack
+    dotfile:
+      name: .ackrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.ackrc
+        dest: ${XDG_CONFIG_HOME}/ack/ackrc
+      - type: export
+        key: ACKRC
+        value: ${XDG_CONFIG_HOME}/ack/ackrc
+
+  - name: aspell
+    dotfile:
+      name: .aspell.conf
+    actions:
+      - type: migrate
+        source: ${HOME}/.aspell.conf
+        dest: ${XDG_CONFIG_HOME}/aspell/aspell.conf
+      - type: export
+        key: ASPELL_CONF
+        value: per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl
+
+  - name: atom
+    dotfile:
+      name: .atom
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.atom
+        dest: ${XDG_CONFIG_HOME}/atom
+      - type: export
+        key: ATOM_HOME
+        value: ${XDG_CONFIG_HOME}/atom
+
   - name: aria2_dir
     description: aria2 download utility config and cache dir
     dotfile:
@@ -15,23 +61,38 @@ rules:
       - type: migrate
         source: ${HOME}/.aria2/aria.conf
         dest: ${XDG_CONFIG_HOME}/aria2/aria2.conf
-        symlink: false
       - type: migrate
         source: ${HOME}/.aria2/dht.dat
         dest: ${XDG_CACHE_HOME}/aria2/dht.dat
-        symlink: false
       - type: delete
         path: ${HOME}/.aria2
-  - name: tig_history
-    description: tig git explorer history file
+
+  - name: aws-cli
     dotfile:
-      name: .tig_history
-      is_dir: false
+      name: .aws
+      is_dir: true
     actions:
       - type: migrate
-        source: ${HOME}/.tig_history
-        dest: ${XDG_DATA_HOME}/tig/history
-        symlink: false
+        source: ${HOME}/.aws
+        dest: ${XDG_CONFIG_HOME}/aws
+      - type: export
+        key: AWS_SHARED_CREDENTIALS_FILE
+        value: ${XDG_CONFIG_HOME}/aws/credentials
+      - type: export
+        key: AWS_CONFIG_FILE
+        value: ${XDG_CONFIG_HOME}/aws/config
+
+  - name: bash-completion
+    dotfile:
+      name: .bash_completion
+    actions:
+      - type: migrate
+        source: ${HOME}/.bash_completion
+        dest: ${XDG_CONFIG_HOME}/bash-completion/bash_completion
+      - type: export
+        key: BASH_COMPLETION_USER_FILE
+        value: ${XDG_CONFIG_HOME}/bash-completion/bash_completion
+
   - name: cargo_home
     description: Rust Cargo home dir
     dotfile:
@@ -41,16 +102,548 @@ rules:
       - type: migrate
         source: ${HOME}/.cargo
         dest: ${XDG_DATA_HOME}/cargo
-        symlink: false
       - type: export
         key: CARGO_HOME
         value: ${XDG_DATA_HOME}/cargo
-  - name: abook
-    description: ""
+
+  - name: conky
     dotfile:
-      name: .abook
+      name: .conkyrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.conkyrc
+        dest: ${XDG_CONFIG_HOME}/conky/conkyrc
+      - type: alias
+        alias: conky
+        command: conky --config "$XDG_CONFIG_HOME"/conky/conkyrc
+
+  - name: claws-mail
+    dotfile:
+      name: ~/.claws-mail
       is_dir: true
     actions:
+      - type: migrate
+        source: ${HOME}/.claws-mail
+        dest: ${XDG_DATA_HOME}/claws-mail
       - type: alias
-        alias: abook
-        command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook
+        alias: claws-mail
+        command: claws-mail --alternate-config-dir "$XDG_DATA_HOME/claws-mail"
+
+  - name: crawl
+    dotfile:
+      name: .crawl
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.crawl
+        dest: ${XDG_DATA_HOME}/crawl
+      - type: export
+        key: CRAWL_DIR
+        value: ${XDG_DATA_HOME}/crawl/
+
+  - name: cuda
+    # guesswork
+    dotfile:
+      name: .nv
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.nv
+        dest: ${XDG_CACHE_HOME}/nv
+      - type: export
+        key: CUDA_CACHE_PATH
+        value: ${XDG_CACHE_HOME}/nv
+
+  - name: docker
+    dotfile:
+      name: .docker
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.docker
+        dest: ${XDG_CONFIG_HOME}/docker
+      - type: export
+        key: DOCKER_CONFIG
+        value: ${XDG_CONFIG_HOME}/docker
+
+  - name: electrum
+    dotfile:
+      name: .electrum
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.electrum
+        dest: ${XDG_DATA_HOME}/electrum
+      - type: export
+        key: ELECTRUMDIR
+        value: ${XDG_DATA_HOME}/electrum
+
+  - name: elinks
+    dotfile:
+      name: .elinks
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.elinks
+        dest: ${XDG_CONFIG_HOME}/elinks
+      - type: export
+        key: ELINKS_CONFDIR
+        value: ${XDG_CONFIG_HOME}/elinks
+
+  - name: gdb-init
+    dotfile:
+      name: .gdbinit
+    actions:
+      - type: migrate
+        source: ${HOME}/.gdbinit
+        dest: ${XDG_CONFIG_HOME}/gdb/init
+      - type: alias
+        alias: gdb
+        command: gdb -n -x $XDG_CONFIG_HOME/gdb/init
+
+  - name: gtk1
+    dotfile:
+      name: .gtkrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.gtkrc
+        dest: ${XDG_CONFIG_HOME}/gtk-1.0/gtkrc
+      - type: export
+        key: GTK_RC_FILES
+        value: ${XDG_CONFIG_HOME}/gtk-1.0/gtkrc
+
+  - name: gtk2
+    dotfile:
+      name: .gtkrc-2.0
+    actions:
+      - type: migrate
+        source: ${HOME}/.gtkrc-2.0
+        dest: ${XDG_CONFIG_HOME}/gtk-2.0/gtkrc
+      - type: export
+        key: GTK2_RC_FILES
+        value: ${XDG_CONFIG_HOME}/gtk-2.0/gtkrc
+
+  - name: gradle
+    dotfile:
+      name: .gradle
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.gradle
+        dest: ${XDG_DATA_HOME}/gradle
+      - type: export
+        key: GRADLE_USER_HOME
+        value: ${XDG_DATA_HOME}/gradle
+
+  - name: hledger
+    dotfile:
+      name: .hledger.journal
+    actions:
+      - type: migrate
+        source: ${HOME}/.hledger.journal
+        dest: ${XDG_DATA_HOME}/hledger/journal
+      - type: export
+        key: LEDGER_FILE
+        value: ${XDG_DATA_HOME}/hledger/journal
+
+  - name: imapfilter
+    dotfile:
+      name: .imapfilter
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.imapfilter
+        dest: ${XDG_CONFIG_HOME}/imapfilter
+      - type: export
+        key: IMAPFILTER_HOME
+        value: ${XDG_CONFIG_HOME}/imapfilter
+
+  - name: isync
+    dotfile:
+      name: .mbsyncrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.mbsyncrc
+        dest: ${XDG_CONFIG_HOME}/isync/mbsyncrc
+      - type: alias
+        alias: mbsync
+        command: mbsync -c ${XDG_CONFIG_HOME}/isync/mbsyncrc
+
+  - name: kde
+    dotfile:
+      name: .kde
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.kde
+        dest: ${XDG_CONFIG_HOME}/kde
+      - type: export
+        key: KDEHOME
+        value: ${XDG_CONFIG_HOME}/kde
+
+  - name: less
+    dotfile:
+      name: .lesshst
+    actions:
+      - type: migrate
+        source: ${HOME}/.lesshst
+        dest: ${XDG_CACHE_HOME}/less/history
+      - type: export
+        key: LESSHISTFILE
+        value: ${XDG_CACHE_HOME}/less/history
+      - type: export
+        key: LESSKEY
+        value: ${XDG_CONFIG_HOME}/less/lesskey
+
+  - name: libx11-xcompose
+    dotfile:
+      name: .XCompose
+    actions:
+      - type: migrate
+        source: ${HOME}/.XCompose
+        dest: ${XDG_CONFIG_HOME}/X11/xcompose
+      - type: export
+        key: XCOMPOSEFILE
+        value: ${XDG_CONFIG_HOME}/X11/xcompose
+
+  - name: libx11-xcompose-cache
+    dotfile:
+      name: .compose-cache
+    actions:
+      - type: migrate
+        source: ${HOME}/.compose-cache
+        dest: ${XDG_CACHE_HOME}/X11/xcompose
+      - type: export
+        key: XCOMPOSECACHE
+        value: ${XDG_CACHE_HOME}/X11/xcompose
+
+  - name: ltrace
+    dotfile:
+      name: .ltrace.conf
+    actions:
+      - type: migrate
+        source: ${HOME}/.ltrace.conf
+        dest: ${XDG_CONFIG_HOME}/ltrace/ltrace.conf
+      - type: alias
+        alias: ltrace
+        command: ltrace -F "$XDG_CONFIG_HOME"/ltrace/ltrace.conf
+
+  - name: mathematica
+    dotfile:
+      name: .Mathematica
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.Mathematica
+        dest: ${XDG_CONFIG_HOME}/mathematica
+      - type: export
+        key: MATHEMATICA_USERBASE
+        value: ${XDG_CONFIG_HOME}/mathematica
+
+  - name: maxima
+    dotfile:
+      name: .maxima
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.maxima
+        dest: ${XDG_CONFIG_HOME}/maxima
+      - type: export
+        key: MAXIMA_USERDIR
+        value: ${XDG_CONFIG_HOME}/maxima
+
+  - name: mednafen
+    dotfile:
+      name: .mednafen
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.mednafen
+        dest: ${XDG_CONFIG_HOME}/mednafen
+      - type: export
+        key: MEDNAFEN_HOME
+        value: ${XDG_CONFIG_HOME}/mednafen
+
+  - name: mitmproxy
+    dotfile:
+      name: .mitmproxy
+    actions:
+      - type: migrate
+        source: ${HOME}/.mitmproxy
+        dest: ${XDG_CONFIG_HOME}/mitmproxy
+      - type: alias
+        alias: mitmproxy
+        command: mitmproxy --set confdir=${XDG_CONFIG_HOME}/mitmproxy
+      - type: alias
+        alias: mitmweb
+        command: mitmweb --set confdir=${XDG_CONFIG_HOME}/mitmproxy
+
+  - name: monero
+    dotfile:
+      name: .bitmonero
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.bitmonero
+        dest: ${XDG_DATA_HOME}/bitmonero
+      - type: alias
+        alias: monerod
+        command: monerod --data-dir ${XDG_DATA_HOME}/bitmonero
+
+  - name: most
+    dotfile:
+      name: .mostrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.mostrc
+        dest: ${XDG_CONFIG_HOME}/most/mostrc
+      - type: export
+        key: MOST_INITFILE
+        value: ${XDG_CONFIG_HOME}/most/mostrc
+
+  - name: mplayer
+    dotfile:
+      name: .mplayer
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.mplayer
+        dest: ${XDG_CONFIG_HOME}/mplayer
+      - type: export
+        key: MPLAYER_HOME
+        value: ${XDG_CONFIG_HOME}/mplayer
+
+  - name: mysql_history
+    dotfile:
+      name: .mysql_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.mysql_history
+        dest: ${XDG_DATA_HOME}/mysql_history
+      - type: export
+        key: MYSQL_HISTFILE
+        value: ${XDG_DATA_HOME}/mysql_history
+
+  - name: ncurses
+    dotfile:
+      name: .terminfo
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.terminfo
+        dest: ${XDG_DATA_HOME}/terminfo
+      - type: export
+        key: TERMINFO
+        value: ${XDG_DATA_HOME}/terminfo
+      - type: export
+        key: TERMINFO_DIRS
+        value: ${XDG_DATA_HOME}/terminfo:/usr/share/terminfo
+
+  - name: ncmpc
+    dotfile:
+      name: .ncmpc
+    actions:
+      - type: migrate
+        source: ${HOME}/.ncmpc
+        dest: ${XDG_CONFIG_HOME}/ncmpc/config
+      - type: alias
+        alias: ncmpc
+        command: ncmpc -f ${XDG_CONFIG_HOME}/ncmpc/config
+
+  - name: netbeans
+    dotfile:
+      name: .netbeans
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.netbeans
+        dest: ${XDG_CONFIG_HOME}/netbeans
+      - type: alias
+        alias: netbeans
+        command: netbeans --userdir ${XDG_CONFIG_HOME}/ncmpc/config
+
+  - name: nvidia-settings
+    dotfile:
+      name: .nvidia-settings-rc
+    actions:
+      - type: migrate
+        source: ${HOME}/.nvidia-settings-rc
+        dest: ${XDG_CONFIG_HOME}/nvidia/settings
+      - type: alias
+        alias: nvidia-settings
+        command: nvidia-settings --config=${XDG_CONFIG_HOME}/nvidia/settings
+
+  - name: nvm
+    dotfile:
+      name: .nvm
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.nvm
+        dest: ${XDG_DATA_HOME}/nvm
+      - type: export
+        key: NVM_DIR
+        value: ${XDG_DATA_HOME}/nvm
+
+  - name: parallel
+    dotfile:
+      name: .parallel
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.parallel
+        dest: ${XDG_CONFIG_HOME}/parallel
+      - type: export
+        key: PARALLEL_HOME
+        value: ${XDG_CONFIG_HOME}/parallel
+
+  - name: pass
+    dotfile:
+      name: .password-store
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.password-store
+        dest: ${XDG_DATA_HOME}/pass
+      - type: export
+        key: PASSWORD_STORE_DIR
+        value: ${XDG_DATA_HOME}/pass
+
+  - name: setuptools
+    dotfile:
+      name: .python-eggs
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.python-eggs
+        dest: ${XDG_CACHE_HOME}/python-eggs
+      - type: export
+        key: PYTHON_EGG_CACHE
+        value: ${XDG_CACHE_HOME}/python-eggs
+
+  - name: pylint
+    dotfile:
+      name: .pylint.d
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.pylint.d
+        dest: ${XDG_CACHE_HOME}/pylint
+      - type: export
+        key: PYLINTHOME
+        value: ${XDG_CACHE_HOME}/pylint
+
+  - name: readline
+    dotfile:
+      name: .inputrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.inputrc
+        dest: ${XDG_CONFIG_HOME}/readline/inputrc
+      - type: export
+        key: INPUTRC
+        value: ${XDG_CONFIG_HOME}/readline/inputrc
+
+  - name: rustup
+    dotfile:
+      name: .rustup
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.rustup
+        dest: ${XDG_DATA_HOME}/rustup
+      - type: export
+        key: RUSTUP_HOME
+        value: ${XDG_DATA_HOME}/rustup
+
+  - name: screen
+    dotfile:
+      name: .screenrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.screenrc
+        dest: ${XDG_CONFIG_HOME}/screen/screenrc
+      - type: export
+        key: SCREENRC
+        value: ${XDG_CONFIG_HOME}/screen/screenrc
+
+  - name: stack
+    dotfile:
+      name: .stack
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.stack
+        dest: ${XDG_DATA_HOME}/stack
+      - type: export
+        key: STACK_ROOT
+        value: ${XDG_DATA_HOME}/stack
+
+  - name: task
+    dotfile:
+      name: .task
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.task
+        dest: ${XDG_DATA_HOME}/task
+      - type: export
+        key: TASKDATA
+        value: ${XDG_DATA_HOME}/task
+
+  - name: taskrc
+    dotfile:
+      name: .taskrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.taskrc
+        dest: ${XDG_CONFIG_HOME}/task/taskrc
+      - type: export
+        key: TASKRC
+        value: ${XDG_CONFIG_HOME}/task/taskrc
+
+  - name: tig-history
+    description: tig git explorer history file
+    dotfile:
+      name: .tig_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.tig_history
+        dest: ${XDG_DATA_HOME}/tig/history
+
+  - name: uncrustify
+    dotfile:
+      name: .uncrustify.cfg
+    actions:
+      - type: migrate
+        source: ${HOME}/.uncrustify.cfg
+        dest: ${XDG_CONFIG_HOME}/uncrustify/uncrustify.cfg
+      - type: export
+        key: UNCRUSTIFY_CONFIG
+        value: ${XDG_CONFIG_HOME}/uncrustify/uncrustify.cfg
+
+  - name: unison
+    dotfile:
+      name: .unison
+    actions:
+      - type: migrate
+        source: ${HOME}/.unison
+        dest: ${XDG_DATA_HOME}/unison
+      - type: export
+        key: UNISON
+        value: ${XDG_DATA_HOME}/unison
+
+  - name: weechat
+    dotfile:
+      name: .weechat
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.weechat
+        dest: ${XDG_CONFIG_HOME}/weechat
+      - type: export
+        key: WEECHAT_HOME
+        value: ${XDG_CONFIG_HOME}/weechat
+      - type: alias
+        alias: weechat
+        command: weechat -d ${XDG_CONFIG_HOME}/weechat
