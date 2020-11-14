@@ -1,3 +1,19 @@
+# [0.3.0](https://github.com/doron-cohen/antidot/compare/v0.2.0...v0.3.0) (2020-11-14)
+
+
+### Bug Fixes
+
+* add proper error when missing rules file ([094a3b5](https://github.com/doron-cohen/antidot/commit/094a3b56faca84a16c097e3dc5a4bca998386594))
+* ensure data home exists before rules update ([cdf5c28](https://github.com/doron-cohen/antidot/commit/cdf5c281d7f6f04e3ad096ab0a3c067e98b9c188))
+* use correct data path for alias and env files ([96c90db](https://github.com/doron-cohen/antidot/commit/96c90db6cc4c66862dc9db849dadc1431621747e))
+
+
+### Features
+
+* add verbose flag ([#23](https://github.com/doron-cohen/antidot/issues/23)) ([74792b4](https://github.com/doron-cohen/antidot/commit/74792b4f305509772e4f87267305ee9be2ce39f4))
+
+
+
 # [0.2.0](https://github.com/doron-cohen/antidot/compare/v0.1.0...v0.2.0) (2020-10-16)
 
 
