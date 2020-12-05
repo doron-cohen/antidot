@@ -153,6 +153,9 @@ rules:
       - type: export
         key: CUDA_CACHE_PATH
         value: ${XDG_CACHE_HOME}/nv
+      - type: export
+        key: __GL_SHADER_DISK_CACHE_PATH
+        value: ${XDG_CACHE_HOME}/nv
 
   - name: docker
     dotfile:
