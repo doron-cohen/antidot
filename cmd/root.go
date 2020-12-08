@@ -16,6 +16,10 @@ var rootCmd = &cobra.Command{
 	Use:   "antidot",
 	Short: "Clean your $HOME from those pesky dotfiles",
 	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) == 0 {
+			cmd.Help()
+			os.Exit(0)
+		}
 	},
 }
 
