@@ -14,6 +14,11 @@ func Debug(format string, a ...interface{}) {
 	}
 }
 
+func Warn(format string, a ...interface{}) {
+	format = fmt.Sprintf("%s %s\n", ApplyStyle(Yellow, "WARNING:"), format)
+	fmt.Fprintf(os.Stderr, format, a...)
+}
+
 func Print(format string, a ...interface{}) {
 	fmt.Printf(format+"\n", a...)
 }

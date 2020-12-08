@@ -24,6 +24,7 @@ const (
 	Magenta ctc.Color = ctc.ForegroundBrightMagenta
 	Green   ctc.Color = ctc.ForegroundBrightGreen
 	Gray    ctc.Color = ctc.ForegroundBrightBlack
+	Yellow  ctc.Color = ctc.ForegroundBrightYellow
 )
 
 func ApplyStyle(style ctc.Color, text string) string {
