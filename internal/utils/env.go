@@ -6,6 +6,8 @@ import (
 	"os/user"
 
 	"github.com/adrg/xdg"
+
+	"github.com/doron-cohen/antidot/internal/tui"
 )
 
 func GetHomeDir() (string, error) {
@@ -19,6 +21,30 @@ func GetHomeDir() (string, error) {
 
 func ExpandEnv(text string) string {
 	return os.ExpandEnv(text)
+}
+
+func ApplyDefaultXdgEnv() {
+	xdgSystemDefaults := map[string]string{
+		"XDG_CONFIG_HOME": xdg.ConfigHome,
+		"XDG_CACHE_HOME":  xdg.CacheHome,
+		"XDG_DATA_HOME":   xdg.DataHome,
+	}
+	printNewline := false
+	for name, defaultValue := range xdgSystemDefaults {
+		if value, exists := os.LookupEnv(name); !exists || value == "" {
+			tui.Warn(
+				"Environment variable %s not set. Using default path: %s",
+				tui.ApplyStyle(tui.Yellow, name),
+				tui.ApplyStyle(tui.Yellow, defaultValue),
+			)
+			os.Setenv(name, defaultValue)
+			printNewline = true
+		}
+	}
+
+	if printNewline {
+		fmt.Println("")
+	}
 }
 
 func XdgVarsExport() string {

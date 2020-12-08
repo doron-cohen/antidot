@@ -34,6 +34,8 @@ var cleanCmd = &cobra.Command{
 		userHomeDir, err := utils.GetHomeDir()
 		tui.FatalIfError("Unable to detect user home dir", err)
 
+		utils.ApplyDefaultXdgEnv()
+
 		dotfiles, err := dotfile.Detect(userHomeDir)
 		tui.FatalIfError("Failed to detect dotfiles in home dir", err)
 
