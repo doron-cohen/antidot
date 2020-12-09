@@ -331,6 +331,15 @@ rules:
         alias: ltrace
         command: ltrace -F "$XDG_CONFIG_HOME"/ltrace/ltrace.conf
 
+  - name: mapscii
+    dotfile:
+      name: .mapscii
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.mapscii
+        dest: ${XDG_CACHE_HOME}/mapscii
+
   - name: mathematica
     dotfile:
       name: .Mathematica
