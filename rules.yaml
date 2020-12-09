@@ -524,6 +524,14 @@ rules:
         key: PYTHON_EGG_CACHE
         value: ${XDG_CACHE_HOME}/python-eggs
 
+  - name: pulseaudio
+    dotfile:
+      name: .pulse-cookie
+    actions:
+      - type: migrate
+        source: ${HOME}/.pulse-cookie
+        dest: ${XDG_CONFIG_HOME}/pulse/cookie
+
   - name: pylint
     dotfile:
       name: .pylint.d
