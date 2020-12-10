@@ -27,12 +27,11 @@ func (r Rule) Pprint() {
 }
 
 func (r Rule) Apply() {
-	// TODO: handle errors
 	if !r.Ignore {
 		for _, action := range r.Actions {
 			err := action.Apply()
 			if err != nil {
-				tui.Print("Failed to run rule %s: %v", r.Name, err)
+				tui.Warn("Failed to run rule %s: %v", r.Name, err)
 				break
 			}
 		}
