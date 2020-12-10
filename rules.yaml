@@ -204,6 +204,24 @@ rules:
         alias: gdb
         command: gdb -n -x $XDG_CONFIG_HOME/gdb/init
 
+  - name: gem
+    dotfile:
+      name: .gem
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.gem/ruby
+        dest: ${XDG_CONFIG_HOME}/gem
+      - type: export
+        key: GEM_HOME
+        value: ${XDG_DATA_HOME}/gem
+      - type: migrate
+        source: ${HOME}/.gem/specs
+        dest: ${XDG_CACHE_HOME}/gem
+      - type: export
+        key: GEM_SPEC_CACHE
+        value: ${XDG_CACHE_HOME}/gem
+
   - name: gtk1
     dotfile:
       name: .gtkrc
