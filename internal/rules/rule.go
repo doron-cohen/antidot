@@ -13,10 +13,17 @@ type Rule struct {
 	Dotfile     *dotfile.Dotfile
 	Ignore      bool
 	Actions     []Action
+	Notes       []string
 }
 
 func (r Rule) Pprint() {
 	tui.Print(tui.ApplyStylef(tui.Cyan, "Rule %s:", r.Name))
+	if len(r.Notes) != 0 {
+		for _, note := range r.Notes {
+			tui.Print("  %s %s", tui.ApplyStyle(tui.Cyan, "NOTICE"), note)
+		}
+	}
+
 	for _, action := range r.Actions {
 		action.Pprint()
 	}
