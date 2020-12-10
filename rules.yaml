@@ -204,6 +204,20 @@ rules:
         alias: gdb
         command: gdb -n -x $XDG_CONFIG_HOME/gdb/init
 
+  - name: gnupg
+    dotfile:
+      name: .gnupg
+      is_dir: true
+    notes:
+      - You may have to restart gpg-agent with 'gpgconf --kill gpg-agent'
+    actions:
+      - type: migrate
+        source: ${HOME}/.gnupg
+        dest: ${XDG_DATA_HOME}/gnupg
+      - type: export
+        key: GNUPGHOME
+        value: ${XDG_DATA_HOME}/gnupg
+
   - name: gtk1
     dotfile:
       name: .gtkrc
