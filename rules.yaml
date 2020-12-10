@@ -465,6 +465,15 @@ rules:
         alias: netbeans
         command: netbeans --userdir ${XDG_CONFIG_HOME}/ncmpc/config
 
+  - name: nss
+    dotfile:
+      name: .pki
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.pki
+        dest: ${XDG_DATA_HOME}/pki
+
   - name: nvidia-settings
     dotfile:
       name: .nvidia-settings-rc
