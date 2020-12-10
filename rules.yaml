@@ -474,6 +474,17 @@ rules:
         alias: netbeans
         command: netbeans --userdir ${XDG_CONFIG_HOME}/ncmpc/config
 
+  - name: npm
+    dotfile:
+      name: .npmrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.npmrc
+        dest: ${XDG_CONFIG_HOME}/npm/npmrc
+      - type: export
+        key: NPM_CONFIG_USERCONFIG
+        value: ${XDG_CONFIG_HOME}/npm/npmrc
+
   - name: nvidia-settings
     dotfile:
       name: .nvidia-settings-rc
