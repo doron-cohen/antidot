@@ -536,6 +536,15 @@ rules:
         key: PYLINTHOME
         value: ${XDG_CACHE_HOME}/pylint
 
+  - name: racket
+    dotfile:
+      name: .racket
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.racket
+        dest: ${XDG_CONFIG_HOME}/racket
+
   - name: readline
     dotfile:
       name: .inputrc
