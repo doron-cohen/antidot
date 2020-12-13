@@ -557,6 +557,18 @@ rules:
       - type: export
         key: PASSWORD_STORE_DIR
         value: ${XDG_DATA_HOME}/pass
+  
+  - name: pex
+    dotfile:
+      name: .pex
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.pex
+        dest: ${XDG_CACHE_HOME}/pex
+      - type: export
+        key: PEX_ROOT
+        value: ${XDG_CACHE_HOME}/pex
 
   - name: setuptools
     dotfile:
