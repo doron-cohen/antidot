@@ -1,3 +1,21 @@
+# [0.4.0](https://github.com/doron-cohen/antidot/compare/v0.3.0...v0.4.0) (2020-12-13)
+
+
+### Bug Fixes
+
+* don't override existing xdg values ([#42](https://github.com/doron-cohen/antidot/issues/42)) ([7d3611d](https://github.com/doron-cohen/antidot/commit/7d3611db380dacdb93e447b7cc754a0d7b4648bc))
+* fallback to system default xdg values ([#37](https://github.com/doron-cohen/antidot/issues/37)) ([ed96942](https://github.com/doron-cohen/antidot/commit/ed969424d07675203db53b76943846d2521d8bdf))
+* print help when no command is passed ([#43](https://github.com/doron-cohen/antidot/issues/43)) ([fb660ea](https://github.com/doron-cohen/antidot/commit/fb660eadbbdfc7336db06259c904e8ee040698c6))
+* remove init var check ([#70](https://github.com/doron-cohen/antidot/issues/70)) ([32f26a3](https://github.com/doron-cohen/antidot/commit/32f26a37e7eb8903f6bf6d6a29ad0b8da62eeff7))
+* skip ignored rules ([365f7aa](https://github.com/doron-cohen/antidot/commit/365f7aac4554e53aad836427dd80c2d807995103))
+
+
+### Features
+
+* support printing rules' notes ([#68](https://github.com/doron-cohen/antidot/issues/68)) ([891b969](https://github.com/doron-cohen/antidot/commit/891b969e1304e1573ac04eefd49b017fdf1474bd))
+
+
+
 # [0.3.0](https://github.com/doron-cohen/antidot/compare/v0.2.0...v0.3.0) (2020-11-14)
 
 
