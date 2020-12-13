@@ -639,6 +639,18 @@ rules:
         key: TASKRC
         value: ${XDG_CONFIG_HOME}/task/taskrc
 
+  - name: texworks
+    dotfile:
+      name: .TeXworks
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.TeXworks
+        dest: ${XDG_CONFIG_HOME}/TeXworks
+      - type: export
+        key: TW_LIBPATH
+        value: ${XDG_CONFIG_HOME}/TeXworks
+
   - name: tig-history
     description: tig git explorer history file
     dotfile:
