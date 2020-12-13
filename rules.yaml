@@ -275,6 +275,18 @@ rules:
         key: IMAPFILTER_HOME
         value: ${XDG_CONFIG_HOME}/imapfilter
 
+  - name: irssi
+    dotfile:
+      name: .irssi
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.irssi
+        dest: ${XDG_CONFIG_HOME}/irssi
+      - type: alias
+        alias: irssi
+        command: irssi --home ${XDG_CONFIG_HOME}/irssi
+
   - name: isync
     dotfile:
       name: .mbsyncrc
