@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/doron-cohen/antidot/compare/v0.4.0...v0.4.1) (2020-12-14)
+
+
+### Bug Fixes
+
+* remove quotes from env fallback values ([73081fd](https://github.com/doron-cohen/antidot/commit/73081fd3d84629ce0e35b9b62da64f99ef23b7b4))
+
+
+
 # [0.4.0](https://github.com/doron-cohen/antidot/compare/v0.3.0...v0.4.0) (2020-12-13)
 
 
