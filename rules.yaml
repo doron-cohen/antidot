@@ -106,6 +106,19 @@ rules:
         key: CARGO_HOME
         value: ${XDG_DATA_HOME}/cargo
 
+  - name: ccache
+    description: ccache cache dir
+    dotfile:
+      name: .ccache
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.ccache
+        dest: ${XDG_CACHE_HOME}/ccache
+      - type: export
+        key: CCACHE_DIR
+        value: ${XDG_CACHE_HOME}/ccache
+
   - name: conky
     dotfile:
       name: .conkyrc
