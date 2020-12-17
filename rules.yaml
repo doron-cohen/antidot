@@ -263,6 +263,15 @@ rules:
         key: LEDGER_FILE
         value: ${XDG_DATA_HOME}/hledger/journal
 
+  - name: httpie
+    dotfile:
+      name: .httpie
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.httpie
+        dest: ${XDG_CONFIG_HOME}/httpie
+
   - name: imapfilter
     dotfile:
       name: .imapfilter
