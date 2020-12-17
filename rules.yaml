@@ -193,6 +193,24 @@ rules:
         key: ELINKS_CONFDIR
         value: ${XDG_CONFIG_HOME}/elinks
 
+  - name: fontconfig
+    dotfile:
+      name: .fontconfig
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.fontconfig
+        dest: ${XDG_DATA_HOME}/fontconfig
+
+  - name: fonts
+    dotfile:
+      name: .fonts
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.fonts
+        dest: ${XDG_DATA_HOME}/fonts
+
   - name: gdb-init
     dotfile:
       name: .gdbinit
