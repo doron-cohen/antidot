@@ -32,6 +32,8 @@ rules:
   - name: alsa
     dotfile:
       name: .asoundrc
+    notes:
+      - xdg support was added in alsa v1.2.3. Check alsa's version with 'alsactl --version'.
     actions:
       - type: migrate
         source: ${HOME}/.asoundrc
