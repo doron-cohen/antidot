@@ -310,6 +310,18 @@ rules:
         key: KDEHOME
         value: ${XDG_CONFIG_HOME}/kde
 
+  - name: lein
+    dotfile:
+      name: .lein
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.lein
+        dest: ${XDG_DATA_HOME}/lein
+      - type: export
+        key: LEIN_HOME
+        value: ${XDG_DATA_HOME}/lein
+
   - name: less
     dotfile:
       name: .lesshst
