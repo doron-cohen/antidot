@@ -193,6 +193,24 @@ rules:
         key: ELINKS_CONFDIR
         value: ${XDG_CONFIG_HOME}/elinks
 
+  - name: fontconfig
+    dotfile:
+      name: .fontconfig
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.fontconfig
+        dest: ${XDG_DATA_HOME}/fontconfig
+
+  - name: fonts
+    dotfile:
+      name: .fonts
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.fonts
+        dest: ${XDG_DATA_HOME}/fonts
+
   - name: gdb-init
     dotfile:
       name: .gdbinit
@@ -221,6 +239,20 @@ rules:
       - type: export
         key: GEM_SPEC_CACHE
         value: ${XDG_CACHE_HOME}/gem
+
+  - name: gnupg
+    dotfile:
+      name: .gnupg
+      is_dir: true
+    notes:
+      - You may have to restart gpg-agent with 'gpgconf --kill gpg-agent'
+    actions:
+      - type: migrate
+        source: ${HOME}/.gnupg
+        dest: ${XDG_DATA_HOME}/gnupg
+      - type: export
+        key: GNUPGHOME
+        value: ${XDG_DATA_HOME}/gnupg
 
   - name: gtk1
     dotfile:
@@ -267,6 +299,15 @@ rules:
         key: LEDGER_FILE
         value: ${XDG_DATA_HOME}/hledger/journal
 
+  - name: httpie
+    dotfile:
+      name: .httpie
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.httpie
+        dest: ${XDG_CONFIG_HOME}/httpie
+
   - name: imapfilter
     dotfile:
       name: .imapfilter
@@ -278,6 +319,18 @@ rules:
       - type: export
         key: IMAPFILTER_HOME
         value: ${XDG_CONFIG_HOME}/imapfilter
+
+  - name: irssi
+    dotfile:
+      name: .irssi
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.irssi
+        dest: ${XDG_CONFIG_HOME}/irssi
+      - type: alias
+        alias: irssi
+        command: irssi --home ${XDG_CONFIG_HOME}/irssi
 
   - name: isync
     dotfile:
@@ -301,6 +354,18 @@ rules:
       - type: export
         key: KDEHOME
         value: ${XDG_CONFIG_HOME}/kde
+
+  - name: lein
+    dotfile:
+      name: .lein
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.lein
+        dest: ${XDG_DATA_HOME}/lein
+      - type: export
+        key: LEIN_HOME
+        value: ${XDG_DATA_HOME}/lein
 
   - name: less
     dotfile:
@@ -348,6 +413,15 @@ rules:
       - type: alias
         alias: ltrace
         command: ltrace -F "$XDG_CONFIG_HOME"/ltrace/ltrace.conf
+
+  - name: mapscii
+    dotfile:
+      name: .mapscii
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.mapscii
+        dest: ${XDG_CACHE_HOME}/mapscii
 
   - name: mathematica
     dotfile:
@@ -483,6 +557,17 @@ rules:
         alias: netbeans
         command: netbeans --userdir ${XDG_CONFIG_HOME}/ncmpc/config
 
+  - name: npm
+    dotfile:
+      name: .npmrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.npmrc
+        dest: ${XDG_CONFIG_HOME}/npm/npmrc
+      - type: export
+        key: NPM_CONFIG_USERCONFIG
+        value: ${XDG_CONFIG_HOME}/npm/npmrc
+
   - name: nvidia-settings
     dotfile:
       name: .nvidia-settings-rc
@@ -529,6 +614,18 @@ rules:
       - type: export
         key: PASSWORD_STORE_DIR
         value: ${XDG_DATA_HOME}/pass
+  
+  - name: pex
+    dotfile:
+      name: .pex
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.pex
+        dest: ${XDG_CACHE_HOME}/pex
+      - type: export
+        key: PEX_ROOT
+        value: ${XDG_CACHE_HOME}/pex
 
   - name: setuptools
     dotfile:

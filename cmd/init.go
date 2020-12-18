@@ -22,14 +22,11 @@ var initCmd = &cobra.Command{
 		aliasFilePath, err := utils.GetAliasFile()
 		tui.FatalIfError("Failed to get alias file path", err)
 
-		tui.Print(`if [[ "$ANTIDOT_INIT" != "1" ]]; then
-%s
-  source %s
-  source %s
+		tui.Print(`%s
 
-  export ANTIDOT_INIT=1
-fi`,
-			utils.IndentLines(utils.XdgVarsExport()),
+source %s
+source %s`,
+			utils.XdgVarsExport(),
 			envFilePath,
 			aliasFilePath,
 		)

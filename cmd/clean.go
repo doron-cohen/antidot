@@ -48,6 +48,10 @@ var cleanCmd = &cobra.Command{
 			}
 
 			rule.Pprint()
+			if rule.Ignore {
+				continue
+			}
+
 			confirmed := tui.Confirm(fmt.Sprintf("Apply rule %s?", rule.Name))
 			if confirmed {
 				rule.Apply()
