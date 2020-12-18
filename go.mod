@@ -3,7 +3,7 @@ module github.com/doron-cohen/antidot
 go 1.14
 
 require (
-	github.com/AlecAivazis/survey/v2 v2.2.5
+	github.com/AlecAivazis/survey/v2 v2.2.7
 	github.com/adrg/xdg v0.2.3
 	github.com/google/go-cmp v0.5.4
 	github.com/mitchellh/mapstructure v1.4.0
