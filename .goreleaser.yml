@@ -1,0 +1,56 @@
+before:
+  hooks:
+    - go mod verify
+
+builds:
+  - id: antidot-linux
+    binary: antidot
+    ldflags:
+      - -s -w -X 'main.version=${{ .Version }}'
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+  - id: antidot-darwin
+    binary: antidot
+    ldflags:
+      - -s -w -X 'main.version=${{ .Version }}'
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - amd64
+
+archives:
+  - id: binaries
+    name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: binary
+    builds:
+      - antidot-linux
+      - antidot-darwin
+  - id: aur
+    name_template: "aur_{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - antidot-linux
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+release:
+  ids:
+    - release
+    - binaries
+  prerelease: auto
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs'
+      - '^test'
+      - '^tests'
+      - '^chore'
