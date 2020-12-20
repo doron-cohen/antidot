@@ -25,6 +25,12 @@ builds:
       - amd64
 
 archives:
+  - id: release
+    name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: binary
+    builds:
+      - antidot-linux
+      - antidot-darwin
   - id: binaries
     name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format: binary
