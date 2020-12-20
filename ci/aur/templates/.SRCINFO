@@ -5,7 +5,7 @@ pkgbase = antidot-bin
 	arch = x86_64
 	pkgver = ${PKGVER}
 	pkgrel = ${RELEASE}
-	source = ${pkgname}-$pkgver.bin::$url/releases/download/v${VERSION}/antidot_v${VERSION}_linux_amd64
+	source = antidot-${VERSION}.bin::${REPO_URL}/releases/download/v${VERSION}/antidot_v${VERSION}_linux_amd64
 	sha256sums = ${SHA256SUM}
 
 pkgname = antidot-bin

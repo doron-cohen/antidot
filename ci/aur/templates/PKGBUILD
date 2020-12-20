@@ -14,9 +14,9 @@ provides=("antidot")
 conflicts=("antidot")
 depends=()
 
-source=("${pkgname}-$pkgver.bin::$url/releases/download/v${VERSION}/antidot_v${VERSION}_linux_amd64")
+source=("antidot-${VERSION}.bin::${REPO_URL}/releases/download/v${VERSION}/antidot_v${VERSION}_linux_amd64")
 sha256sums=("${SHA256SUM}")
 
 package() {
-  install -Dm 0755 "$srcdir/${pkgname}-$pkgver.bin" "$pkgdir/usr/bin/antidot"
+  install -Dm 0755 "$srcdir/antidot-${VERSION}.bin" "$pkgdir/usr/bin/antidot"
 }
