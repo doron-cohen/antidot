@@ -24,10 +24,12 @@ var initCmd = &cobra.Command{
 
 		tui.Print(`%s
 
-source %s
-source %s`,
+if [ -f "%s" ]; then source "%s"; fi
+if [ -f "%s" ]; then source "%s"; fi`,
 			utils.XdgVarsExport(),
 			envFilePath,
+			envFilePath,
+			aliasFilePath,
 			aliasFilePath,
 		)
 	},
