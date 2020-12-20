@@ -9,6 +9,7 @@ BINARY_PATH=$2
 echo "Publishing to AUR as version ${VERSION}"
 
 # Ensure the SSH private key ends with a new line
+mkdir -p ~/.ssh
 printf -- "${AUR_SSH_KEY}\n" > ~/.ssh/aur.key
 chmod 600 ~/.ssh/aur.key
 export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur.key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
