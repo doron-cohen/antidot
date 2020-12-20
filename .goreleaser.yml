@@ -62,3 +62,19 @@ publishers:
     cmd: ci/aur/publish.sh {{ .Version }} {{ abs .ArtifactPath }}
     env:
       - AUR_SSH_KEY={{ .Env.AUR_SSH_KEY }}
+
+brews:
+  - name: antidot
+    folder: Formula
+    homepage: "https://github.com/doron-cohen/antidot"
+    description: "Cleans up your $HOME from those pesky dotfiles"
+    url_template: "https://github.com/doron-cohen/antidot/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    skip_upload: false
+    ids:
+      - release
+    tap:
+      owner: doron-cohen
+      name: homebrew-tap
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@doron.dev
