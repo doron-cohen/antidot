@@ -41,6 +41,7 @@ var cleanCmd = &cobra.Command{
 
 		tui.Debug("Found %d dotfiles in %s", len(dotfiles), userHomeDir)
 
+		appliedRule := false
 		for _, dotfile := range dotfiles {
 			rule := rules.MatchRule(&dotfile)
 			if rule == nil {
@@ -55,9 +56,14 @@ var cleanCmd = &cobra.Command{
 			confirmed := tui.Confirm(fmt.Sprintf("Apply rule %s?", rule.Name))
 			if confirmed {
 				rule.Apply()
+				appliedRule = true
 			}
 
 			tui.Print("") // one line space
+		}
+
+		if appliedRule {
+			tui.Print("Cleanup finished - run \"eval $(antidot init)\" to take effect")
 		}
 	},
 }
