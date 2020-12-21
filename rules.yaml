@@ -235,6 +235,14 @@ rules:
         alias: gdb
         command: gdb -n -x $XDG_CONFIG_HOME/gdb/init
 
+  - name: gitconfig
+    dotfile:
+      name: .gitconfig
+    actions:
+      - type: migrate
+        source: ${HOME}/.gitconfig
+        dest: ${XDG_CONFIG_HOME}/git/config
+
   - name: gnupg
     dotfile:
       name: .gnupg
