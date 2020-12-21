@@ -552,6 +552,18 @@ rules:
         alias: netbeans
         command: netbeans --userdir ${XDG_CONFIG_HOME}/ncmpc/config
 
+  - name: npm
+    dotfile:
+      name: .npm
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.npm
+        dest: ${XDG_CACHE_HOME}/npm
+      - type: export
+        key: npm_config_cache
+        value: ${XDG_CACHE_HOME}/npm
+
   - name: npmrc
     dotfile:
       name: .npmrc
