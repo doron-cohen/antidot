@@ -552,7 +552,7 @@ rules:
         alias: netbeans
         command: netbeans --userdir ${XDG_CONFIG_HOME}/ncmpc/config
 
-  - name: npm
+  - name: npmrc
     dotfile:
       name: .npmrc
     actions:
