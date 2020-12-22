@@ -1,0 +1,23 @@
+name: Rules Validation
+
+on:
+  push:
+    paths:
+      - "rules.schema.yaml"
+      - "rules.yaml"
+
+jobs:
+  ValidateRules:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+
+      - name: Validate Rules Schema
+        run: npx ajv-cli validate -s rules.schema.yaml -d rules.yaml

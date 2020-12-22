@@ -1,0 +1,22 @@
+# Maintainer: Alex Dewar <a.dewar@sussex.ac.uk>
+# Maintainer: Doron Cohen <me@doron.dev>
+
+pkgname=antidot-bin
+pkgdesc="${DESCRIPTION}"
+url="${REPO_URL}"
+license=("MIT")
+arch=("x86_64")
+
+pkgver=${PKGVER}
+pkgrel=${RELEASE}
+
+provides=("antidot")
+conflicts=("antidot")
+depends=()
+
+source=("antidot-${VERSION}.bin::${REPO_URL}/releases/download/v${VERSION}/antidot_v${VERSION}_linux_amd64")
+sha256sums=("${SHA256SUM}")
+
+package() {
+  install -Dm 0755 "$srcdir/antidot-${VERSION}.bin" "$pkgdir/usr/bin/antidot"
+}

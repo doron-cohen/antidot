@@ -29,6 +29,16 @@ rules:
         key: ACKRC
         value: ${XDG_CONFIG_HOME}/ack/ackrc
 
+  - name: alsa
+    dotfile:
+      name: .asoundrc
+    notes:
+      - xdg support was added in alsa v1.2.3. Check alsa's version with 'alsactl --version'.
+    actions:
+      - type: migrate
+        source: ${HOME}/.asoundrc
+        dest: ${XDG_CONFIG_HOME}/alsa/asoundrc
+
   - name: aspell
     dotfile:
       name: .aspell.conf
@@ -105,6 +115,19 @@ rules:
       - type: export
         key: CARGO_HOME
         value: ${XDG_DATA_HOME}/cargo
+
+  - name: ccache
+    description: ccache cache dir
+    dotfile:
+      name: .ccache
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.ccache
+        dest: ${XDG_CACHE_HOME}/ccache
+      - type: export
+        key: CCACHE_DIR
+        value: ${XDG_CACHE_HOME}/ccache
 
   - name: conky
     dotfile:
@@ -239,6 +262,15 @@ rules:
       - type: export
         key: GEM_SPEC_CACHE
         value: ${XDG_CACHE_HOME}/gem
+
+  - name: gitconfig
+    dotfile:
+      name: .gitconfig
+    actions:
+      - type: migrate
+        source: ${HOME}/.gitconfig
+        dest: ${XDG_CONFIG_HOME}/git/config
+
 
   - name: gnupg
     dotfile:

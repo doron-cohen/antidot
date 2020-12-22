@@ -1,0 +1,225 @@
+$id: http://example.com/example.json
+$schema: http://json-schema.org/draft-07/schema
+
+title: Antidot Rules
+type: object
+additionalProperties: false
+description: antidot rules file
+required:
+  - version
+  - rules
+
+examples:
+  - version: 1
+    rules:
+      - name: rule-name
+        description: Rule description
+        notes:
+          - First note
+          - Second note
+        dotfile:
+          is_dir: false
+          name: .dotfile_name
+        actions:
+          - dest: /other/path
+            source: /some/path
+            type: migrate
+          - path: /some/path
+            type: delete
+          - key: ENV_KEY
+            type: export
+            value: env_value
+          - alias: alias
+            command: cmd --with=flag
+            type: alias
+  - version: 1
+    rules:
+      - name: rule-name
+        description: Rule description
+        dotfile:
+          name: .dotfile_name
+        actions:
+          - type: migrate
+            dest: /other/path
+            source: /some/path
+          - type: export
+            key: ENV_KEY
+            value: env_value
+
+properties:
+  version:
+    $id: "#/properties/version"
+    default: 1
+    description: The rules file schema version.
+    title: Rules Schema Version
+    type: integer
+  rules:
+    $id: "#/properties/rules"
+    title: Rules
+    type: array
+    default: []
+    description: List of rules that match actions to dotfiles.
+    items:
+      $id: "#/properties/rules/items"
+      title: Rule
+      description: A rule that match actions to a dotfile.
+      required:
+        - name
+        - dotfile
+        - actions
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          $id: "#/properties/rules/items/properties/name"
+          default: ""
+          description: An explanation about the purpose of this instance.
+          examples:
+            - rule-name
+          title: The name schema
+          type: string
+        description:
+          $id: "#/properties/rules/items/properties/description"
+          default: ""
+          description: An explanation about the purpose of this instance.
+          examples:
+            - Rule description
+          title: The description schema
+          type: string
+        notes:
+          $id: "#/properties/rules/items/properties/notes"
+          title: Rules' Notes
+          type: array
+          default: []
+          description: A list of notes or warnings about the rule.
+          items:
+            $id: "#/properties/rules/items/properties/notes/items"
+            title: Rule Note
+            type: string
+        dotfile:
+          $id: "#/properties/rules/items/properties/dotfile"
+          additionalProperties: true
+          default: {}
+          description: An explanation about the purpose of this instance.
+          examples:
+            - is_dir: false
+              name: .dotfile_name
+          properties:
+            is_dir:
+              $id: "#/properties/rules/items/properties/dotfile/properties/is_dir"
+              default: false
+              description: An explanation about the purpose of this
+                instance.
+              examples:
+                - false
+              title: The is_dir schema
+              type: boolean
+            name:
+              $id: "#/properties/rules/items/properties/dotfile/properties/name"
+              default: ""
+              description: An explanation about the purpose of this
+                instance.
+              examples:
+                - .dotfile_name
+              title: The name schema
+              type: string
+          required:
+            - name
+          title: The dotfile schema
+          type: object
+        actions:
+          $id: "#/properties/rules/items/properties/actions"
+          title: Action List
+          type: array
+          default: []
+          description: Actions to run for a specific dotfile.
+          items:
+            $id: "#/properties/rules/items/properties/actions/items"
+            anyOf:
+              - $id: "#/properties/rules/items/properties/actions/items/migrate"
+                title: Migrate Action
+                description: Action to migrate a file to a new location.
+                type: object
+                required:
+                  - type
+                  - source
+                  - dest
+                additionalProperties: false
+                properties:
+                  type:
+                    $id: "#/properties/rules/items/properties/actions/items/migrate/properties/type"
+                    description: The action's type.
+                    const: migrate
+                  source:
+                    $id: "#/properties/rules/items/properties/actions/items/migrate/properties/source"
+                    description: Migrate file from this path.
+                    examples:
+                      - /some/path
+                    type: string
+                  dest:
+                    $id: "#/properties/rules/items/properties/actions/items/migrate/properties/dest"
+                    description: Migrate file to this path.
+                    examples:
+                      - /other/path
+                    type: string
+              - $id: "#/properties/rules/items/properties/actions/items/delete"
+                title: Delete Action
+                description: Action to delete a file or directory.
+                required:
+                  - type
+                  - path
+                type: object
+                additionalProperties: false
+                properties:
+                  type:
+                    $id: "#/properties/rules/items/properties/actions/items/delete/properties/type"
+                    description: The action's type.
+                    const: delete
+                  path:
+                    $id: "#/properties/rules/items/properties/actions/items/delete/properties/path"
+                    description: The file or directory path to delete.
+                    type: string
+              - $id: "#/properties/rules/items/properties/actions/items/export"
+                title: Export Action
+                description: Action to export an environment variable.
+                additionalProperties: false
+                required:
+                  - type
+                  - key
+                  - value
+                type: object
+                properties:
+                  type:
+                    $id: "#/properties/rules/items/properties/actions/items/export/properties/type"
+                    description: The action's type.
+                    const: export
+                  key:
+                    $id: "#/properties/rules/items/properties/actions/items/export/properties/key"
+                    description: The environment variable name.
+                    type: string
+                  value:
+                    $id: "#/properties/rules/items/properties/actions/items/export/properties/value"
+                    description: The environment variable value.
+                    type: string
+              - $id: "#/properties/rules/items/properties/actions/items/alias"
+                title: Alias Action
+                description: Action to decalare a command alias.
+                required:
+                  - type
+                  - alias
+                  - command
+                type: object
+                additionalProperties: false
+                properties:
+                  type:
+                    $id: "#/properties/rules/items/properties/actions/items/alias/properties/type"
+                    description: The action's type.
+                    const: alias
+                  alias:
+                    $id: "#/properties/rules/items/properties/actions/items/alias/properties/alias"
+                    description: Alias name.
+                    type: string
+                  command:
+                    $id: "#/properties/rules/items/properties/actions/items/alias/properties/command"
+                    description: Alias value.
+                    type: string

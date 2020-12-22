@@ -1,0 +1,86 @@
+before:
+  hooks:
+    - go mod verify
+
+builds:
+  - id: antidot-linux
+    binary: antidot
+    ldflags:
+      - -s -w -X 'main.version=${{ .Version }}'
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+  - id: antidot-darwin
+    binary: antidot
+    ldflags:
+      - -s -w -X 'main.version=${{ .Version }}'
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - amd64
+
+archives:
+  - id: release
+    name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: binary
+    builds:
+      - antidot-linux
+      - antidot-darwin
+  - id: binaries
+    name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: binary
+    builds:
+      - antidot-linux
+      - antidot-darwin
+  - id: aur
+    name_template: "aur_{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - antidot-linux
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+release:
+  ids:
+    - release
+    - binaries
+  prerelease: auto
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs'
+      - '^test'
+      - '^tests'
+      - '^chore'
+
+publishers:
+  - name: aur
+    ids:
+      - aur
+    cmd: ci/aur/publish.sh {{ .Version }} {{ abs .ArtifactPath }}
+    env:
+      - AUR_SSH_KEY={{ .Env.AUR_SSH_KEY }}
+
+brews:
+  - name: antidot
+    folder: Formula
+    homepage: "https://github.com/doron-cohen/antidot"
+    description: "Cleans up your $HOME from those pesky dotfiles"
+    url_template: "https://github.com/doron-cohen/antidot/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    skip_upload: false
+    ids:
+      - release
+    tap:
+      owner: doron-cohen
+      name: homebrew-tap
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@doron.dev
