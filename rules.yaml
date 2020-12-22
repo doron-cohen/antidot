@@ -103,6 +103,17 @@ rules:
         key: BASH_COMPLETION_USER_FILE
         value: ${XDG_CONFIG_HOME}/bash-completion/bash_completion
 
+  - name: bash_history
+    dotfile:
+      name: .bash_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.bash_history
+        dest: ${XDG_CACHE_HOME}/bash/history
+      - type: export
+        key: HISTFILE
+        value: ${XDG_CACHE_HOME}/bash/history
+
   - name: cargo_home
     description: Rust Cargo home dir
     dotfile:
