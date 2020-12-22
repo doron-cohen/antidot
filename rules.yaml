@@ -790,3 +790,28 @@ rules:
       - type: alias
         alias: weechat
         command: weechat -d ${XDG_CONFIG_HOME}/weechat
+
+  - name: yarn
+    dotfile:
+      name: .yarn
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.yarn/link
+        dest: ${XDG_DATA_HOME}/yarn/link
+      - type: migrate
+        source: ${HOME}/.yarn/global
+        dest: ${XDG_DATA_HOME}/yarn/global
+      - type: migrate
+        source: ${HOME}/.yarn/config
+        dest: ${XDG_CONFIG_HOME}/yarn/config
+      - type: delete
+        path: ${HOME}/.yarn
+
+  - name: yarnrc
+    dotfile:
+      name: .yarnrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.yarnrc
+        dest: ${XDG_CONFIG_HOME}/yarn/config
