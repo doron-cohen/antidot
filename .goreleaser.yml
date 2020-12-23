@@ -6,7 +6,7 @@ builds:
   - id: antidot-linux
     binary: antidot
     ldflags:
-      - -s -w -X 'main.version=${{ .Version }}'
+      - -s -w -X 'main.version={{ .Version }}'
     env:
       - CGO_ENABLED=0
     goos:
