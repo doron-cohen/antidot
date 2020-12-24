@@ -14,7 +14,13 @@ No more! `antidot` is a tool to automatically detect and remove dotfiles from `$
 
 ## Installation
 
-Go to the [releases](https://github.com/doron-cohen/antidot/releases) section and grab the one that fits your OS. Brew and AUR packages are planned in the future.
+### Arch Linux
+
+```shell
+yay -Sy antidot-bin
+```
+
+Go to the [releases](https://github.com/doron-cohen/antidot/releases) section and grab the one that fits your OS. Brew packages are planned in the future.
 
 After installing run `antidot update` to download the latest rules file and you're all set!
 
