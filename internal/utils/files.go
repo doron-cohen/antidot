@@ -57,15 +57,54 @@ func MoveDirectory(source, dest string) error {
 	return nil
 }
 
+func PathExists(path string) (bool, error) {
+	fi, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	if !fi.IsDir() {
+		return true, nil
+	}
+
+	f, err := os.Open(path)
+	if err != nil {
+		return false, err
+	}
+	defer f.Close()
+
+	// Treat empty directory as non-existent
+	_, err = f.Readdirnames(1)
+	if err != nil {
+		if err == io.EOF {
+			err = nil
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
+}
+
 // Try to move file/directory with os.Rename and if that fails, do a copy + delete
 func MovePath(source, dest string) error {
-	err := os.Rename(source, dest)
+	exists, err := PathExists(dest)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return fmt.Errorf("Destination path %s already exists", dest)
+	}
+
+	err = os.Rename(source, dest)
 	if err == nil {
 		return nil
 	}
 
 	fi, err := os.Stat(source)
-	if fi.Mode().IsDir() {
+	if fi.IsDir() {
 		return MoveDirectory(source, dest)
 	}
 
