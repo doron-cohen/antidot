@@ -1,8 +1,6 @@
 package rules
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -27,17 +25,14 @@ func (m Migrate) Apply() error {
 	}
 
 	dest := utils.ExpandEnv(m.Dest)
-	if utils.FileExists(dest) {
-		errMessage := fmt.Sprintf("Destination file %s exists", dest)
-		return errors.New(errMessage)
-	}
 
+	// NB: No error is thrown if dir already exists
 	err = os.MkdirAll(filepath.Dir(dest), os.FileMode(0o755))
 	if err != nil {
 		return err
 	}
 
-	err = os.Rename(source, dest)
+	err = utils.MovePath(source, dest)
 	if err != nil {
 		return err
 	}
