@@ -21,13 +21,13 @@ type configTest struct {
 
 func TestLoadConfig(t *testing.T) {
 	tests := []configTest{
-		configTest{
+		{
 			Name: "EmptyRules",
 			ConfigYaml: `version: 1
 rules: []`,
 			ExpectedRulesConfig: rules.RulesConfig{Version: 1, Rules: []rules.Rule{}},
 		},
-		configTest{
+		{
 			Name: "AllActions",
 			ConfigYaml: `version: 1
 rules:
@@ -46,7 +46,7 @@ rules:
 			ExpectedRulesConfig: rules.RulesConfig{
 				Version: 1,
 				Rules: []rules.Rule{
-					rules.Rule{
+					{
 						Name:        "all_actions",
 						Description: "a rule containing all actions",
 						Dotfile:     &dotfile.Dotfile{Name: ".test", IsDir: true},
@@ -65,7 +65,7 @@ rules:
 				},
 			},
 		},
-		configTest{
+		{
 			Name: "IgnoredRule",
 			ConfigYaml: `version: 1
 rules:
@@ -78,7 +78,7 @@ rules:
 			ExpectedRulesConfig: rules.RulesConfig{
 				Version: 1,
 				Rules: []rules.Rule{
-					rules.Rule{
+					{
 						Name:        "ignored_rule",
 						Description: "an ignored rule",
 						Dotfile:     &dotfile.Dotfile{Name: ".test", IsDir: false},
@@ -95,7 +95,7 @@ rules:
 		if err != nil {
 			t.Errorf("Failed creating temp dir: %v", err)
 		}
-		// defer os.RemoveAll(tmpDir)
+		defer os.RemoveAll(tmpDir)
 
 		t.Run(test.Name, func(t *testing.T) {
 			configFileName := fmt.Sprintf("%s.yml", test.Name)

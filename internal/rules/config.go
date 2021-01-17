@@ -22,6 +22,7 @@ type RulesConfig struct {
 
 var rulesConfig RulesConfig
 
+// TODO: return a pointer to RulesConfig
 func LoadRulesConfig(filepath string) (RulesConfig, error) {
 	tui.Debug("Loading rules config file %s", filepath)
 	rulesBytes, err := ioutil.ReadFile(filepath)

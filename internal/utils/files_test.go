@@ -7,6 +7,9 @@ import (
 
 func TestPathExists(t *testing.T) {
 	exists, err := PathExists("file_that_doesnt_exist")
+	if err != nil {
+		t.Fatalf("PathExists returned error: %v", err)
+	}
 	if exists {
 		t.Fatalf("PathExists() returning true for file which doesn't exist")
 	}
@@ -19,6 +22,9 @@ func TestPathExists(t *testing.T) {
 	defer os.Remove("testfile")
 
 	exists, err = PathExists("testfile")
+	if err != nil {
+		t.Fatalf("PathExists returned error: %v", err)
+	}
 	if !exists {
 		t.Fatalf("PathExists() returning false for file which exists")
 	}
@@ -31,6 +37,9 @@ func TestPathExists(t *testing.T) {
 	defer os.RemoveAll("testdir")
 
 	exists, err = PathExists("testdir")
+	if err != nil {
+		t.Fatalf("PathExists returned error: %v", err)
+	}
 	if exists {
 		t.Fatalf("PathExists() returning true for empty directory")
 	}
@@ -42,6 +51,9 @@ func TestPathExists(t *testing.T) {
 	f.Close()
 
 	exists, err = PathExists("testdir")
+	if err != nil {
+		t.Fatalf("PathExists returned error: %v", err)
+	}
 	if !exists {
 		t.Fatalf("PathExists() returning false for non-empty directory")
 	}

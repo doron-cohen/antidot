@@ -20,7 +20,8 @@ var rootCmd = &cobra.Command{
 	Short: "Clean your $HOME from those pesky dotfiles",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			cmd.Help()
+			err := cmd.Help()
+			tui.FatalIfError("Failed printing help message", err)
 			os.Exit(0)
 		}
 	},

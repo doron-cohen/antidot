@@ -80,7 +80,6 @@ func PathExists(path string) (bool, error) {
 	_, err = f.Readdirnames(1)
 	if err != nil {
 		if err == io.EOF {
-			err = nil
 			return false, nil
 		}
 		return false, err
@@ -104,6 +103,10 @@ func MovePath(source, dest string) error {
 	}
 
 	fi, err := os.Stat(source)
+	if err != nil {
+		return err
+	}
+
 	if fi.IsDir() {
 		return MoveDirectory(source, dest)
 	}

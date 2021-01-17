@@ -37,7 +37,7 @@ func getActionByName(name string) (Action, error) {
 
 func actionDecodeHook(sourceType, destType reflect.Type, raw interface{}) (interface{}, error) {
 	// TODO: find a better way to compare these types
-	if fmt.Sprintf("%s", destType) == "rules.Action" {
+	if destType.String() == "rules.Action" {
 		var err error
 		var result Action
 
@@ -47,7 +47,11 @@ func actionDecodeHook(sourceType, destType reflect.Type, raw interface{}) (inter
 			return nil, err
 		}
 
-		mapstructure.Decode(raw, &result)
+		err = mapstructure.Decode(raw, &result)
+		if err != nil {
+			return nil, err
+		}
+
 		return result, nil
 	}
 	return raw, nil
