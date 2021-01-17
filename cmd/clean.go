@@ -42,6 +42,10 @@ var cleanCmd = &cobra.Command{
 
 		dotfiles, err := dotfile.Detect(userHomeDir)
 		tui.FatalIfError("Failed to detect dotfiles in home dir", err)
+		if len(dotfiles) == 0 {
+			tui.Print("No dotfiles detected in home directory. You're all clean!")
+			return
+		}
 
 		tui.Debug("Found %d dotfiles in %s", len(dotfiles), userHomeDir)
 
@@ -71,7 +75,10 @@ var cleanCmd = &cobra.Command{
 		}
 
 		if appliedRule {
-			tui.Print("Cleanup finished - run \"eval $(antidot init)\" to take effect")
+			tui.Print(
+				"Cleanup finished - run %s to take effect",
+				tui.ApplyStyle(tui.Blue, "eval \"$(antidot init)\""),
+			)
 		}
 	},
 }
