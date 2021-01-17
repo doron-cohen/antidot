@@ -11,10 +11,14 @@ import (
 
 func FileExists(filename string) bool {
 	_, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
+	return !os.IsNotExist(err)
+}
+
+func OpenOrCreate(filepath string) (*os.File, error) {
+	if FileExists(filepath) {
+		return os.Open(filepath)
 	}
-	return true
+	return os.Create(filepath)
 }
 
 func MoveFile(sourcePath, destPath string) error {
