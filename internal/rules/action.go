@@ -6,10 +6,16 @@ import (
 	"reflect"
 
 	"github.com/mitchellh/mapstructure"
+
+	sh "github.com/doron-cohen/antidot/internal/shell"
 )
 
+type ActionContext struct {
+	Shell sh.Shell
+}
+
 type Action interface {
-	Apply() error
+	Apply(ActionContext) error
 	Pprint()
 }
 

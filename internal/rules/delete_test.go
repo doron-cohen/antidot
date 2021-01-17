@@ -23,7 +23,10 @@ func TestDeleteApply(t *testing.T) {
 	}
 
 	deleteAction := rules.Delete{Path: filePath}
-	deleteAction.Apply()
+	err = deleteAction.Apply(testActionContext)
+	if err != nil {
+		t.Fatalf("Error while applying delete action: %v", err)
+	}
 
 	_, err = os.Stat(filePath)
 	if os.IsExist(err) {

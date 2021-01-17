@@ -24,7 +24,10 @@ func TestMigrateApply(t *testing.T) {
 
 	destPath := filepath.Join(tmpDir, "dir/dest")
 	migrateAction := rules.Migrate{Source: sourcePath, Dest: destPath, Symlink: false}
-	migrateAction.Apply()
+	err = migrateAction.Apply(testActionContext)
+	if err != nil {
+		t.Fatalf("Error while applying migrate action: %v", err)
+	}
 
 	_, err = os.Stat(sourcePath)
 	if os.IsExist(err) {

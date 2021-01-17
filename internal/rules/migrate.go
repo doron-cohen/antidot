@@ -14,7 +14,7 @@ type Migrate struct {
 	Symlink bool
 }
 
-func (m Migrate) Apply() error {
+func (m Migrate) Apply(actx ActionContext) error {
 	source := utils.ExpandEnv(m.Source)
 	_, err := os.Stat(source)
 	if os.IsNotExist(err) {

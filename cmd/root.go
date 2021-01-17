@@ -12,6 +12,9 @@ import (
 
 var rulesFilePath string
 
+// Used in clean and init
+var shellOverride string
+
 var rootCmd = &cobra.Command{
 	Use:   "antidot",
 	Short: "Clean your $HOME from those pesky dotfiles",

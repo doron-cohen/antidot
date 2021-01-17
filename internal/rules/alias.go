@@ -1,12 +1,7 @@
 package rules
 
 import (
-	"errors"
-	"fmt"
-	"os"
-
 	"github.com/doron-cohen/antidot/internal/tui"
-	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 type Alias struct {
@@ -15,41 +10,9 @@ type Alias struct {
 }
 
 // TODO: remove code duplication with export.go
-func (a Alias) Apply() error {
-	aliasFilePath, err := utils.GetAliasFile()
+func (a Alias) Apply(actx ActionContext) error {
+	err := actx.Shell.AddCommandAlias(a.Alias, a.Command)
 	if err != nil {
-		return err
-	}
-
-	if !utils.FileExists(aliasFilePath) {
-		if _, err = os.Create(aliasFilePath); err != nil {
-			return err
-		}
-	}
-
-	aliasMap, err := utils.AliasMapFromFile(aliasFilePath)
-	if err != nil {
-		return err
-	}
-
-	existingAlias, isAliasContained := aliasMap[a.Alias]
-	if isAliasContained {
-		tui.Debug("Alias %s already exists in alias file %s", a.Alias, aliasMap)
-		if existingAlias != a.Command {
-			errMessage := fmt.Sprintf(
-				"Current command for alias '%s' (%s) is different than the requested (%s)",
-				a.Alias, existingAlias, a.Command,
-			)
-			return errors.New(errMessage)
-		} else {
-			return nil
-		}
-	} else {
-		aliasMap[a.Alias] = a.Command
-	}
-
-	tui.Debug("Writing to %s", aliasFilePath)
-	if err = utils.WriteKeyValuesToFile(aliasMap, aliasFilePath); err != nil {
 		return err
 	}
 

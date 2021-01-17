@@ -3,11 +3,14 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
+	sh "github.com/doron-cohen/antidot/internal/shell"
 	"github.com/doron-cohen/antidot/internal/tui"
-	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 func init() {
+	initCmd.Flags().StringVarP(
+		&shellOverride, "shell", "s", "", "Which shell to render the init script to",
+	)
 	rootCmd.AddCommand(initCmd)
 }
 
@@ -15,22 +18,9 @@ var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize antidot for aliases and env vars to work",
 	Run: func(cmd *cobra.Command, args []string) {
-		// TODO: detect shell and generate appropriate script
-		envFilePath, err := utils.GetEnvFile()
-		tui.FatalIfError("Failed to get env file path", err)
+		shell, err := sh.Get(shellOverride)
+		tui.FatalIfError("", err)
 
-		aliasFilePath, err := utils.GetAliasFile()
-		tui.FatalIfError("Failed to get alias file path", err)
-
-		tui.Print(`%s
-
-if [ -f "%s" ]; then source "%s"; fi
-if [ -f "%s" ]; then source "%s"; fi`,
-			utils.XdgVarsExport(),
-			envFilePath,
-			envFilePath,
-			aliasFilePath,
-			aliasFilePath,
-		)
+		tui.Print(shell.InitStub())
 	},
 }

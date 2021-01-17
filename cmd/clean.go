@@ -8,11 +8,15 @@ import (
 
 	"github.com/doron-cohen/antidot/internal/dotfile"
 	"github.com/doron-cohen/antidot/internal/rules"
+	"github.com/doron-cohen/antidot/internal/shell"
 	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 func init() {
+	cleanCmd.Flags().StringVarP(
+		&shellOverride, "shell", "s", "", "Which shell syntax to apply rules in",
+	)
 	rootCmd.AddCommand(cleanCmd)
 }
 
@@ -41,6 +45,10 @@ var cleanCmd = &cobra.Command{
 
 		tui.Debug("Found %d dotfiles in %s", len(dotfiles), userHomeDir)
 
+		sh, err := shell.Get(shellOverride)
+		tui.FatalIfError("", err)
+		actx := rules.ActionContext{Shell: sh}
+
 		appliedRule := false
 		for _, dotfile := range dotfiles {
 			rule := rules.MatchRule(&dotfile)
@@ -55,7 +63,7 @@ var cleanCmd = &cobra.Command{
 
 			confirmed := tui.Confirm(fmt.Sprintf("Apply rule %s?", rule.Name))
 			if confirmed {
-				rule.Apply()
+				rule.Apply(actx)
 				appliedRule = true
 			}
 

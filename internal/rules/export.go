@@ -1,12 +1,7 @@
 package rules
 
 import (
-	"errors"
-	"fmt"
-	"os"
-
 	"github.com/doron-cohen/antidot/internal/tui"
-	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 type Export struct {
@@ -14,41 +9,9 @@ type Export struct {
 	Value string
 }
 
-func (e Export) Apply() error {
-	envFile, err := utils.GetEnvFile()
+func (e Export) Apply(actx ActionContext) error {
+	err := actx.Shell.AddEnvExport(e.Key, e.Value)
 	if err != nil {
-		return err
-	}
-
-	if !utils.FileExists(envFile) {
-		if _, err = os.Create(envFile); err != nil {
-			return err
-		}
-	}
-
-	envMap, err := utils.EnvMapFromFile(envFile)
-	if err != nil {
-		return err
-	}
-
-	existingValue, isKeyContained := envMap[e.Key]
-	if isKeyContained {
-		tui.Debug("Key %s already exists in env file %s", e.Key, envFile)
-		if existingValue != e.Value {
-			errMessage := fmt.Sprintf(
-				"Current value for key '%s' (%s) is different than the requested (%s)",
-				e.Key, existingValue, e.Value,
-			)
-			return errors.New(errMessage)
-		} else {
-			return nil
-		}
-	} else {
-		envMap[e.Key] = e.Value
-	}
-
-	tui.Debug("Writing to %s", envFile)
-	if err = utils.WriteKeyValuesToFile(envMap, envFile); err != nil {
 		return err
 	}
 

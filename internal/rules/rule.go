@@ -33,10 +33,10 @@ func (r Rule) Pprint() {
 	}
 }
 
-func (r Rule) Apply() {
+func (r Rule) Apply(actx ActionContext) {
 	if !r.Ignore {
 		for _, action := range r.Actions {
-			err := action.Apply()
+			err := action.Apply(actx)
 			if err != nil {
 				tui.Warn("Failed to run rule %s: %v", r.Name, err)
 				break
