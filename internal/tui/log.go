@@ -32,3 +32,8 @@ func FatalIfError(message string, err error) {
 		os.Exit(255)
 	}
 }
+
+func Fatal(message string) {
+	fmt.Fprintf(os.Stderr, ApplyStylef(Red, "Error: %v\n", message))
+	os.Exit(255)
+}

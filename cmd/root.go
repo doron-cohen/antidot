@@ -12,12 +12,16 @@ import (
 
 var rulesFilePath string
 
+// Used in clean and init
+var shellOverride string
+
 var rootCmd = &cobra.Command{
 	Use:   "antidot",
 	Short: "Clean your $HOME from those pesky dotfiles",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			cmd.Help()
+			err := cmd.Help()
+			tui.FatalIfError("Failed printing help message", err)
 			os.Exit(0)
 		}
 	},

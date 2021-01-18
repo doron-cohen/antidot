@@ -11,10 +11,14 @@ import (
 
 func FileExists(filename string) bool {
 	_, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
+	return !os.IsNotExist(err)
+}
+
+func OpenOrCreate(filepath string) (*os.File, error) {
+	if FileExists(filepath) {
+		return os.Open(filepath)
 	}
-	return true
+	return os.Create(filepath)
 }
 
 func MoveFile(sourcePath, destPath string) error {
@@ -80,7 +84,6 @@ func PathExists(path string) (bool, error) {
 	_, err = f.Readdirnames(1)
 	if err != nil {
 		if err == io.EOF {
-			err = nil
 			return false, nil
 		}
 		return false, err
@@ -104,6 +107,10 @@ func MovePath(source, dest string) error {
 	}
 
 	fi, err := os.Stat(source)
+	if err != nil {
+		return err
+	}
+
 	if fi.IsDir() {
 		return MoveDirectory(source, dest)
 	}

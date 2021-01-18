@@ -9,8 +9,11 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/doron-cohen/antidot/internal/rules"
+	"github.com/doron-cohen/antidot/internal/shell"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
+
+var testActionContext rules.ActionContext
 
 func TestAliasNoEnv(t *testing.T) {
 	utils.AppDirs.AppName = "antidot_test"
@@ -26,7 +29,7 @@ func TestAliasNoEnv(t *testing.T) {
 	}
 
 	aliasAction := rules.Alias{Alias: "ll", Command: "ls -la \"$XDG_CONFIG_HOME\"/test"}
-	err = aliasAction.Apply()
+	err = aliasAction.Apply(testActionContext)
 	if err != nil {
 		t.Fatalf("Error while applying alias action: %v", err)
 	}
@@ -44,3 +47,8 @@ func TestAliasNoEnv(t *testing.T) {
 }
 
 // TODO: test alias key conflict
+
+func init() {
+	sh, _ := shell.Get("bash")
+	testActionContext = rules.ActionContext{sh}
+}

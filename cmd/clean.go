@@ -8,11 +8,15 @@ import (
 
 	"github.com/doron-cohen/antidot/internal/dotfile"
 	"github.com/doron-cohen/antidot/internal/rules"
+	"github.com/doron-cohen/antidot/internal/shell"
 	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 func init() {
+	cleanCmd.Flags().StringVarP(
+		&shellOverride, "shell", "s", "", "Which shell syntax to apply rules in",
+	)
 	rootCmd.AddCommand(cleanCmd)
 }
 
@@ -38,8 +42,16 @@ var cleanCmd = &cobra.Command{
 
 		dotfiles, err := dotfile.Detect(userHomeDir)
 		tui.FatalIfError("Failed to detect dotfiles in home dir", err)
+		if len(dotfiles) == 0 {
+			tui.Print("No dotfiles detected in home directory. You're all clean!")
+			return
+		}
 
 		tui.Debug("Found %d dotfiles in %s", len(dotfiles), userHomeDir)
+
+		sh, err := shell.Get(shellOverride)
+		tui.FatalIfError("", err)
+		actx := rules.ActionContext{Shell: sh}
 
 		appliedRule := false
 		for _, dotfile := range dotfiles {
@@ -55,7 +67,7 @@ var cleanCmd = &cobra.Command{
 
 			confirmed := tui.Confirm(fmt.Sprintf("Apply rule %s?", rule.Name))
 			if confirmed {
-				rule.Apply()
+				rule.Apply(actx)
 				appliedRule = true
 			}
 
@@ -63,7 +75,10 @@ var cleanCmd = &cobra.Command{
 		}
 
 		if appliedRule {
-			tui.Print("Cleanup finished - run \"eval $(antidot init)\" to take effect")
+			tui.Print(
+				"Cleanup finished - run %s to take effect",
+				tui.ApplyStyle(tui.Blue, "eval \"$(antidot init)\""),
+			)
 		}
 	},
 }

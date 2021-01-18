@@ -11,7 +11,7 @@ type Delete struct {
 	Path string
 }
 
-func (d Delete) Apply() error {
+func (d Delete) Apply(actx ActionContext) error {
 	path := utils.ExpandEnv(d.Path)
 	if !utils.FileExists(path) {
 		return nil

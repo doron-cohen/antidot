@@ -25,7 +25,7 @@ func TestExportNoEnv(t *testing.T) {
 	}
 
 	exportAction := rules.Export{Key: "HELLO", Value: "world"}
-	err = exportAction.Apply()
+	err = exportAction.Apply(testActionContext)
 	if err != nil {
 		t.Fatalf("Error while applying export action: %v", err)
 	}
