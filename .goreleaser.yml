@@ -27,16 +27,30 @@ builds:
 archives:
   - id: release
     name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-    format: binary
+    format: tar.gz
     builds:
       - antidot-linux
       - antidot-darwin
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+
   - id: binaries
     name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format: binary
     builds:
       - antidot-linux
       - antidot-darwin
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+
   - id: aur
     name_template: "aur_{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     builds:
