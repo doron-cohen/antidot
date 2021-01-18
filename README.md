@@ -4,8 +4,6 @@
 
 Cleans up your `$HOME` from those pesky dotfiles.
 
-### :construction: This is a work in progress! :construction:
-
 ## Intro
 
 For years I stood by and saw how countless applications populate my home dir with dotfiles.
@@ -18,6 +16,12 @@ No more! `antidot` is a tool to automatically detect and remove dotfiles from `$
 
 ```shell
 yay -Sy antidot-bin
+```
+
+### Homebrew
+
+```shell
+brew install doron-cohen/tap/antidot
 ```
 
 Go to the [releases](https://github.com/doron-cohen/antidot/releases) section and grab the one that fits your OS. Brew packages are planned in the future.
