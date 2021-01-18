@@ -95,6 +95,7 @@ brews:
     tap:
       owner: doron-cohen
       name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     commit_author:
       name: goreleaserbot
       email: goreleaser@doron.dev
