@@ -24,7 +24,7 @@ yay -Sy antidot-bin
 brew install doron-cohen/tap/antidot
 ```
 
-Go to the [releases](https://github.com/doron-cohen/antidot/releases) section and grab the one that fits your OS. Brew packages are planned in the future.
+Go to the [releases](https://github.com/doron-cohen/antidot/releases) section and grab the one that fits your OS.
 
 After installing run `antidot update` to download the latest rules file and you're all set!
 
@@ -71,4 +71,4 @@ Rule docker:
 
 Answering yes will move the directory and write the environment variable to a file that can be easily sourced by the shell. Running `antidot init` will create a shell script that will do just that.
 
-Adding `eval "$(antidot init)"` to your `.bashrc` will make sure you shell sessions will see these variables and aliases. Fish shell and Zsh support is coming soon.
+Adding `eval "$(antidot init)"` to your `.bashrc` or `.zshrc` will make sure you shell sessions will see these variables and aliases. In Fish the proper way is to run `antidot init | source`. You could add it to `$__fish_config_dir/conf.d/antidot.fish`.
