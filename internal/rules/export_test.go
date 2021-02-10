@@ -1,43 +1,44 @@
 package rules_test
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/doron-cohen/antidot/internal/rules"
+	"github.com/doron-cohen/antidot/internal/shell"
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 func TestExportNoEnv(t *testing.T) {
 	utils.AppDirs.AppName = "antidot_test"
+
+	kvPath, err := utils.AppDirs.GetDataFile("store.json")
+	if err != nil {
+		t.Fatalf("Failed getting data file path %s: %s", kvPath, err)
+	}
 	defer os.RemoveAll(utils.AppDirs.DataHome())
 
-	envFilePath, err := utils.GetEnvFile()
+	kvStore, err := shell.LoadKeyValueStore(kvPath)
 	if err != nil {
-		t.Fatalf("Error getting env file path: %v", err)
+		t.Fatalf("Failed loading key value store from %s: %s", kvPath, err)
 	}
 
-	if utils.FileExists(envFilePath) {
-		t.Fatalf("Env file %s shouldn't exist", envFilePath)
-	}
-
+	testActionContext := rules.ActionContext{kvStore}
 	exportAction := rules.Export{Key: "HELLO", Value: "world"}
-	err = exportAction.Apply(testActionContext)
+	err = exportAction.Apply(&testActionContext)
 	if err != nil {
 		t.Fatalf("Error while applying export action: %v", err)
 	}
 
-	contents, err := ioutil.ReadFile(envFilePath)
+	envVars, err := kvStore.ListEnvVars()
 	if err != nil {
-		t.Fatalf("Error while reading env file: %v", err)
+		t.Fatalf("Error while listing env vars from kv store: %v", err)
 	}
 
-	// TODO: don't be too specific
-	if !cmp.Equal(contents, []byte("export HELLO=\"world\"\n")) {
-		t.Fatalf("Unexpected env file contents: %s", contents)
+	if !cmp.Equal(envVars, map[string]string{"HELLO": "world"}) {
+		t.Fatalf("Unexpected env file contents: %s", envVars)
 	}
 }
 

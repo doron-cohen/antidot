@@ -1,9 +1,6 @@
 package shell_test
 
 import (
-	"fmt"
-	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -12,120 +9,70 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func appendToEndOfFile(path, text string) error {
-	file, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, os.FileMode(0o755))
-	defer func() { _ = file.Close() }()
-	if err != nil {
-		return fmt.Errorf("Failed to open key value file: %v", err)
-	}
+func TestKeyValueStore(t *testing.T) {
+	tmpDir := os.TempDir()
+	kvPath := filepath.Join(tmpDir, "antidot_kvstore_test.json")
+	defer os.Remove(kvPath)
 
-	_, err = file.Seek(0, io.SeekEnd)
-	if err != nil {
-		return fmt.Errorf("Failed to seek key value file: %v", err)
-	}
+	t.Run("Open a new file", func(t *testing.T) {
+		kv, err := shell.LoadKeyValueStore(kvPath)
+		if err != nil {
+			t.Fatalf("Failed to open new key value store in %s: %v", kvPath, err)
+		}
 
-	_, err = file.WriteString(text)
-	if err != nil {
-		return fmt.Errorf("Failed to write to key value file: %v", err)
-	}
+		if kv.Aliases == nil || len(kv.Aliases) > 0 {
+			t.Fatalf("Aliases not initialized: %v", err)
+		}
 
-	return nil
-}
+		if kv.EnvVars == nil || len(kv.EnvVars) > 0 {
+			t.Fatalf("EnvVars not initialized: %v", err)
+		}
+	})
 
-type kvTest struct {
-	testName          string
-	key               string
-	value             string
-	expected          map[string]string
-	expectedAppendErr string
-	appendText        string
-}
+	t.Run("Add aliases and env vars", func(t *testing.T) {
+		kv, err := shell.LoadKeyValueStore(kvPath)
+		if err != nil {
+			t.Fatalf("Failed to open existing key value store in %s: %v", kvPath, err)
+		}
 
-func TestKeyValueFile(t *testing.T) {
-	expected := make(map[string]string)
-	format := "set %s = '%s'\n"
-	kv := shell.NewKeyValueMapFormat(
-		`(?m)^set (?P<key>\w+) = '(?P<value>.*)'`,
-		format,
-	)
-
-	tmpDir, err := ioutil.TempDir("", "test")
-	if err != nil {
-		t.Errorf("Failed setting up test: %v", err)
-	}
-	defer os.RemoveAll(tmpDir)
-
-	path := filepath.Join(tmpDir, "test.kv")
-
-	tests := []kvTest{
-		{
-			testName: "add key value to empty file",
-			key:      "hello",
-			value:    "world",
-			expected: map[string]string{"hello": "world"},
-		},
-		{
-			testName: "add key value to existing file",
-			key:      "hi",
-			value:    "there",
-			expected: map[string]string{"hello": "world", "hi": "there"},
-		},
-		{
-			testName:   "ignore out of format text",
-			key:        "",
-			value:      "",
-			expected:   map[string]string{"hello": "world", "hi": "there"},
-			appendText: "This is not the format!\n",
-		},
-		{
-			testName:          "key value conflict",
-			key:               "hi",
-			value:             "ho",
-			expected:          map[string]string{"hello": "world", "hi": "there"},
-			expectedAppendErr: "Key hi already exists with different value",
-		},
-		{
-			testName: "ignore key value exists",
-			key:      "hi",
-			value:    "there",
-			expected: map[string]string{"hello": "world", "hi": "there"},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.testName, func(t *testing.T) {
-			if tt.appendText != "" {
-				err = appendToEndOfFile(path, tt.appendText)
-				if err != nil {
-					t.Fatal(err)
-				}
-			}
-
-			if tt.key != "" {
-				err = shell.AppendKeyValueToFile(path, tt.key, tt.value, kv)
-
-				if tt.expectedAppendErr != "" {
-					if err == nil || err.Error() != tt.expectedAppendErr {
-						t.Fatalf("Expected error %s from append key value", tt.expectedAppendErr)
-					}
-					return
-				}
-				if err != nil {
-					t.Fatal("Failed to append key value to file", err)
-				}
-			}
-
-			bytes, err := ioutil.ReadFile(path)
+		aliases := map[string]string{
+			"test":      "test --color",
+			"tool":      "tool --config ${XDG_CONFIG_HOME}/tool.toml",
+			"grrrrreat": "grrrrrrrrreat",
+		}
+		for k, v := range aliases {
+			err = kv.AddAlias(k, v)
 			if err != nil {
-				t.Fatal("Failed to read key value file")
+				t.Fatalf("Failed to add alias %s=%s: %v", k, v, err)
 			}
-			kvMap, err := kv.ParseKeyValuePairs(string(bytes[:]))
+		}
+
+		envVars := map[string]string{
+			"TEST_HOME": "${XDG_CONFIG_HOME}/test",
+			"MEMES":     "${XDG_MEMES_HOME}",
+			"SHELL":     "/bin/bash",
+		}
+		for k, v := range envVars {
+			err = kv.AddEnv(k, v)
 			if err != nil {
-				t.Fatal("Failed to parse key values from file", err)
+				t.Fatalf("Failed to add env %s=%s: %v", k, v, err)
 			}
-			if !cmp.Equal(kvMap, tt.expected) {
-				t.Fatalf("Key value mismatch. Expected %v got %v", expected, kvMap)
-			}
-		})
-	}
+		}
+
+		storedAliases, err := kv.ListAliases()
+		if err != nil {
+			t.Fatalf("Failed listing aliases: %v", err)
+		}
+		if !cmp.Equal(aliases, storedAliases) {
+			t.Fatal("Aliases mismatch")
+		}
+
+		storedEnvVars, err := kv.ListEnvVars()
+		if err != nil {
+			t.Fatalf("Failed listing env vars: %v", err)
+		}
+		if !cmp.Equal(envVars, storedEnvVars) {
+			t.Fatal("Env vars mismatch")
+		}
+	})
 }

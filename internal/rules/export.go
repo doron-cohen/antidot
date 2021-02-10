@@ -9,8 +9,8 @@ type Export struct {
 	Value string
 }
 
-func (e Export) Apply(actx ActionContext) error {
-	err := actx.Shell.AddEnvExport(e.Key, e.Value)
+func (e Export) Apply(actx *ActionContext) error {
+	err := actx.KeyValueStore.AddEnv(e.Key, e.Value)
 	if err != nil {
 		return err
 	}

@@ -37,3 +37,7 @@ func init() {
 	// TODO: import this from somewhere
 	AppDirs = appDirs{AppName: "antidot"}
 }
+
+func GetKeyValueStorePath() (string, error) {
+	return AppDirs.GetDataFile("kvstore.json")
+}

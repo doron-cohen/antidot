@@ -10,8 +10,8 @@ type Alias struct {
 }
 
 // TODO: remove code duplication with export.go
-func (a Alias) Apply(actx ActionContext) error {
-	err := actx.Shell.AddCommandAlias(a.Alias, a.Command)
+func (a Alias) Apply(actx *ActionContext) error {
+	err := actx.KeyValueStore.AddAlias(a.Alias, a.Command)
 	if err != nil {
 		return err
 	}

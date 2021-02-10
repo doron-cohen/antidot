@@ -1,9 +1,7 @@
 package rules_test
 
 import (
-	"io/ioutil"
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -13,42 +11,35 @@ import (
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
-var testActionContext rules.ActionContext
-
 func TestAliasNoEnv(t *testing.T) {
 	utils.AppDirs.AppName = "antidot_test"
+
+	kvPath, err := utils.AppDirs.GetDataFile("store.json")
+	if err != nil {
+		t.Fatalf("Failed getting data file path %s: %s", kvPath, err)
+	}
 	defer os.RemoveAll(utils.AppDirs.DataHome())
 
-	aliasFilePath, err := utils.GetAliasFile()
+	kvStore, err := shell.LoadKeyValueStore(kvPath)
 	if err != nil {
-		t.Fatalf("Error getting alias file path: %v", err)
+		t.Fatalf("Failed loading key value store from %s: %s", kvPath, err)
 	}
 
-	if utils.FileExists(aliasFilePath) {
-		t.Fatalf("Alias file %s shouldn't exist", aliasFilePath)
-	}
-
+	testActionContext := rules.ActionContext{kvStore}
 	aliasAction := rules.Alias{Alias: "ll", Command: "ls -la \"$XDG_CONFIG_HOME\"/test"}
-	err = aliasAction.Apply(testActionContext)
+	err = aliasAction.Apply(&testActionContext)
 	if err != nil {
 		t.Fatalf("Error while applying alias action: %v", err)
 	}
 
-	contents, err := ioutil.ReadFile(aliasFilePath)
+	aliases, err := kvStore.ListAliases()
 	if err != nil {
-		t.Fatalf("Error while reading alias file: %v", err)
+		t.Fatalf("Error while listing env vars from kv store: %v", err)
 	}
 
-	// TODO: don't be too specific
-	expected := "alias ll=\"ls -la \"$XDG_CONFIG_HOME\"/test\""
-	if !cmp.Equal(strings.Trim(string(contents), " \t\n"), string(expected)) {
-		t.Fatalf("Unexpected alias file contents: '%s' != '%s'", contents, expected)
+	if !cmp.Equal(aliases, map[string]string{"ll": "ls -la \"$XDG_CONFIG_HOME\"/test"}) {
+		t.Fatalf("Unexpected alias file contents: %s", aliases)
 	}
 }
 
 // TODO: test alias key conflict
-
-func init() {
-	sh, _ := shell.Get("bash")
-	testActionContext = rules.ActionContext{sh}
-}
