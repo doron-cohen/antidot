@@ -92,7 +92,7 @@ rules:
         key: AWS_CONFIG_FILE
         value: ${XDG_CONFIG_HOME}/aws/config
 
-  - name: bash-completion
+  - name: bash_completion
     dotfile:
       name: .bash_completion
     actions:
@@ -385,6 +385,18 @@ rules:
       - type: alias
         alias: mbsync
         command: mbsync -c ${XDG_CONFIG_HOME}/isync/mbsyncrc
+
+  - name: k9s
+    dotfile:
+      name: .k9s
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.k9s
+        dest: ${XDG_CONFIG_HOME}/k9s
+      - type: export
+        key: K9SCONFIG
+        value: ${XDG_CONFIG_HOME}/k9s
 
   - name: kde
     dotfile:
