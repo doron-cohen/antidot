@@ -51,14 +51,6 @@ func ApplyDefaultXdgEnv() {
 	}
 }
 
-func GetAliasFile() (string, error) {
-	return AppDirs.GetDataFile("alias.sh")
-}
-
-func GetEnvFile() (string, error) {
-	return AppDirs.GetDataFile("env.sh")
-}
-
 func GetRulesFilePath() string {
 	return AppDirs.GetDataFilePath("rules.yaml")
 }

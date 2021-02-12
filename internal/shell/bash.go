@@ -6,40 +6,27 @@ import (
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
-type Bash struct {
-	envMapFormat   *keyValueMapFormat
-	aliasMapFormat *keyValueMapFormat
-}
+type Bash struct{}
 
-func (b *Bash) envFilePath() (string, error) {
+func (b *Bash) EnvFilePath() (string, error) {
 	return utils.AppDirs.GetDataFile("env.sh")
 }
 
-func (b *Bash) aliasFilePath() (string, error) {
+func (b *Bash) AliasFilePath() (string, error) {
 	return utils.AppDirs.GetDataFile("alias.sh")
 }
 
-func (b *Bash) AddEnvExport(key, value string) error {
-	path, err := b.envFilePath()
-	if err != nil {
-		return err
-	}
-
-	return AppendKeyValueToFile(path, key, value, b.envMapFormat)
+func (b *Bash) FormatAlias(alias, command string) string {
+	return fmt.Sprintf("alias %s=\"%s\"\n", alias, command)
 }
 
-func (b *Bash) AddCommandAlias(alias, command string) error {
-	path, err := b.aliasFilePath()
-	if err != nil {
-		return err
-	}
-
-	return AppendKeyValueToFile(path, alias, command, b.aliasMapFormat)
+func (b *Bash) FormatExport(key, value string) string {
+	return fmt.Sprintf("export %s=\"%s\"\n", key, value)
 }
 
 func (b *Bash) InitStub() string {
-	envFilePath, _ := b.envFilePath()
-	aliasFilePath, _ := b.aliasFilePath()
+	envFilePath, _ := b.EnvFilePath()
+	aliasFilePath, _ := b.AliasFilePath()
 
 	xdgExport := ""
 	for key, value := range utils.XdgDefaults() {
@@ -58,14 +45,5 @@ if [ -f "%s" ]; then source "%s"; fi`,
 }
 
 func init() {
-	registerShell("bash", &Bash{
-		envMapFormat: NewKeyValueMapFormat(
-			`^export (?P<key>\w+)="(?P<value>.*)"`,
-			"export %s=\"%s\"\n",
-		),
-		aliasMapFormat: NewKeyValueMapFormat(
-			`^alias (?P<alias>\w+)="(?P<command>.*)"`,
-			"alias %s=\"%s\"\n",
-		),
-	})
+	registerShell("bash", &Bash{})
 }

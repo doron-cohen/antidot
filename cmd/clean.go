@@ -40,6 +40,9 @@ var cleanCmd = &cobra.Command{
 
 		utils.ApplyDefaultXdgEnv()
 
+		sh, err := shell.Get(shellOverride)
+		tui.FatalIfError("Failed to detect shell", err)
+
 		dotfiles, err := dotfile.Detect(userHomeDir)
 		tui.FatalIfError("Failed to detect dotfiles in home dir", err)
 		if len(dotfiles) == 0 {
@@ -49,11 +52,24 @@ var cleanCmd = &cobra.Command{
 
 		tui.Debug("Found %d dotfiles in %s", len(dotfiles), userHomeDir)
 
-		sh, err := shell.Get(shellOverride)
-		tui.FatalIfError("", err)
-		actx := rules.ActionContext{Shell: sh}
+		kvStore, err := shell.LoadKeyValueStore("")
+		tui.FatalIfError("Failed to load key value store", err)
+		actx := rules.ActionContext{KeyValueStore: kvStore}
 
 		appliedRule := false
+		defer func() {
+			if appliedRule || true {
+				err := shell.DumpAliases(sh, kvStore)
+				if err != nil {
+					tui.Warn("Failed to dump aliases")
+				}
+				err = shell.DumpExports(sh, kvStore)
+				if err != nil {
+					tui.Warn("Failed to dump exports")
+				}
+			}
+		}()
+
 		for _, dotfile := range dotfiles {
 			rule := rules.MatchRule(&dotfile)
 			if rule == nil {
@@ -67,7 +83,7 @@ var cleanCmd = &cobra.Command{
 
 			confirmed := tui.Confirm(fmt.Sprintf("Apply rule %s?", rule.Name))
 			if confirmed {
-				rule.Apply(actx)
+				rule.Apply(&actx)
 				appliedRule = true
 			}
 

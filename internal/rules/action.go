@@ -7,15 +7,15 @@ import (
 
 	"github.com/mitchellh/mapstructure"
 
-	sh "github.com/doron-cohen/antidot/internal/shell"
+	"github.com/doron-cohen/antidot/internal/shell"
 )
 
 type ActionContext struct {
-	Shell sh.Shell
+	KeyValueStore *shell.KeyValueStore
 }
 
 type Action interface {
-	Apply(ActionContext) error
+	Apply(*ActionContext) error
 	Pprint()
 }
 

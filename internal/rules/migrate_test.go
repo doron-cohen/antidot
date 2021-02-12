@@ -7,9 +7,18 @@ import (
 	"testing"
 
 	"github.com/doron-cohen/antidot/internal/rules"
+	"github.com/doron-cohen/antidot/internal/shell"
+	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 func TestMigrateApply(t *testing.T) {
+	utils.AppDirs.AppName = "antidot_test"
+	defer os.RemoveAll(utils.AppDirs.DataHome())
+
+	kvPath := filepath.Join(utils.AppDirs.DataHome(), "store.json")
+	kvStore, _ := shell.LoadKeyValueStore(kvPath)
+	testActionContext := rules.ActionContext{kvStore}
+
 	tmpDir, err := ioutil.TempDir("", "test")
 	if err != nil {
 		t.Errorf("Failed setting up test: %v", err)
@@ -24,7 +33,7 @@ func TestMigrateApply(t *testing.T) {
 
 	destPath := filepath.Join(tmpDir, "dir/dest")
 	migrateAction := rules.Migrate{Source: sourcePath, Dest: destPath, Symlink: false}
-	err = migrateAction.Apply(testActionContext)
+	err = migrateAction.Apply(&testActionContext)
 	if err != nil {
 		t.Fatalf("Error while applying migrate action: %v", err)
 	}

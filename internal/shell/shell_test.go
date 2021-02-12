@@ -9,12 +9,20 @@ import (
 
 type TestSh struct{}
 
-func (t *TestSh) AddCommandAlias(alias, command string) error {
-	return nil
+func (t *TestSh) EnvFilePath() (string, error) {
+	return "", nil
 }
 
-func (t *TestSh) AddEnvExport(key, value string) error {
-	return nil
+func (t *TestSh) AliasFilePath() (string, error) {
+	return "", nil
+}
+
+func (t *TestSh) FormatAlias(alias, command string) string {
+	return ""
+}
+
+func (t *TestSh) FormatExport(key, value string) string {
+	return ""
 }
 
 func (t *TestSh) InitStub() string {
@@ -23,14 +31,21 @@ func (t *TestSh) InitStub() string {
 
 type FallbackSh struct{}
 
-func (t *FallbackSh) AddCommandAlias(alias, command string) error {
-	return nil
+func (t *FallbackSh) EnvFilePath() (string, error) {
+	return "", nil
 }
 
-func (t *FallbackSh) AddEnvExport(key, value string) error {
-	return nil
+func (t *FallbackSh) AliasFilePath() (string, error) {
+	return "", nil
 }
 
+func (t *FallbackSh) FormatAlias(alias, command string) string {
+	return ""
+}
+
+func (t *FallbackSh) FormatExport(key, value string) string {
+	return ""
+}
 func (t *FallbackSh) InitStub() string {
 	return ""
 }

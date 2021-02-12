@@ -3,7 +3,9 @@ package utils
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"github.com/doron-cohen/antidot/internal/tui"
 	"github.com/otiai10/copy"
@@ -116,4 +118,38 @@ func MovePath(source, dest string) error {
 	}
 
 	return MoveFile(source, dest)
+}
+
+func AtomicWrite(bytes []byte, path string) error {
+	file, err := ioutil.TempFile("", "atomic_*****")
+	if err != nil {
+		return err
+	}
+
+	tmpFilePath, err := filepath.Abs(file.Name())
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		_ = file.Close()
+		_ = os.Remove(tmpFilePath)
+	}()
+
+	_, err = file.Write(bytes)
+	if err != nil {
+		return err
+	}
+
+	err = file.Close()
+	if err != nil {
+		return err
+	}
+
+	err = os.Rename(tmpFilePath, path)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

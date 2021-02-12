@@ -33,7 +33,8 @@ func (r Rule) Pprint() {
 	}
 }
 
-func (r Rule) Apply(actx ActionContext) {
+// TODO: return the error
+func (r Rule) Apply(actx *ActionContext) {
 	if !r.Ignore {
 		for _, action := range r.Actions {
 			err := action.Apply(actx)
