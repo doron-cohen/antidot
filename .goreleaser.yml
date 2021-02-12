@@ -75,14 +75,6 @@ changelog:
       - '^tests'
       - '^chore'
 
-publishers:
-  - name: aur
-    ids:
-      - aur
-    cmd: ci/aur/publish.sh {{ .Version }} {{ abs .ArtifactPath }}
-    env:
-      - AUR_SSH_KEY={{ .Env.AUR_SSH_KEY }}
-
 brews:
   - name: antidot
     folder: Formula
