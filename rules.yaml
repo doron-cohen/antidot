@@ -458,6 +458,15 @@ rules:
         key: XCOMPOSECACHE
         value: ${XDG_CACHE_HOME}/X11/xcompose
 
+  - name: lnav
+    dotfile:
+      name: .lnav
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.lnav
+        dest: ${XDG_CONFIG_HOME}/lnav
+
   - name: ltrace
     dotfile:
       name: .ltrace.conf
