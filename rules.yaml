@@ -621,6 +621,17 @@ rules:
         alias: netbeans
         command: netbeans --userdir ${XDG_CONFIG_HOME}/ncmpc/config
 
+  - name: node_repl_history
+    dotfile:
+      name: .node_repl_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.node_repl_history
+        dest: ${XDG_CACHE_HOME}/node_repl_history
+      - type: export
+        key: NODE_REPL_HISTORY
+        value: ${XDG_CACHE_HOME}/node_repl_history
+
   - name: npm
     dotfile:
       name: .npm
