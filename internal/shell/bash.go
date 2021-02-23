@@ -30,7 +30,7 @@ func (b *Bash) InitStub() string {
 
 	xdgExport := ""
 	for key, value := range utils.XdgDefaults() {
-		xdgExport += fmt.Sprintf("export %s=\"{%s:-%s}\"\n", key, key, value)
+		xdgExport += fmt.Sprintf("export %s=\"${%s:-%s}\"\n", key, key, value)
 	}
 
 	return fmt.Sprintf(`%s
