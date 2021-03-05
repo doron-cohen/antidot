@@ -4,6 +4,10 @@
 
 Cleans up your `$HOME` from those pesky dotfiles.
 
+## Migration from Pre 0.6.0 Versions
+
+Please backup your environment variable and aliases files (in `$XDG_DATA_HOME/antidot/{env,alias}.*`). After version 0.6.0 antidot stores env exports and alias definitions in a JSON file and generates from it shell definition files.
+
 ## Intro
 
 For years I stood by and saw how countless applications populate my home dir with dotfiles.
