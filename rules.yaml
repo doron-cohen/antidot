@@ -877,3 +877,6 @@ rules:
       - type: migrate
         source: ${HOME}/.yarnrc
         dest: ${XDG_CONFIG_HOME}/yarn/config
+      - type: alias
+        alias: yarn
+        command: yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config
