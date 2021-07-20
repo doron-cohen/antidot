@@ -907,3 +907,15 @@ rules:
       - type: export
         key: OPAMROOT
         value: ${XDG_DATA_HOME}/opam
+
+  - name: chez
+    dotfile:
+      name: .chezscheme_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.chezscheme_history
+        dest: ${XDG_DATA_HOME}/chezscheme/history
+      - type: alias
+        alias: petite
+        command: petite --eehistory ${XDG_DATA_HOME}/chezscheme/history
+
