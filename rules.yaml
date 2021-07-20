@@ -895,3 +895,15 @@ rules:
       - type: export
         key: CABAL_DIR
         value: ${XDG_CACHE_HOME}/cabal/
+
+  - name: opam
+    dotfile:
+      name: .opam
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.opam
+        dest: ${XDG_DATA_HOME}/opam
+      - type: export
+        key: OPAMROOT
+        value: ${XDG_DATA_HOME}/opam
