@@ -877,3 +877,21 @@ rules:
       - type: migrate
         source: ${HOME}/.yarnrc
         dest: ${XDG_CONFIG_HOME}/yarn/config
+
+  - name: cabal
+    dotfile:
+      name: .cabal
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.cabal/config
+        dest: ${XDG_CONFIG_HOME}/cabal/config
+      - type: migrate
+        source: ${HOME}/.cabal/
+        dest: ${XDG_CACHE_HOME}/cabal/
+      - type: export
+        key: CABAL_CONFIG
+        value: ${XDG_CONFIG_HOME}/cabal/config
+      - type: export
+        key: CABAL_DIR
+        value: ${XDG_CACHE_HOME}/cabal/
