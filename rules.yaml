@@ -918,4 +918,7 @@ rules:
       - type: alias
         alias: petite
         command: petite --eehistory ${XDG_DATA_HOME}/chezscheme/history
+      - type: alias
+        alias: scheme
+        command: scheme --eehistory ${XDG_DATA_HOME}/chezscheme/history
 
