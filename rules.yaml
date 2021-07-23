@@ -877,3 +877,48 @@ rules:
       - type: migrate
         source: ${HOME}/.yarnrc
         dest: ${XDG_CONFIG_HOME}/yarn/config
+
+  - name: cabal
+    dotfile:
+      name: .cabal
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.cabal/config
+        dest: ${XDG_CONFIG_HOME}/cabal/config
+      - type: migrate
+        source: ${HOME}/.cabal/
+        dest: ${XDG_CACHE_HOME}/cabal/
+      - type: export
+        key: CABAL_CONFIG
+        value: ${XDG_CONFIG_HOME}/cabal/config
+      - type: export
+        key: CABAL_DIR
+        value: ${XDG_CACHE_HOME}/cabal/
+
+  - name: opam
+    dotfile:
+      name: .opam
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.opam
+        dest: ${XDG_DATA_HOME}/opam
+      - type: export
+        key: OPAMROOT
+        value: ${XDG_DATA_HOME}/opam
+
+  - name: chez
+    dotfile:
+      name: .chezscheme_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.chezscheme_history
+        dest: ${XDG_DATA_HOME}/chezscheme/history
+      - type: alias
+        alias: petite
+        command: petite --eehistory ${XDG_DATA_HOME}/chezscheme/history
+      - type: alias
+        alias: scheme
+        command: scheme --eehistory ${XDG_DATA_HOME}/chezscheme/history
+
