@@ -48,7 +48,7 @@ rules:
         dest: ${XDG_CONFIG_HOME}/aspell/aspell.conf
       - type: export
         key: ASPELL_CONF
-        value: per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl
+        value: per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl; personal ${XDG_CONFIG_HOME}/aspell/it.pws; repl ${XDG_CONFIG_HOME}/aspell/it.prepl
 
   - name: atom
     dotfile:
