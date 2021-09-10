@@ -878,6 +878,14 @@ rules:
         source: ${HOME}/.yarnrc
         dest: ${XDG_CONFIG_HOME}/yarn/config
 
+  - name: qrcp
+    dotfile:
+      name: .qrcp
+    actions:
+      - type: migrate
+        source: ${HOME}/.qrcp
+        dest: ${XDG_CONFIG_HOME}/qrcp/config.json
+
   - name: cabal
     dotfile:
       name: .cabal
