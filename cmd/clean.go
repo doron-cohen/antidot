@@ -58,7 +58,7 @@ var cleanCmd = &cobra.Command{
 
 		appliedRule := false
 		defer func() {
-			if appliedRule || true {
+			if appliedRule {
 				err := shell.DumpAliases(sh, kvStore)
 				if err != nil {
 					tui.Warn("Failed to dump aliases")
