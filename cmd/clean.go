@@ -40,9 +40,6 @@ var cleanCmd = &cobra.Command{
 
 		utils.ApplyDefaultXdgEnv()
 
-		sh, err := shell.Get(shellOverride)
-		tui.FatalIfError("Failed to detect shell", err)
-
 		dotfiles, err := dotfile.Detect(userHomeDir)
 		tui.FatalIfError("Failed to detect dotfiles in home dir", err)
 		if len(dotfiles) == 0 {
@@ -57,19 +54,6 @@ var cleanCmd = &cobra.Command{
 		actx := rules.ActionContext{KeyValueStore: kvStore}
 
 		appliedRule := false
-		defer func() {
-			if appliedRule {
-				err := shell.DumpAliases(sh, kvStore)
-				if err != nil {
-					tui.Warn("Failed to dump aliases")
-				}
-				err = shell.DumpExports(sh, kvStore)
-				if err != nil {
-					tui.Warn("Failed to dump exports")
-				}
-			}
-		}()
-
 		for _, dotfile := range dotfiles {
 			rule := rules.MatchRule(&dotfile)
 			if rule == nil {

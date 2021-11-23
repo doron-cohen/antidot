@@ -9,18 +9,19 @@ import (
 
 func init() {
 	initCmd.Flags().StringVarP(
-		&shellOverride, "shell", "s", "", "Which shell to render the init script to",
+		&shellOverride, "shell", "s", "", "What shell to print an init script for - One of: bash zsh fish",
 	)
 	rootCmd.AddCommand(initCmd)
 }
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialize antidot for aliases and env vars to work",
+	Short: "Print shell code to initialize aliases and environment variables based on your current shell, unless -s is passed",
 	Run: func(cmd *cobra.Command, args []string) {
 		shell, err := sh.Get(shellOverride)
 		tui.FatalIfError("", err)
-
-		tui.Print(shell.InitStub())
+		script, err := sh.GetShellScript(shell)
+		tui.FatalIfError("", err)
+		tui.Print(script)
 	},
 }

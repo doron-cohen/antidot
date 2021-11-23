@@ -2,17 +2,14 @@ package shell
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/doron-cohen/antidot/internal/tui"
+	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 type Shell interface {
-	AliasFilePath() (string, error)
-	EnvFilePath() (string, error)
 	FormatAlias(alias, command string) string
 	FormatExport(alias, command string) string
 	InitStub() string
@@ -33,12 +30,41 @@ func Get(shellName string) (Shell, error) {
 	if !ok {
 		var error = strings.Join([]string{"Shell", shellName, "is not supported.\nSupported shells are:\n",}, " ")
 		for name := range SupportedShells {
-			error = strings.Join([]string{error, name}, " ");
+			error = strings.Join([]string{error, name}, " ")
 		}
 		return nil, fmt.Errorf(error)
 	}
 
 	return shell, nil
+}
+
+func GetShellScript(shell Shell) (string, error) {
+	kvPath, err := utils.AppDirs.GetDataFile("store.json")
+	if err != nil {
+		return "", err
+	}
+
+	kvStore, err := LoadKeyValueStore(kvPath)
+	if err != nil {
+		return "", err
+	}
+
+	builder := strings.Builder{}
+	builder.WriteString(shell.InitStub())
+
+	environment, err := DumpExports(shell, kvStore)
+	if err != nil {
+		return "", err
+	}
+	builder.WriteString(environment)
+
+	aliases, err := DumpAliases(shell, kvStore)
+	if err != nil {
+		return "", err
+	}
+	builder.WriteString(aliases)
+
+	return builder.String(), nil
 }
 
 func detectShell() string {
@@ -54,15 +80,10 @@ func registerShell(name string, shell Shell) {
 	SupportedShells[name] = shell
 }
 
-func DumpAliases(shell Shell, kvStore *KeyValueStore) error {
-	aliasFilePath, err := shell.AliasFilePath()
-	if err != nil {
-		return err
-	}
-
+func DumpAliases(shell Shell, kvStore *KeyValueStore) (string, error) {
 	aliases, err := kvStore.ListAliases()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	builder := strings.Builder{}
@@ -71,37 +92,21 @@ func DumpAliases(shell Shell, kvStore *KeyValueStore) error {
 		builder.WriteString(kvLine)
 	}
 
-	tui.Debug("Dumping aliases to %s", aliasFilePath)
-	err = ioutil.WriteFile(aliasFilePath, []byte(builder.String()), os.FileMode(0o644))
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return builder.String(), nil
 }
 
-func DumpExports(shell Shell, kvStore *KeyValueStore) error {
-	envFilePath, err := shell.EnvFilePath()
-	if err != nil {
-		return err
-	}
-
+func DumpExports(shell Shell, kvStore *KeyValueStore) (string, error) {
 	envVars, err := kvStore.ListEnvVars()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	builder := strings.Builder{}
 	for k, v := range envVars {
+		fmt.Printf("%v: %v", k, v)
 		kvLine := shell.FormatExport(k, v)
 		builder.WriteString(kvLine)
 	}
 
-	tui.Debug("Dumping env vars to %s", envFilePath)
-	err = ioutil.WriteFile(envFilePath, []byte(builder.String()), os.FileMode(0o644))
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return builder.String(), nil
 }
