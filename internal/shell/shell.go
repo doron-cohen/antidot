@@ -39,7 +39,7 @@ func Get(shellName string) (Shell, error) {
 }
 
 func GetShellScript(shell Shell) (string, error) {
-	kvPath, err := utils.AppDirs.GetDataFile("store.json")
+	kvPath, err := utils.AppDirs.GetDataFile("kvstore.json")
 	if err != nil {
 		return "", err
 	}
@@ -48,15 +48,23 @@ func GetShellScript(shell Shell) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if err := kvStore.load(); err != nil {
+		return "", err
+	}
+	if err != nil {
+		return "", err
+	}
 
 	builder := strings.Builder{}
 	builder.WriteString(shell.InitStub())
+	builder.WriteString("\n")
 
 	environment, err := DumpExports(shell, kvStore)
 	if err != nil {
 		return "", err
 	}
 	builder.WriteString(environment)
+	builder.WriteString("\n")
 
 	aliases, err := DumpAliases(shell, kvStore)
 	if err != nil {
@@ -103,7 +111,6 @@ func DumpExports(shell Shell, kvStore *KeyValueStore) (string, error) {
 
 	builder := strings.Builder{}
 	for k, v := range envVars {
-		fmt.Printf("%v: %v", k, v)
 		kvLine := shell.FormatExport(k, v)
 		builder.WriteString(kvLine)
 	}
