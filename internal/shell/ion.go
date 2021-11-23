@@ -23,7 +23,7 @@ func (b *Ion) FormatExport(key, value string) string {
 
 func (b *Ion) InitStub() string {
 	builder := strings.Builder{}
-	builder.WriteString("# Put 'eval $(antidot init)' (without single quotes) in your ionrc to automatically run this\n")
+	builder.WriteString("# Put 'eval $(antidot init -s ion)' (without single quotes) in your ionrc to automatically run this\n")
 	for key, value := range utils.XdgDefaults() {
 		builder.WriteString(fmt.Sprintf("export %s = $or(${%s} \"%s\")\n", key, key, value))
 	}
