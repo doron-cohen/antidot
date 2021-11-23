@@ -31,7 +31,7 @@ func Get(shellName string) (Shell, error) {
 
 	shell, ok := SupportedShells[shellName]
 	if !ok {
-		errorBuilder := strings.Builder()
+		errorBuilder := strings.Builder{}
 		errorBuilder.WriteString("Shell ")
 		errorBuilder.WriteString(shellName)
 		errorBuilder.WriteString("is not supported.\nSupported shells are:\n")
@@ -39,7 +39,7 @@ func Get(shellName string) (Shell, error) {
 			errorBuilder.WriteString(" ")
 			errorBuilder.WriteString(name)
 		}
-		return nil, fmt.Errorf(error)
+		return nil, fmt.Errorf(errorBuilder.String())
 	}
 
 	return shell, nil
