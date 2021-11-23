@@ -7,19 +7,23 @@ import (
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
-type Bash struct{}
+type Ion struct{}
 
-func (b *Bash) FormatAlias(alias, command string) string {
+func (b *Ion) FormatAlias(alias, command string) string {
 	return fmt.Sprintf("alias %s = \"%s\"\n", alias, command)
 }
 
-func (b *Bash) FormatExport(key, value string) string {
+func (b *Ion) FormatExport(key, value string) string {
+	// ion uses the variable $HISTFILE itself and it uses a proper location
+	if (key == "HISTFILE") {
+		return ""
+	}
 	return fmt.Sprintf("export %s = \"%s\"\n", key, value)
 }
 
-func (b *Bash) InitStub() string {
+func (b *Ion) InitStub() string {
 	builder := strings.Builder{}
-	builder.WriteString("# Put 'eval \"$(antidot init -c ion)\"' (without single quotes) in your ionrc to automatically run this\n")
+	builder.WriteString("# Put 'eval $(antidot init -c ion)' (without single quotes) in your ionrc to automatically run this\n")
 	for key, value := range utils.XdgDefaults() {
 		builder.WriteString(fmt.Sprintf("export %s = $or(${%s} \"%s\")\n", key, key, value))
 	}
@@ -27,5 +31,5 @@ func (b *Bash) InitStub() string {
 }
 
 func init() {
-	registerShell("bash", &Bash{})
+	registerShell("ion", &Ion{})
 }
