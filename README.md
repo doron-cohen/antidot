@@ -76,3 +76,9 @@ Rule docker:
 Answering yes will move the directory and write the environment variable to a file that can be easily sourced by the shell. Running `antidot init` will create a shell script that will do just that.
 
 Adding `eval "$(antidot init)"` to your `.bashrc` or `.zshrc` will make sure you shell sessions will see these variables and aliases. In Fish the proper way is to run `antidot init | source`. You could add it to `$__fish_config_dir/conf.d/antidot.fish`.
+
+## Building
+
+    go build main.go -o antidot
+
+A makefile is also provided with some extra options
