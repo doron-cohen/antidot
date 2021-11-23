@@ -28,7 +28,7 @@ func (f *Fish) FormatExport(key, value string) string {
 }
 
 func (f *Fish) InitStub() string {
-	format := "set -q %s; or set -x %s = \"%s\"\n"
+	format := "set -q %s; or set -x %s \"%s\"\n"
 
 	builder := strings.Builder{}
 	builder.WriteString("# Put 'antidot init | source' (without single quotes) in `fish_config_dir/conf.d/antidot.fish` to automatically run this\n")
