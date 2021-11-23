@@ -79,6 +79,15 @@ func GetShellScript(shell Shell) (string, error) {
 	return builder.String(), nil
 }
 
+func ListShells() string {
+	builder := strings.Builder{}
+	for name, _ := range SupportedShells {
+		builder.WriteString(" ")
+		builder.WriteString(name)
+	}
+	return builder.String()
+}
+
 func detectShell() string {
 	shellPath := os.Getenv("SHELL")
 	if shellPath == "" {

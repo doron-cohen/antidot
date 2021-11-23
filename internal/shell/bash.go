@@ -19,7 +19,7 @@ func (b *Bash) FormatExport(key, value string) string {
 
 func (b *Bash) InitStub() string {
 	builder := strings.Builder{}
-	builder.WriteString("# Put 'eval \"$(antidot init -c bash)\"' (without single quotes) in your bashrc to automatically run this\n")
+	builder.WriteString("# Put 'eval \"$(antidot init)\"' (without single quotes) in your bashrc to automatically run this\n")
 	for key, value := range utils.XdgDefaults() {
 		builder.WriteString(fmt.Sprintf("export %s=\"${%s:-%s}\"\n", key, key, value))
 	}

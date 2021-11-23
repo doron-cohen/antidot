@@ -9,7 +9,7 @@ import (
 
 func init() {
 	initCmd.Flags().StringVarP(
-		&shellOverride, "shell", "s", "", "What shell to print an init script for - One of: bash zsh fish",
+		&shellOverride, "shell", "s", "", "What shell to print an init script for - One of:" + sh.ListShells(),
 	)
 	rootCmd.AddCommand(initCmd)
 }
