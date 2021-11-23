@@ -79,6 +79,6 @@ Adding `eval "$(antidot init)"` to your `.bashrc` or `.zshrc` will make sure you
 
 ## Building
 
-    go build main.go -o antidot
+    go build -o antidot
 
 A makefile is also provided with some extra options
