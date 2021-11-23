@@ -28,11 +28,15 @@ func Get(shellName string) (Shell, error) {
 
 	shell, ok := SupportedShells[shellName]
 	if !ok {
-		var error = strings.Join([]string{"Shell", shellName, "is not supported.\nSupported shells are:\n",}, " ")
+		errorBuilder := strings.Builder{}
+		errorBuilder.WriteString("Shell ")
+		errorBuilder.WriteString(shellName)
+		errorBuilder.WriteString("is not supported.\nSupported shells are:\n")
 		for name := range SupportedShells {
-			error = strings.Join([]string{error, name}, " ")
+			errorBuilder.WriteString(" ")
+			errorBuilder.WriteString(name)
 		}
-		return nil, fmt.Errorf(error)
+		return nil, fmt.Errorf(errorBuilder.String())
 	}
 
 	return shell, nil
