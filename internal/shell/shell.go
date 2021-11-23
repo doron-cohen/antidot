@@ -36,8 +36,8 @@ func Get(shellName string) (Shell, error) {
 		errorBuilder.WriteString(shellName)
 		errorBuilder.WriteString("is not supported.\nSupported shells are:\n")
 		for name := range SupportedShells {
-			errorBuilder.WriteString(" ");
-			errorBuilder.WriteString(name);
+			errorBuilder.WriteString(" ")
+			errorBuilder.WriteString(name)
 		}
 		return nil, fmt.Errorf(error)
 	}
