@@ -772,6 +772,15 @@ rules:
         key: SCREENRC
         value: ${XDG_CONFIG_HOME}/screen/screenrc
 
+  - name: simplescreenrecorder
+    dotfile:
+      name: .ssr
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.ssr
+        dest: ${XDG_DATA_HOME}/.simplescreenrecorder
+
   - name: stack
     dotfile:
       name: .stack
