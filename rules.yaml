@@ -939,3 +939,16 @@ rules:
         alias: scheme
         command: scheme --eehistory ${XDG_DATA_HOME}/chezscheme/history
 
+  - name: go
+    dotfile:
+      name: go
+      is_dir: true
+    notes:
+      - You will need to manually delete the original directory at `~/go` because of permissions.
+    actions:
+      - type: migrate
+        source: ${HOME}/go/
+        dest: ${XDG_DATA_HOME}/go/
+      - type: export
+        key: GOPATH
+        value: ${XDG_DATA_HOME}/go
