@@ -961,3 +961,14 @@ rules:
       - type: export
         key: GOPATH
         value: ${XDG_DATA_HOME}/go
+
+  - name: z
+    dotfile:
+      name: .z
+    actions:
+      - type: migrate
+        source: ${HOME}/.z
+        dest: ${XDG_CACHE_HOME}/z
+      - type: export
+        key: _Z_DATA
+        value: ${XDG_CACHE_HOME}/z
