@@ -977,9 +977,6 @@ rules:
       is_dir: true
     actions:
       - type: export
-        key: PATH
-        value: ${XDG_DATA_HOME}/perl/bin${PATH:+:${PATH}}
-      - type: export
         key: PERL5LIB
         value: ${XDG_DATA_HOME}/perl/lib/perl5${PERL5LIB:+:${PERL5LIB}}
       - type: export
