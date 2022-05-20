@@ -1,6 +1,5 @@
 version: 1
 rules:
-
   - name: abook
     description: ""
     dotfile:
@@ -281,7 +280,6 @@ rules:
       - type: migrate
         source: ${HOME}/.gitconfig
         dest: ${XDG_CONFIG_HOME}/git/config
-
 
   - name: gnupg
     dotfile:
@@ -701,7 +699,7 @@ rules:
       - type: export
         key: PASSWORD_STORE_DIR
         value: ${XDG_DATA_HOME}/pass
-  
+
   - name: pex
     dotfile:
       name: .pex
@@ -972,3 +970,15 @@ rules:
       - type: export
         key: _Z_DATA
         value: ${XDG_CACHE_HOME}/z
+
+  - name: solargraph
+    dotfile:
+      name: .solargraph
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.solargraph
+        dest: ${XDG_CACHE_HOME}/solargraph
+      - type: export
+        key: SOLARGRAPH_CACHE
+        value: ${XDG_CACHE_HOME}/solargraph
