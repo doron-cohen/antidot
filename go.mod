@@ -7,7 +7,7 @@ require (
 	github.com/adrg/xdg v0.3.4
 	github.com/google/go-cmp v0.5.6
 	github.com/kr/pretty v0.1.0 // indirect
-	github.com/mitchellh/mapstructure v1.4.1
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/otiai10/copy v1.5.1
 	github.com/spf13/cobra v1.5.0
 	github.com/wzshiming/ctc v1.2.3
