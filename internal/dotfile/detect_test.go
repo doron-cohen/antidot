@@ -62,37 +62,43 @@ func tearDown(tmpDir string) {
 
 func TestFindDotfiles(t *testing.T) {
 	tests := []dotfilesTest{
-		dotfilesTest{
+		{
 			Name:             "Empty dir",
 			Files:            []fileInfo{},
 			ExpectedDotfiles: []dotfile.Dotfile{},
 		},
-		dotfilesTest{
+		{
 			Name: "No dotfiles",
 			Files: []fileInfo{
-				fileInfo{"file1", false},
-				fileInfo{"file2", false},
-				fileInfo{"dir1", true},
-				fileInfo{"dir1/file3", false},
-				fileInfo{"dir1/file4", false},
+				{"file1", false},
+				{"file2", false},
+				{"dir1", true},
+				{"dir1/file3", false},
+				{"dir1/file4", false},
 			},
-			ExpectedDotfiles: []dotfile.Dotfile{},
+			ExpectedDotfiles: []dotfile.Dotfile{
+				{"dir1", true},
+				{"file1", false},
+				{"file2", false},
+			},
 		},
-		dotfilesTest{
+		{
 			Name: "Mixed",
 			Files: []fileInfo{
-				fileInfo{"file1", false},
-				fileInfo{".file2", false},
-				fileInfo{"dir1", true},
-				fileInfo{"dir1/.file3", false},
-				fileInfo{"dir1/file4", false},
-				fileInfo{".dir2", true},
-				fileInfo{".dir2/.file5", true},
+				{"file1", false},
+				{".file2", false},
+				{"dir1", true},
+				{"dir1/.file3", false},
+				{"dir1/file4", false},
+				{".dir2", true},
+				{".dir2/.file5", true},
 			},
 			ExpectedDotfiles: []dotfile.Dotfile{
 				// Order matters here and I don't want to invest in a comparison function
-				dotfile.Dotfile{".dir2", true},
-				dotfile.Dotfile{".file2", false},
+				{".dir2", true},
+				{".file2", false},
+				{"dir1", true},
+				{"file1", false},
 			},
 		},
 	}
