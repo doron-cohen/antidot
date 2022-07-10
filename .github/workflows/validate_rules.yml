@@ -1,6 +1,10 @@
 name: Rules Validation
 
 on:
+  pull_request:
+    paths:
+      - "rules.schema.yaml"
+      - "rules.yaml"
   push:
     paths:
       - "rules.schema.yaml"
