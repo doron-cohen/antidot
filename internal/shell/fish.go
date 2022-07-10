@@ -38,7 +38,7 @@ func (f *Fish) InitStub() string {
 	envFilePath, _ := f.EnvFilePath()
 	aliasFilePath, _ := f.AliasFilePath()
 
-	format := "set -q %s; or set -x %s=\"%s\"\n"
+	format := "set -q %s; or set -x %s \"%s\"\n"
 	xdgExport := ""
 	for key, value := range utils.XdgDefaults() {
 
