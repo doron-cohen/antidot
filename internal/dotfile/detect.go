@@ -9,6 +9,7 @@ type Dotfile struct {
 	IsDir bool `mapstructure:"is_dir"`
 }
 
+// TODO: Change the detection flow. We don't need this anymore IMO.
 func Detect(dir string) ([]Dotfile, error) {
 	// TODO: better handle file errors
 	files, err := ioutil.ReadDir(dir)
