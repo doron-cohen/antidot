@@ -1,6 +1,7 @@
 before:
   hooks:
     - go mod verify
+    - go mod vendor
 
 builds:
   - id: antidot-linux

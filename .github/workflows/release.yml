@@ -26,3 +26,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
           HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+
+      - name: Generate release tarball
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          tar czf antidot-${VERSION}.tar.gz --transform "s,^,antidot-${VERSION}/," --exclude dist *
+
+      - name: Upload release tarball
+        uses: softprops/action-gh-release@v1
+        with:
+          files: antidot-*.tar.gz
+          append_body: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
