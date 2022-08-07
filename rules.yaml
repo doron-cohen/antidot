@@ -758,6 +758,30 @@ rules:
         key: INPUTRC
         value: ${XDG_CONFIG_HOME}/readline/inputrc
 
+  - name: redisclirc
+    description: redis client configuration file
+    dotfile:
+      name: .redisclirc
+    actions:
+      - type: migrate
+        source: ${HOME}/.redisclirc
+        dest: ${XDG_CONFIG_HOME}/redis/redisclirc
+      - type: export
+        key: REDISCLI_RCFILE
+        value: ${XDG_CONFIG_HOME}/redis/redisclirc
+
+  - name: rediscli_history
+    description: redis client history file
+    dotfile:
+      name: .rediscli_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.rediscli_history
+        dest: ${XDG_DATA_HOME}/redis/rediscli_history
+      - type: export
+        key: REDISCLI_HISTFILE
+        value: ${XDG_DATA_HOME}/redis/rediscli_history
+
   - name: rustup
     dotfile:
       name: .rustup
