@@ -191,6 +191,25 @@ rules:
         key: __GL_SHADER_DISK_CACHE_PATH
         value: ${XDG_CACHE_HOME}/nv
 
+  - name: cqlsh
+    description: CQL Shell for Apache Cassandra
+    dotfile:
+      name: .cassandra
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.cassandra/cqlshrc
+        dest: ${XDG_CONFIG_HOME}/cassandra/cqlshrc
+      - type: alias
+        alias: cqlsh
+        command: cqlsh --cqlshrc $XDG_CONFIG_HOME/cassandra/cqlshrc
+      - type: migrate
+        source: ${HOME}/.cassandra/cqlsh_history
+        dest: ${XDG_CACHE_HOME}/cassandra/cqlsh_history
+      - type: export
+        key: CQL_HISTORY
+        value: ${XDG_CACHE_HOME}/cassandra/cqlsh_history
+
   - name: docker
     dotfile:
       name: .docker
