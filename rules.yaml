@@ -972,3 +972,15 @@ rules:
       - type: export
         key: _Z_DATA
         value: ${XDG_CACHE_HOME}/z
+
+  - name: julia
+    dotfile:
+      name: .julia
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.julia
+        dest: ${XDG_DATA_HOME}/julia
+      - type: export
+        key: JULIA_DEPOT_PATH
+        value: ${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}
