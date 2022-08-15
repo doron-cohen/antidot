@@ -570,6 +570,25 @@ rules:
         key: MPLAYER_HOME
         value: ${XDG_CONFIG_HOME}/mplayer
 
+  - name: myclirc
+    dotfile:
+      name: .myclirc
+    actions:
+      - type: migrate
+        source: ${HOME}/.myclirc
+        dest: ${XDG_CONFIG_HOME}/mycli/myclirc
+
+  - name: mycli-history
+    dotfile:
+      name: .mycli-history
+    actions:
+      - type: migrate
+        source: ${HOME}/.mycli-history
+        dest: ${XDG_DATA_HOME}/mycli/history
+      - type: export
+        key: MYCLI_HISTFILE
+        value: ${XDG_DATA_HOME}/mycli/history
+
   - name: mysql_history
     dotfile:
       name: .mysql_history
@@ -982,3 +1001,18 @@ rules:
       - type: export
         key: SOLARGRAPH_CACHE
         value: ${XDG_CACHE_HOME}/solargraph
+
+  - name: java
+    dotfile:
+      name: .java
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.java
+        dest: ${XDG_CONFIG_HOME}/java
+      - type: export
+        key: _JAVA_OPTIONS
+        value: -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+      - type: export
+        key: _JAVA_OPTIONS
+        value: -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
