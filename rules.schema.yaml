@@ -203,7 +203,7 @@ properties:
                     type: string
               - $id: "#/properties/rules/items/properties/actions/items/alias"
                 title: Alias Action
-                description: Action to decalare a command alias.
+                description: Action to declare a command alias.
                 required:
                   - type
                   - alias

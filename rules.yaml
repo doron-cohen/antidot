@@ -1,6 +1,5 @@
 version: 1
 rules:
-
   - name: abook
     description: ""
     dotfile:
@@ -191,6 +190,25 @@ rules:
         key: __GL_SHADER_DISK_CACHE_PATH
         value: ${XDG_CACHE_HOME}/nv
 
+  - name: cqlsh
+    description: CQL Shell for Apache Cassandra
+    dotfile:
+      name: .cassandra
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.cassandra/cqlshrc
+        dest: ${XDG_CONFIG_HOME}/cassandra/cqlshrc
+      - type: alias
+        alias: cqlsh
+        command: cqlsh --cqlshrc $XDG_CONFIG_HOME/cassandra/cqlshrc
+      - type: migrate
+        source: ${HOME}/.cassandra/cqlsh_history
+        dest: ${XDG_CACHE_HOME}/cassandra/cqlsh_history
+      - type: export
+        key: CQL_HISTORY
+        value: ${XDG_CACHE_HOME}/cassandra/cqlsh_history
+
   - name: docker
     dotfile:
       name: .docker
@@ -281,7 +299,6 @@ rules:
       - type: migrate
         source: ${HOME}/.gitconfig
         dest: ${XDG_CONFIG_HOME}/git/config
-
 
   - name: gnupg
     dotfile:
@@ -572,6 +589,25 @@ rules:
         key: MPLAYER_HOME
         value: ${XDG_CONFIG_HOME}/mplayer
 
+  - name: myclirc
+    dotfile:
+      name: .myclirc
+    actions:
+      - type: migrate
+        source: ${HOME}/.myclirc
+        dest: ${XDG_CONFIG_HOME}/mycli/myclirc
+
+  - name: mycli-history
+    dotfile:
+      name: .mycli-history
+    actions:
+      - type: migrate
+        source: ${HOME}/.mycli-history
+        dest: ${XDG_DATA_HOME}/mycli/history
+      - type: export
+        key: MYCLI_HISTFILE
+        value: ${XDG_DATA_HOME}/mycli/history
+
   - name: mysql_history
     dotfile:
       name: .mysql_history
@@ -701,7 +737,7 @@ rules:
       - type: export
         key: PASSWORD_STORE_DIR
         value: ${XDG_DATA_HOME}/pass
-  
+
   - name: pex
     dotfile:
       name: .pex
@@ -757,6 +793,30 @@ rules:
       - type: export
         key: INPUTRC
         value: ${XDG_CONFIG_HOME}/readline/inputrc
+
+  - name: redisclirc
+    description: redis client configuration file
+    dotfile:
+      name: .redisclirc
+    actions:
+      - type: migrate
+        source: ${HOME}/.redisclirc
+        dest: ${XDG_CONFIG_HOME}/redis/redisclirc
+      - type: export
+        key: REDISCLI_RCFILE
+        value: ${XDG_CONFIG_HOME}/redis/redisclirc
+
+  - name: rediscli_history
+    description: redis client history file
+    dotfile:
+      name: .rediscli_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.rediscli_history
+        dest: ${XDG_DATA_HOME}/redis/rediscli_history
+      - type: export
+        key: REDISCLI_HISTFILE
+        value: ${XDG_DATA_HOME}/redis/rediscli_history
 
   - name: rustup
     dotfile:
@@ -984,3 +1044,30 @@ rules:
       - type: export
         key: JULIA_DEPOT_PATH
         value: ${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}
+
+  - name: solargraph
+    dotfile:
+      name: .solargraph
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.solargraph
+        dest: ${XDG_CACHE_HOME}/solargraph
+      - type: export
+        key: SOLARGRAPH_CACHE
+        value: ${XDG_CACHE_HOME}/solargraph
+
+  - name: java
+    dotfile:
+      name: .java
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.java
+        dest: ${XDG_CONFIG_HOME}/java
+      - type: export
+        key: _JAVA_OPTIONS
+        value: -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+      - type: export
+        key: _JAVA_OPTIONS
+        value: -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
