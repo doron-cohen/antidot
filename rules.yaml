@@ -1,6 +1,5 @@
 version: 1
 rules:
-
   - name: abook
     description: ""
     dotfile:
@@ -281,7 +280,6 @@ rules:
       - type: migrate
         source: ${HOME}/.gitconfig
         dest: ${XDG_CONFIG_HOME}/git/config
-
 
   - name: gnupg
     dotfile:
@@ -701,7 +699,7 @@ rules:
       - type: export
         key: PASSWORD_STORE_DIR
         value: ${XDG_DATA_HOME}/pass
-  
+
   - name: pex
     dotfile:
       name: .pex
@@ -972,3 +970,36 @@ rules:
       - type: export
         key: _Z_DATA
         value: ${XDG_CACHE_HOME}/z
+
+  - name: perl
+    dotfile:
+      name: perl5
+      is_dir: true
+    actions:
+      - type: export
+        key: PERL5LIB
+        value: ${XDG_DATA_HOME}/perl/lib/perl5${PERL5LIB:+:${PERL5LIB}}
+      - type: export
+        key: PERL_LOCAL_LIB_ROOT
+        value: ${XDG_DATA_HOME}/perl${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}
+      - type: export
+        key: PERL_MB_OPT
+        value: --install_base \"${XDG_DATA_HOME}/perl\"
+      - type: export
+        key: PERL_MM_OPT
+        value: INSTALL_BASE=${XDG_DATA_HOME}/perl
+      - type: migrate
+        source: ${HOME}/perl5
+        dest: ${XDG_DATA_HOME}/perl
+
+  - name: cpanm
+    dotfile:
+      name: .cpanm
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.cpanm
+        dest: ${XDG_DATA_HOME}/cpanm
+      - type: export
+        key: PERL_CPANM_HOME
+        value: ${XDG_DATA_HOME}/cpanm
