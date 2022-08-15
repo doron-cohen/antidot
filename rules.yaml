@@ -972,3 +972,18 @@ rules:
       - type: export
         key: _Z_DATA
         value: ${XDG_CACHE_HOME}/z
+
+  - name: java
+    dotfile:
+      name: .java
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.java
+        dest: ${XDG_CONFIG_HOME}/java
+      - type: export
+        key: _JAVA_OPTIONS
+        value: -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+      - type: export
+        key: _JAVA_OPTIONS
+        value: -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
