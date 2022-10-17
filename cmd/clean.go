@@ -3,10 +3,10 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 
-	"github.com/doron-cohen/antidot/internal/dotfile"
 	"github.com/doron-cohen/antidot/internal/rules"
 	"github.com/doron-cohen/antidot/internal/shell"
 	"github.com/doron-cohen/antidot/internal/tui"
@@ -26,7 +26,7 @@ var cleanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		tui.Debug("Cleaning up!")
 
-		_, err := rules.LoadRulesConfig(rulesFilePath)
+		rulesConfig, err := rules.LoadRulesConfig(rulesFilePath)
 		if err != nil {
 			if _, rulesMissing := err.(*rules.MissingRulesFile); rulesMissing {
 				tui.Print("Couldn't find rules file. Please run `antidot update`.")
@@ -43,15 +43,6 @@ var cleanCmd = &cobra.Command{
 		sh, err := shell.Get(shellOverride)
 		tui.FatalIfError("Failed to detect shell", err)
 
-		dotfiles, err := dotfile.Detect(userHomeDir)
-		tui.FatalIfError("Failed to detect dotfiles in home dir", err)
-		if len(dotfiles) == 0 {
-			tui.Print("No dotfiles detected in home directory. You're all clean!")
-			return
-		}
-
-		tui.Debug("Found %d dotfiles in %s", len(dotfiles), userHomeDir)
-
 		kvStore, err := shell.LoadKeyValueStore("")
 		tui.FatalIfError("Failed to load key value store", err)
 		actx := rules.ActionContext{KeyValueStore: kvStore}
@@ -59,35 +50,37 @@ var cleanCmd = &cobra.Command{
 		appliedRule := false
 		defer func() {
 			if appliedRule {
-				err := shell.DumpAliases(sh, kvStore)
-				if err != nil {
+				if err := shell.DumpAliases(sh, kvStore); err != nil {
 					tui.Warn("Failed to dump aliases")
 				}
-				err = shell.DumpExports(sh, kvStore)
-				if err != nil {
+
+				if err = shell.DumpExports(sh, kvStore); err != nil {
 					tui.Warn("Failed to dump exports")
 				}
 			}
 		}()
 
-		for _, dotfile := range dotfiles {
-			rule := rules.MatchRule(&dotfile)
-			if rule == nil {
-				continue
+		for _, rule := range rulesConfig.Rules {
+			fullPath := filepath.Join(userHomeDir, rule.Dotfile.Name)
+			match, err := rule.Dotfile.MatchPath(fullPath)
+			if err != nil {
+				tui.Warn("Failed to find dotfile for rule %s", rule.Name)
 			}
 
-			rule.Pprint()
-			if rule.Ignore {
-				continue
-			}
+			if match {
+				rule.Pprint()
+				if rule.Ignore {
+					continue
+				}
 
-			confirmed := tui.Confirm(fmt.Sprintf("Apply rule %s?", rule.Name))
-			if confirmed {
-				rule.Apply(&actx)
-				appliedRule = true
-			}
+				confirmed := tui.Confirm(fmt.Sprintf("Apply rule %s?", rule.Name))
+				if confirmed {
+					rule.Apply(&actx)
+					appliedRule = true
+				}
 
-			tui.Print("") // one line space
+				tui.Print("") // one line space
+			}
 		}
 
 		if appliedRule {
@@ -95,6 +88,8 @@ var cleanCmd = &cobra.Command{
 				"Cleanup finished - run %s to take effect",
 				tui.ApplyStyle(tui.Blue, "eval \"$(antidot init)\""),
 			)
+		} else {
+			tui.Print("No dotfiles detected in home directory. You're all clean!")
 		}
 	},
 }
