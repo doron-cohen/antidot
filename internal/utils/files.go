@@ -10,6 +10,11 @@ import (
 	"github.com/otiai10/copy"
 )
 
+func IsDir(filePath string) bool {
+	info, err := os.Lstat(filePath)
+	return err == nil && info.IsDir()
+}
+
 func FileExists(filename string) bool {
 	_, err := os.Stat(filename)
 	return !os.IsNotExist(err)
