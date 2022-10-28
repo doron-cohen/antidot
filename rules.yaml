@@ -1059,3 +1059,25 @@ rules:
       - type: export
         key: _JAVA_OPTIONS
         value: -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+
+  - name: octave
+    dotfile:
+      name: .octaverc
+    actions:
+      - type: migrate
+        source: ${HOME}/.octaverc
+        dest: ${XDG_CONFIG_HOME}/octave/octaverc
+      - type: export
+        key: OCTAVE_SITE_INITFILE
+        value: ${XDG_CONFIG_HOME}/octave/octaverc
+
+  - name: octave_hist
+    dotfile:
+      name: .octave_hist
+    actions:
+      - type: migrate
+        source: ${HOME}/.octave_hist
+        dest: ${XDG_CACHE_HOME}/octave_hist
+      - type: export
+        key: OCTAVE_HISTFILE
+        value: ${XDG_CACHE_HOME}/octave_hist
