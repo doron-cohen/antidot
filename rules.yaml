@@ -1059,3 +1059,25 @@ rules:
       - type: export
         key: _JAVA_OPTIONS
         value: -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+
+  - name: wget-hsts
+    dotfile:
+      name: .wget-hsts
+    actions:
+      - type: migrate
+        source: ${HOME}/.wget-hsts
+        dest: ${XDG_CACHE_HOME}/wget-hsts
+      - type: alias
+        alias: wget
+        command: wget --hsts-file="${XDG_CACHE_HOME}/wget-hsts"
+
+  - name: wgetrc
+    dotfile:
+      name: .wgetrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.wgetrc
+        dest: ${XDG_CONFIG_HOME}/wgetrc
+      - type: export
+        key: WGETRC
+        value: "${XDG_CONFIG_HOME}/wgetrc"
