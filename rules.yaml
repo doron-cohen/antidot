@@ -543,6 +543,7 @@ rules:
   - name: mitmproxy
     dotfile:
       name: .mitmproxy
+      is_dir: true
     actions:
       - type: migrate
         source: ${HOME}/.mitmproxy
