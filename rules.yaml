@@ -1082,3 +1082,47 @@ rules:
       - type: export
         key: WGETRC
         value: "${XDG_CONFIG_HOME}/wgetrc"
+
+  - name: psql_history
+    dotfile:
+      name: .psql_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.psql_history
+        dest: ${XDG_CACHE_HOME}/psql_history
+      - type: export
+        key: PSQL_HISTORY
+        value: ${XDG_CACHE_HOME}/psql_history
+
+  - name: psqlrc
+    dotfile:
+      name: .psqlrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.psqlrc
+        dest: ${XDG_CONFIG_HOME}/pg/psqlrc
+      - type: export
+        key: PSQLRC
+        value: ${XDG_CONFIG_HOME}/pg/psqlrc
+
+  - name: pgpass
+    dotfile:
+      name: .pgpass
+    actions:
+      - type: migrate
+        source: ${HOME}/.pgpass
+        dest: ${XDG_CONFIG_HOME}/pg/pgpass
+      - type: export
+        key: PGPASSFILE
+        value: ${XDG_CONFIG_HOME}/pg/pgpass
+
+  - name: pgservicefile
+    dotfile:
+      name: .pg_service.conf
+    actions:
+      - type: migrate
+        source: ${HOME}/.pg_service.conf
+        dest: ${XDG_CONFIG_HOME}/pg/pg_service.conf
+      - type: export
+        key: PGSERVICEFILE
+        value: ${XDG_CONFIG_HOME}/pg/pg_service.conf
