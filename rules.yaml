@@ -108,10 +108,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.bash_history
-        dest: ${XDG_CACHE_HOME}/bash/history
+        dest: ${XDG_DATA_HOME}/bash/history
       - type: export
         key: HISTFILE
-        value: ${XDG_CACHE_HOME}/bash/history
+        value: ${XDG_DATA_HOME}/bash/history
 
   - name: cargo_home
     description: Rust Cargo home dir
