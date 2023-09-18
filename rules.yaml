@@ -299,6 +299,9 @@ rules:
     notes:
       - You may have to reinstall ghcup with 'curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh'
     actions:
+      - type: migrate
+        source: ${HOME}/.ghcup
+        dest: ${XDG_DATA_HOME}/ghcup
       - type: export
         key: GHCUP_USE_XDG_DIRS
         value: "true"
