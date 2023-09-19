@@ -33,9 +33,7 @@ func (b *Bash) InitStub() string {
 		xdgExport += fmt.Sprintf("export %s=\"${%s:-%s}\"\n", key, key, value)
 	}
 
-	return fmt.Sprintf(`%s
-if [ -f "%s" ]; then source "%s"; fi
-if [ -f "%s" ]; then source "%s"; fi`,
+	return fmt.Sprintf("%s\nif [ -f \"%s\" ]; then source \"%s\"; fi\nif [ -f \"%s\" ]; then source \"%s\"; fi\n",
 		xdgExport,
 		envFilePath,
 		envFilePath,
