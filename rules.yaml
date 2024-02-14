@@ -379,7 +379,14 @@ rules:
       - type: export
         key: IMAPFILTER_HOME
         value: ${XDG_CONFIG_HOME}/imapfilter
-
+  - name: ipython
+    dotfile:
+      name: .ipython
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.ipython
+        dest: ${XDG_CONFIG_HOME}/ipython
   - name: irssi
     dotfile:
       name: .irssi
