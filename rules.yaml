@@ -17,6 +17,14 @@ rules:
         alias: abook
         command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook
 
+  - name: act
+    dotfile:
+      name: .actrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.actrc
+        dest: ${XDG_CONFIG_HOME}/act/actrc
+
   - name: ack
     dotfile:
       name: .ackrc
@@ -33,6 +41,14 @@ rules:
       name: .asoundrc
     notes:
       - xdg support was added in alsa v1.2.3. Check alsa's version with 'alsactl --version'.
+    actions:
+      - type: migrate
+        source: ${HOME}/.asoundrc
+        dest: ${XDG_CONFIG_HOME}/alsa/asoundrc
+
+  - name: alsa
+    dotfile:
+      name: .asoundrc
     actions:
       - type: migrate
         source: ${HOME}/.asoundrc
@@ -124,6 +140,15 @@ rules:
         alias: barnard
         command: barnard --config ${XDG_CONFIG_HOME}/barnard/barnard.yaml
 
+  - name: binwalk
+    dotfile:
+      name: .binwalk
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.binwalk
+        dest: ${XDG_CONFIG_HOME}/binwalk
+
   - name: cargo_home
     description: Rust Cargo home dir
     dotfile:
@@ -160,6 +185,24 @@ rules:
       - type: alias
         alias: conky
         command: conky --config "$XDG_CONFIG_HOME"/conky/conkyrc
+
+  - name: .condarc
+    dotfile:
+      name: .condarc
+    actions:
+      - type: migrate
+        source: ${HOME}/.condarc
+        dest: ${XDG_CONFIG_HOME}/conda/condarc
+
+  - name: conda
+    description: Anaconda config dir
+    dotfile:
+      name: .conda
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.conda
+        dest: ${XDG_CONFIG_HOME}/conda
 
   - name: claws-mail
     dotfile:
