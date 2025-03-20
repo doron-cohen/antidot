@@ -17,6 +17,14 @@ rules:
         alias: abook
         command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook
 
+  - name: act
+    dotfile:
+      name: .actrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.actrc
+        dest: ${XDG_CONFIG_HOME}/act/actrc
+
   - name: ack
     dotfile:
       name: .ackrc
@@ -33,6 +41,14 @@ rules:
       name: .asoundrc
     notes:
       - xdg support was added in alsa v1.2.3. Check alsa's version with 'alsactl --version'.
+    actions:
+      - type: migrate
+        source: ${HOME}/.asoundrc
+        dest: ${XDG_CONFIG_HOME}/alsa/asoundrc
+
+  - name: alsa
+    dotfile:
+      name: .asoundrc
     actions:
       - type: migrate
         source: ${HOME}/.asoundrc
@@ -113,6 +129,26 @@ rules:
         key: HISTFILE
         value: ${XDG_CACHE_HOME}/bash/history
 
+  - name: barnard
+    dotfile:
+      name: .barnard.yaml
+    actions:
+      - type: migrate
+        source: ${HOME}/.barnard.yaml
+        dest: ${XDG_CONFIG_HOME}/barnard/barnard.yaml
+      - type: alias
+        alias: barnard
+        command: barnard --config ${XDG_CONFIG_HOME}/barnard/barnard.yaml
+
+  - name: binwalk
+    dotfile:
+      name: .binwalk
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.binwalk
+        dest: ${XDG_CONFIG_HOME}/binwalk
+
   - name: cargo_home
     description: Rust Cargo home dir
     dotfile:
@@ -149,6 +185,24 @@ rules:
       - type: alias
         alias: conky
         command: conky --config "$XDG_CONFIG_HOME"/conky/conkyrc
+
+  - name: .condarc
+    dotfile:
+      name: .condarc
+    actions:
+      - type: migrate
+        source: ${HOME}/.condarc
+        dest: ${XDG_CONFIG_HOME}/conda/condarc
+
+  - name: conda
+    description: Anaconda config dir
+    dotfile:
+      name: .conda
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.conda
+        dest: ${XDG_CONFIG_HOME}/conda
 
   - name: claws-mail
     dotfile:
@@ -379,7 +433,14 @@ rules:
       - type: export
         key: IMAPFILTER_HOME
         value: ${XDG_CONFIG_HOME}/imapfilter
-
+  - name: ipython
+    dotfile:
+      name: .ipython
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.ipython
+        dest: ${XDG_CONFIG_HOME}/ipython
   - name: irssi
     dotfile:
       name: .irssi
@@ -426,6 +487,24 @@ rules:
       - type: export
         key: KDEHOME
         value: ${XDG_CONFIG_HOME}/kde
+
+  - name: kube
+    dotfile:
+      name: .kube
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.kube/config
+        dest: ${XDG_CONFIG_HOME}/kube/config
+      - type: migrate
+        source: ${HOME}/.kube/cache
+        dest: ${XDG_CACHE_HOME}/kube/cache
+      - type: export
+        key: KUBECONFIG
+        value: ${XDG_CONFIG_HOME}/kube/config
+      - type: alias
+        alias: kubectl
+        command: kubectl --cache-dir=${XDG_CACHE_HOME}/kube/cache --kubeconfig ${XDG_CONFIG_HOME}/kube/config
 
   - name: lein
     dotfile:
@@ -543,6 +622,7 @@ rules:
   - name: mitmproxy
     dotfile:
       name: .mitmproxy
+      is_dir: true
     actions:
       - type: migrate
         source: ${HOME}/.mitmproxy
@@ -761,6 +841,14 @@ rules:
       - type: export
         key: PYTHON_EGG_CACHE
         value: ${XDG_CACHE_HOME}/python-eggs
+
+  - name: pulse-cookie
+    dotfile:
+      name: .pulse-cookie
+    actions:
+      - type: migrate
+        source: ${HOME}/.pulse-cookie
+        dest: ${XDG_CONFIG_HOME}/pulse/cookie
 
   - name: pylint
     dotfile:
@@ -1033,6 +1121,18 @@ rules:
         key: _Z_DATA
         value: ${XDG_CACHE_HOME}/z
 
+  - name: julia
+    dotfile:
+      name: .julia
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.julia
+        dest: ${XDG_DATA_HOME}/julia
+      - type: export
+        key: JULIA_DEPOT_PATH
+        value: ${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}
+
   - name: solargraph
     dotfile:
       name: .solargraph
@@ -1081,3 +1181,69 @@ rules:
       - type: export
         key: OCTAVE_HISTFILE
         value: ${XDG_CACHE_HOME}/octave_hist
+
+  - name: wget-hsts
+    dotfile:
+      name: .wget-hsts
+    actions:
+      - type: migrate
+        source: ${HOME}/.wget-hsts
+        dest: ${XDG_CACHE_HOME}/wget-hsts
+      - type: alias
+        alias: wget
+        command: wget --hsts-file="${XDG_CACHE_HOME}/wget-hsts"
+
+  - name: wgetrc
+    dotfile:
+      name: .wgetrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.wgetrc
+        dest: ${XDG_CONFIG_HOME}/wgetrc
+      - type: export
+        key: WGETRC
+        value: "${XDG_CONFIG_HOME}/wgetrc"
+
+  - name: psql_history
+    dotfile:
+      name: .psql_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.psql_history
+        dest: ${XDG_CACHE_HOME}/psql_history
+      - type: export
+        key: PSQL_HISTORY
+        value: ${XDG_CACHE_HOME}/psql_history
+
+  - name: psqlrc
+    dotfile:
+      name: .psqlrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.psqlrc
+        dest: ${XDG_CONFIG_HOME}/pg/psqlrc
+      - type: export
+        key: PSQLRC
+        value: ${XDG_CONFIG_HOME}/pg/psqlrc
+
+  - name: pgpass
+    dotfile:
+      name: .pgpass
+    actions:
+      - type: migrate
+        source: ${HOME}/.pgpass
+        dest: ${XDG_CONFIG_HOME}/pg/pgpass
+      - type: export
+        key: PGPASSFILE
+        value: ${XDG_CONFIG_HOME}/pg/pgpass
+
+  - name: pgservicefile
+    dotfile:
+      name: .pg_service.conf
+    actions:
+      - type: migrate
+        source: ${HOME}/.pg_service.conf
+        dest: ${XDG_CONFIG_HOME}/pg/pg_service.conf
+      - type: export
+        key: PGSERVICEFILE
+        value: ${XDG_CONFIG_HOME}/pg/pg_service.conf
