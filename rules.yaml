@@ -113,6 +113,17 @@ rules:
         key: HISTFILE
         value: ${XDG_CACHE_HOME}/bash/history
 
+  - name: barnard
+    dotfile:
+      name: .barnard.yaml
+    actions:
+      - type: migrate
+        source: ${HOME}/.barnard.yaml
+        dest: ${XDG_CONFIG_HOME}/barnard/barnard.yaml
+      - type: alias
+        alias: barnard
+        command: barnard --config ${XDG_CONFIG_HOME}/barnard/barnard.yaml
+
   - name: cargo_home
     description: Rust Cargo home dir
     dotfile:
