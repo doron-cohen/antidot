@@ -445,6 +445,24 @@ rules:
         key: KDEHOME
         value: ${XDG_CONFIG_HOME}/kde
 
+  - name: kube
+    dotfile:
+      name: .kube
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.kube/config
+        dest: ${XDG_CONFIG_HOME}/kube/config
+      - type: migrate
+        source: ${HOME}/.kube/cache
+        dest: ${XDG_CACHE_HOME}/kube/cache
+      - type: export
+        key: KUBECONFIG
+        value: ${XDG_CONFIG_HOME}/kube/config
+      - type: alias
+        alias: kubectl
+        command: kubectl --cache-dir=${XDG_CACHE_HOME}/kube/cache --kubeconfig ${XDG_CONFIG_HOME}/kube/config
+
   - name: lein
     dotfile:
       name: .lein
