@@ -936,7 +936,7 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.ssr
-        dest: ${XDG_DATA_HOME}/.simplescreenrecorder
+        dest: ${XDG_CONFIG_HOME}/simplescreenrecorder
 
   - name: stack
     dotfile:
