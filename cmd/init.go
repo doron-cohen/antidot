@@ -21,6 +21,9 @@ var initCmd = &cobra.Command{
 		shell, err := sh.Get(shellOverride)
 		tui.FatalIfError("", err)
 
-		tui.Print(shell.InitStub())
+		kv, err := sh.LoadKeyValueStore("")
+		tui.FatalIfError("", err)
+
+		tui.Print(shell.RenderInit(kv))
 	},
 }
