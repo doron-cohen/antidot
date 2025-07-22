@@ -1,8 +1,6 @@
 package rules
 
 import (
-	"github.com/google/go-cmp/cmp"
-
 	"github.com/doron-cohen/antidot/internal/dotfile"
 	"github.com/doron-cohen/antidot/internal/tui"
 )
@@ -44,14 +42,4 @@ func (r Rule) Apply(actx *ActionContext) {
 			}
 		}
 	}
-}
-
-func MatchRule(dotfile *dotfile.Dotfile) *Rule {
-	for _, rule := range rulesConfig.Rules {
-		if cmp.Equal(dotfile, rule.Dotfile) {
-			tui.Debug("Matched rule %s with dotfile %s", rule.Name, dotfile.Name)
-			return &rule
-		}
-	}
-	return nil
 }

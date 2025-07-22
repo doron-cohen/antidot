@@ -1,0 +1,10 @@
+{
+    "env": {
+        "TEST_VAR": "test_value",
+        "ANOTHER_VAR": "${XDG_CONFIG_HOME}/test"
+    },
+    "alias": {
+        "test_alias": "test_command --flag",
+        "another_alias": "another_command ${XDG_DATA_HOME}/config"
+    }
+}

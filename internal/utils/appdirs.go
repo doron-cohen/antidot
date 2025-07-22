@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"os"
 	"path/filepath"
 
 	"github.com/adrg/xdg"
@@ -39,5 +40,11 @@ func init() {
 }
 
 func GetKeyValueStorePath() (string, error) {
+	// Check if ANTIDOT_STATE_FILE environment variable is set
+	if stateFile := os.Getenv("ANTIDOT_STATE_FILE"); stateFile != "" {
+		return stateFile, nil
+	}
+
+	// Fall back to default XDG location
 	return AppDirs.GetDataFile("kvstore.json")
 }

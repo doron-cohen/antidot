@@ -1,0 +1,32 @@
+{
+    "env": {
+        "SIMPLE_VAR": "simple_value",
+        "PATH_VAR": "${XDG_CONFIG_HOME}/bin:${PATH}",
+        "QUOTED_VAR": "\"quoted value with spaces\"",
+        "ESCAPED_VAR": "value\\ with\\ backslashes",
+        "SPECIAL_CHARS": "value with $ and {} and \"quotes\"",
+        "EMPTY_VAR": "",
+        "NUMERIC_VAR": "12345",
+        "UNDERSCORE_VAR": "value_with_underscores",
+        "DASH_VAR": "value-with-dashes",
+        "UPPERCASE_VAR": "UPPERCASE_VALUE",
+        "LOWERCASE_VAR": "lowercase_value",
+        "MIXED_CASE_VAR": "MixedCaseValue"
+    },
+    "alias": {
+        "SIMPLE_ALIAS": "simple_command",
+        "ALIAS_WITH_ARGS": "command --flag --option value",
+        "ALIAS_WITH_VARS": "command $XDG_CONFIG_HOME/config",
+        "ALIAS_WITH_QUOTES": "command \"quoted argument\"",
+        "ALIAS_WITH_ESCAPES": "command \\$escaped\\ variable",
+        "ALIAS_WITH_SPACES": "command with spaces in name",
+        "ALIAS_WITH_SPECIAL": "command with $ and {} and \"quotes\"",
+        "EMPTY_ALIAS": "",
+        "NUMERIC_ALIAS": "12345",
+        "UNDERSCORE_ALIAS": "command_with_underscores",
+        "DASH_ALIAS": "command-with-dashes",
+        "UPPERCASE_ALIAS": "UPPERCASE_COMMAND",
+        "LOWERCASE_ALIAS": "lowercase_command",
+        "MIXED_CASE_ALIAS": "MixedCaseCommand"
+    }
+}
