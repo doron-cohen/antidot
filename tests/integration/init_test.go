@@ -22,6 +22,9 @@ func loadSnapshot(t *testing.T, snapshotName string) string {
 }
 
 // normalizeOutput sorts lines to make output deterministic for comparison
+// Note: The actual implementation preserves order within categories (XDG exports, env vars, aliases)
+// but uses map iteration which is non-deterministic. We sort here for test consistency
+// with existing snapshots, but this should not mask actual ordering bugs in the implementation.
 func normalizeOutput(output string) string {
 	lines := strings.Split(strings.TrimSpace(output), "\n")
 	// Sort lines to make comparison deterministic
@@ -57,6 +60,12 @@ func normalizePaths(output string) string {
 	// Replace any remaining temporary directory paths with placeholders
 	output = strings.ReplaceAll(output, "/var/folders/", "/TEMP_DIR/")
 	output = strings.ReplaceAll(output, "/tmp/", "/TEMP_DIR/")
+
+	// Use os.UserHomeDir() for more generic path detection
+	homeDir, err := os.UserHomeDir()
+	if err == nil {
+		output = strings.ReplaceAll(output, homeDir, "/USER_HOME/")
+	}
 
 	return output
 }

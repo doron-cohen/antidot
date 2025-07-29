@@ -2,6 +2,7 @@ package shell
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/doron-cohen/antidot/internal/utils"
@@ -20,12 +21,9 @@ func (f *Fish) formatExport(key, value string) string {
 }
 
 func (f *Fish) unbracketEnvVar(value string) string {
-	// Replace ${VAR} with $VAR for fish shell
-	// First replace ${ with $
-	result := strings.ReplaceAll(value, "${", "$")
-	// Then remove the closing }
-	result = strings.ReplaceAll(result, "}", "")
-	return result
+	// Replace ${VAR} with $VAR for fish shell using regex
+	re := regexp.MustCompile(`\$\{([a-zA-Z_][a-zA-Z0-9_]*)\}`)
+	return re.ReplaceAllString(value, `$$$1`)
 }
 
 func (f *Fish) RenderInit(kv *KeyValueStore) string {
