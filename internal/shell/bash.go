@@ -2,48 +2,42 @@ package shell
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 type Bash struct{}
 
-func (b *Bash) EnvFilePath() (string, error) {
-	return utils.AppDirs.GetDataFile("env.sh")
-}
-
-func (b *Bash) AliasFilePath() (string, error) {
-	return utils.AppDirs.GetDataFile("alias.sh")
-}
-
-func (b *Bash) FormatAlias(alias, command string) string {
+func (b *Bash) formatAlias(alias, command string) string {
 	return fmt.Sprintf("alias %s=\"%s\"\n", alias, command)
 }
 
-func (b *Bash) FormatExport(key, value string) string {
+func (b *Bash) formatExport(key, value string) string {
 	return fmt.Sprintf("export %s=\"%s\"\n", key, value)
 }
 
-func (b *Bash) InitStub() string {
-	envFilePath, _ := b.EnvFilePath()
-	aliasFilePath, _ := b.AliasFilePath()
+func (b *Bash) RenderInit(kv *KeyValueStore) string {
+	var sb strings.Builder
 
-	xdgExport := ""
+	// XDG exports
 	for key, value := range utils.XdgDefaults() {
-		xdgExport += fmt.Sprintf("export %s=\"${%s:-%s}\"\n", key, key, value)
+		sb.WriteString(fmt.Sprintf("export %s=\"${%s:-%s}\"\n", key, key, value))
 	}
 
-	return fmt.Sprintf(`%s
-if [ -f "%s" ]; then source "%s"; fi
-if [ -f "%s" ]; then source "%s"; fi`,
-		xdgExport,
-		envFilePath,
-		envFilePath,
-		aliasFilePath,
-		aliasFilePath,
-	)
+	if kv != nil {
+		envs, _ := kv.ListEnvVars()
+		for k, v := range envs {
+			sb.WriteString(b.formatExport(k, v))
+		}
+		aliases, _ := kv.ListAliases()
+		for k, v := range aliases {
+			sb.WriteString(b.formatAlias(k, v))
+		}
+	}
+
+	return sb.String()
 }
 
-func init() {
-	registerShell("bash", &Bash{})
-}
+// Compile-time interface check
+var _ Shell = (*Bash)(nil)

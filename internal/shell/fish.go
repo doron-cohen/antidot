@@ -3,59 +3,54 @@ package shell
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/doron-cohen/antidot/internal/utils"
 )
 
 type Fish struct{}
 
-var bracketedVarRe = regexp.MustCompile(`\$\{(\w+)\}`)
-
-func unbracketEnvVar(str string) string {
-	bytes := bracketedVarRe.ReplaceAll([]byte(str), []byte("$$${1}"))
-	return string(bytes)
+func (f *Fish) formatAlias(alias, command string) string {
+	unbracketed := f.unbracketEnvVar(command)
+	return fmt.Sprintf("alias %s \"%s\"\n", alias, unbracketed)
 }
 
-func (f *Fish) EnvFilePath() (string, error) {
-	return utils.AppDirs.GetDataFile("env.fish")
+func (f *Fish) formatExport(key, value string) string {
+	unbracketed := f.unbracketEnvVar(value)
+	return fmt.Sprintf("set -gx %s \"%s\"\n", key, unbracketed)
 }
 
-func (f *Fish) AliasFilePath() (string, error) {
-	return utils.AppDirs.GetDataFile("alias.fish")
+func (f *Fish) unbracketEnvVar(value string) string {
+	// Replace ${VAR} with $VAR for fish shell using regex
+	re := regexp.MustCompile(`\$\{([a-zA-Z_][a-zA-Z0-9_]*)\}`)
+	result := re.ReplaceAllString(value, `$$$1`)
+
+	// Replace {} with { for empty braces
+	emptyRe := regexp.MustCompile(`\{\}`)
+	return emptyRe.ReplaceAllString(result, `{`)
 }
 
-func (f *Fish) FormatAlias(alias, command string) string {
-	command = unbracketEnvVar(command)
-	return fmt.Sprintf("alias %s \"%s\"\n", alias, command)
-}
+func (f *Fish) RenderInit(kv *KeyValueStore) string {
+	var sb strings.Builder
 
-func (f *Fish) FormatExport(key, value string) string {
-	value = unbracketEnvVar(value)
-	return fmt.Sprintf("set -gx %s \"%s\"\n", key, value)
-}
-
-func (f *Fish) InitStub() string {
-	envFilePath, _ := f.EnvFilePath()
-	aliasFilePath, _ := f.AliasFilePath()
-
-	format := "set -q %s; or set -x %s \"%s\"\n"
-	xdgExport := ""
+	// XDG exports with fish syntax
 	for key, value := range utils.XdgDefaults() {
-
-		xdgExport += fmt.Sprintf(format, key, key, value)
+		sb.WriteString(fmt.Sprintf("set -q %s; or set -x %s \"%s\"\n", key, key, value))
 	}
 
-	return fmt.Sprintf(`%s
-if [ -f "%s" ]; source "%s"; end
-if [ -f "%s" ]; source "%s"; end`,
-		xdgExport,
-		envFilePath,
-		envFilePath,
-		aliasFilePath,
-		aliasFilePath,
-	)
+	if kv != nil {
+		envs, _ := kv.ListEnvVars()
+		for k, v := range envs {
+			sb.WriteString(f.formatExport(k, v))
+		}
+		aliases, _ := kv.ListAliases()
+		for k, v := range aliases {
+			sb.WriteString(f.formatAlias(k, v))
+		}
+	}
+
+	return sb.String()
 }
 
-func init() {
-	registerShell("fish", &Fish{})
-}
+// Compile-time interface check
+var _ Shell = (*Fish)(nil)

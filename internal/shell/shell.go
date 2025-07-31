@@ -2,23 +2,15 @@ package shell
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/doron-cohen/antidot/internal/tui"
 )
 
 type Shell interface {
-	AliasFilePath() (string, error)
-	EnvFilePath() (string, error)
-	FormatAlias(alias, command string) string
-	FormatExport(alias, command string) string
-	InitStub() string
+	RenderInit(kv *KeyValueStore) string
 }
 
-var SupportedShells = make(map[string]Shell)
 var FallbackShellName = "bash"
 
 func Get(shellName string) (Shell, error) {
@@ -29,14 +21,16 @@ func Get(shellName string) (Shell, error) {
 		}
 	}
 
-	shell, ok := SupportedShells[shellName]
-	if !ok {
-		supportedShells := make([]string, 0, len(SupportedShells))
-		for shell := range SupportedShells {
-			supportedShells = append(supportedShells, shell)
-		}
-
-		return nil, fmt.Errorf("Shell %s is still not supported. Supported shells: %v", shellName, supportedShells)
+	var shell Shell
+	switch shellName {
+	case "bash":
+		shell = &Bash{}
+	case "fish":
+		shell = &Fish{}
+	case "zsh":
+		shell = &Bash{} // Zsh uses the same implementation as bash
+	default:
+		return nil, fmt.Errorf("Shell %s is not supported. Supported shells: [bash fish zsh]", shellName)
 	}
 
 	return shell, nil
@@ -49,60 +43,4 @@ func detectShell() string {
 	}
 
 	return filepath.Base(strings.Split(shellPath, " ")[0])
-}
-
-func registerShell(name string, shell Shell) {
-	SupportedShells[name] = shell
-}
-
-func DumpAliases(shell Shell, kvStore *KeyValueStore) error {
-	aliasFilePath, err := shell.AliasFilePath()
-	if err != nil {
-		return err
-	}
-
-	aliases, err := kvStore.ListAliases()
-	if err != nil {
-		return err
-	}
-
-	builder := strings.Builder{}
-	for k, v := range aliases {
-		kvLine := shell.FormatAlias(k, v)
-		builder.WriteString(kvLine)
-	}
-
-	tui.Debug("Dumping aliases to %s", aliasFilePath)
-	err = ioutil.WriteFile(aliasFilePath, []byte(builder.String()), os.FileMode(0o644))
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func DumpExports(shell Shell, kvStore *KeyValueStore) error {
-	envFilePath, err := shell.EnvFilePath()
-	if err != nil {
-		return err
-	}
-
-	envVars, err := kvStore.ListEnvVars()
-	if err != nil {
-		return err
-	}
-
-	builder := strings.Builder{}
-	for k, v := range envVars {
-		kvLine := shell.FormatExport(k, v)
-		builder.WriteString(kvLine)
-	}
-
-	tui.Debug("Dumping env vars to %s", envFilePath)
-	err = ioutil.WriteFile(envFilePath, []byte(builder.String()), os.FileMode(0o644))
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

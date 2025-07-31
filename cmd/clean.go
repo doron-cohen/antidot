@@ -40,26 +40,11 @@ var cleanCmd = &cobra.Command{
 
 		utils.ApplyDefaultXdgEnv()
 
-		sh, err := shell.Get(shellOverride)
-		tui.FatalIfError("Failed to detect shell", err)
-
 		kvStore, err := shell.LoadKeyValueStore("")
 		tui.FatalIfError("Failed to load key value store", err)
 		actx := rules.ActionContext{KeyValueStore: kvStore}
 
 		appliedRule := false
-		defer func() {
-			if appliedRule {
-				if err := shell.DumpAliases(sh, kvStore); err != nil {
-					tui.Warn("Failed to dump aliases")
-				}
-
-				if err = shell.DumpExports(sh, kvStore); err != nil {
-					tui.Warn("Failed to dump exports")
-				}
-			}
-		}()
-
 		for _, rule := range rulesConfig.Rules {
 			fullPath := filepath.Join(userHomeDir, rule.Dotfile.Name)
 			match, err := rule.Dotfile.MatchPath(fullPath)

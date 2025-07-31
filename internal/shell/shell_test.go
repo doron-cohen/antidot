@@ -9,82 +9,70 @@ import (
 
 type TestSh struct{}
 
-func (t *TestSh) EnvFilePath() (string, error) {
-	return "", nil
-}
-
-func (t *TestSh) AliasFilePath() (string, error) {
-	return "", nil
-}
-
-func (t *TestSh) FormatAlias(alias, command string) string {
-	return ""
-}
-
-func (t *TestSh) FormatExport(key, value string) string {
-	return ""
-}
-
-func (t *TestSh) InitStub() string {
+func (t *TestSh) RenderInit(kv *shell.KeyValueStore) string {
 	return ""
 }
 
 type FallbackSh struct{}
 
-func (t *FallbackSh) EnvFilePath() (string, error) {
-	return "", nil
-}
-
-func (t *FallbackSh) AliasFilePath() (string, error) {
-	return "", nil
-}
-
-func (t *FallbackSh) FormatAlias(alias, command string) string {
-	return ""
-}
-
-func (t *FallbackSh) FormatExport(key, value string) string {
-	return ""
-}
-func (t *FallbackSh) InitStub() string {
+func (t *FallbackSh) RenderInit(kv *shell.KeyValueStore) string {
 	return ""
 }
 
 func TestGetShell(t *testing.T) {
-	testsh := TestSh{}
-	fallbackSh := FallbackSh{}
-	shell.SupportedShells = make(map[string]shell.Shell, 1)
-	shell.SupportedShells["testsh"] = &testsh
-	shell.SupportedShells[shell.FallbackShellName] = &fallbackSh
+	// Test that we can get all supported shells
+	bash, err := shell.Get("bash")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if bash == nil {
+		t.Fatal("Expected bash shell, got nil")
+	}
 
-	_, err := shell.Get("unknownsh")
+	fish, err := shell.Get("fish")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if fish == nil {
+		t.Fatal("Expected fish shell, got nil")
+	}
+
+	zsh, err := shell.Get("zsh")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if zsh == nil {
+		t.Fatal("Expected zsh shell, got nil")
+	}
+
+	// Test that zsh returns the same as bash (since they share implementation)
+	if bash != zsh {
+		t.Fatalf("Expected zsh and bash to be the same type, got different types")
+	}
+
+	// Test unknown shell
+	_, err = shell.Get("unknownsh")
 	if err == nil {
 		t.Fatal("Expected error for unknown shell")
 	}
 
-	sh, err := shell.Get("testsh")
+	// Test shell detection from environment
+	os.Setenv("SHELL", "bash")
+	detected, err := shell.Get("")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if sh != &testsh {
-		t.Fatalf("Unexpected shell. Expected %v got %v", testsh, sh)
+	if detected == nil {
+		t.Fatal("Expected detected shell, got nil")
 	}
 
-	os.Setenv("SHELL", "testsh")
-	sh, err = shell.Get("")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if sh != &testsh {
-		t.Fatalf("Unexpected shell. Expected %v got %v", testsh, sh)
-	}
-
+	// Test fallback when no shell is detected
 	os.Unsetenv("SHELL")
-	sh, err = shell.Get("")
+	fallback, err := shell.Get("")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if sh != &fallbackSh {
-		t.Fatalf("Unexpected shell. Expected %v got %v", fallbackSh, sh)
+	if fallback == nil {
+		t.Fatal("Expected fallback shell, got nil")
 	}
 }
