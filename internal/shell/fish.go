@@ -23,7 +23,11 @@ func (f *Fish) formatExport(key, value string) string {
 func (f *Fish) unbracketEnvVar(value string) string {
 	// Replace ${VAR} with $VAR for fish shell using regex
 	re := regexp.MustCompile(`\$\{([a-zA-Z_][a-zA-Z0-9_]*)\}`)
-	return re.ReplaceAllString(value, `$$$1`)
+	result := re.ReplaceAllString(value, `$$$1`)
+
+	// Replace {} with { for empty braces
+	emptyRe := regexp.MustCompile(`\{\}`)
+	return emptyRe.ReplaceAllString(result, `{`)
 }
 
 func (f *Fish) RenderInit(kv *KeyValueStore) string {

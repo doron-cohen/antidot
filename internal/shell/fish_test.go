@@ -156,10 +156,20 @@ func TestFishShell(t *testing.T) {
 		err = kv.AddAlias("grep", "grep --color=auto ${GREP_COLORS}")
 		require.NoError(t, err)
 
+		// Add test data with empty braces
+		err = kv.AddEnv("SPECIAL_CHARS", "value with $ and {} and \"quotes\"")
+		require.NoError(t, err)
+		err = kv.AddAlias("special_alias", "command with $ and {} and \"quotes\"")
+		require.NoError(t, err)
+
 		result := fish.RenderInit(kv)
 
 		// Should contain unbracketed variables
 		assert.Contains(t, result, "set -gx PATH \"$XDG_DATA_HOME/bin:$PATH\"")
 		assert.Contains(t, result, "alias grep \"grep --color=auto $GREP_COLORS\"")
+
+		// Should contain single braces for empty braces
+		assert.Contains(t, result, "set -gx SPECIAL_CHARS \"value with $ and { and \"quotes\"\"")
+		assert.Contains(t, result, "alias special_alias \"command with $ and { and \"quotes\"\"")
 	})
 }
