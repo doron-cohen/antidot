@@ -124,10 +124,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.bash_history
-        dest: ${XDG_CACHE_HOME}/bash/history
+        dest: ${XDG_DATA_HOME}/bash/history
       - type: export
         key: HISTFILE
-        value: ${XDG_CACHE_HOME}/bash/history
+        value: ${XDG_DATA_HOME}/bash/history
 
   - name: barnard
     dotfile:
@@ -258,10 +258,10 @@ rules:
         command: cqlsh --cqlshrc $XDG_CONFIG_HOME/cassandra/cqlshrc
       - type: migrate
         source: ${HOME}/.cassandra/cqlsh_history
-        dest: ${XDG_CACHE_HOME}/cassandra/cqlsh_history
+        dest: ${XDG_DATA_HOME}/cassandra/cqlsh_history
       - type: export
         key: CQL_HISTORY
-        value: ${XDG_CACHE_HOME}/cassandra/cqlsh_history
+        value: ${XDG_DATA_HOME}/cassandra/cqlsh_history
 
   - name: docker
     dotfile:
@@ -524,10 +524,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.lesshst
-        dest: ${XDG_CACHE_HOME}/less/history
+        dest: ${XDG_DATA_HOME}/less/history
       - type: export
         key: LESSHISTFILE
-        value: ${XDG_CACHE_HOME}/less/history
+        value: ${XDG_DATA_HOME}/less/history
       - type: export
         key: LESSKEY
         value: ${XDG_CONFIG_HOME}/less/lesskey
@@ -743,10 +743,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.node_repl_history
-        dest: ${XDG_CACHE_HOME}/node_repl_history
+        dest: ${XDG_DATA_HOME}/node_repl_history
       - type: export
         key: NODE_REPL_HISTORY
-        value: ${XDG_CACHE_HOME}/node_repl_history
+        value: ${XDG_DATA_HOME}/node_repl_history
 
   - name: npm
     dotfile:
@@ -1210,10 +1210,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.psql_history
-        dest: ${XDG_CACHE_HOME}/psql_history
+        dest: ${XDG_DATA_HOME}/psql_history
       - type: export
         key: PSQL_HISTORY
-        value: ${XDG_CACHE_HOME}/psql_history
+        value: ${XDG_DATA_HOME}/psql_history
 
   - name: psqlrc
     dotfile:
