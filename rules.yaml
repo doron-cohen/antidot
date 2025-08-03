@@ -1132,6 +1132,9 @@ rules:
       - type: export
         key: JULIA_DEPOT_PATH
         value: ${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}
+      - type: export
+        key: JULIAUP_DEPOT_PATH
+        value: ${XDG_DATA_HOME}/julia:${JULIAUP_DEPOT_PATH}
 
   - name: solargraph
     dotfile:
