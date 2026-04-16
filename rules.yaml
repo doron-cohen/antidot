@@ -770,13 +770,18 @@ rules:
     dotfile:
       name: .npm
       is_dir: true
+    notes:
+      - "put the following lines in npmrc:
+        ```
+        prefix=${XDG_DATA_HOME}/npm
+        cache=${XDG_CACHE_HOME}/npm
+        init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
+        tmp=${XDG_RUNTIME_DIR}/npm
+        ```"
     actions:
       - type: migrate
         source: ${HOME}/.npm
         dest: ${XDG_CACHE_HOME}/npm
-      - type: export
-        key: npm_config_cache
-        value: ${XDG_CACHE_HOME}/npm
 
   - name: npmrc
     dotfile:
