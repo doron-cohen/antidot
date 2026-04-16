@@ -46,14 +46,6 @@ rules:
         source: ${HOME}/.asoundrc
         dest: ${XDG_CONFIG_HOME}/alsa/asoundrc
 
-  - name: alsa
-    dotfile:
-      name: .asoundrc
-    actions:
-      - type: migrate
-        source: ${HOME}/.asoundrc
-        dest: ${XDG_CONFIG_HOME}/alsa/asoundrc
-
   - name: aspell
     dotfile:
       name: .aspell.conf
