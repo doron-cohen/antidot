@@ -1240,10 +1240,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.wget-hsts
-        dest: ${XDG_CACHE_HOME}/wget-hsts
+        dest: ${XDG_STATE_HOME}/wget-hsts
       - type: alias
         alias: wget
-        command: wget --hsts-file="${XDG_CACHE_HOME}/wget-hsts"
+        command: wget --hsts-file="${XDG_STATE_HOME}/wget-hsts"
 
   - name: wgetrc
     dotfile:
@@ -1262,10 +1262,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.psql_history
-        dest: ${XDG_DATA_HOME}/psql_history
+        dest: ${XDG_STATE_HOME}/psql_history
       - type: export
         key: PSQL_HISTORY
-        value: ${XDG_DATA_HOME}/psql_history
+        value: ${XDG_STATE_HOME}/psql_history
 
   - name: psqlrc
     dotfile:
