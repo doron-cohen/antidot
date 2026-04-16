@@ -291,6 +291,15 @@ rules:
         key: ELINKS_CONFDIR
         value: ${XDG_CONFIG_HOME}/elinks
 
+  - name: emacs
+    dotfile:
+      name: .emacs.d
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.emacs.d
+        dest: ${XDG_CONFIG_HOME}/emacs
+
   - name: fontconfig
     dotfile:
       name: .fontconfig
