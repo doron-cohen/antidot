@@ -546,12 +546,9 @@ rules:
       - type: migrate
         source: ${HOME}/.lesshst
         dest: ${XDG_DATA_HOME}/less/history
-      - type: export
-        key: LESSHISTFILE
-        value: ${XDG_DATA_HOME}/less/history
-      - type: export
-        key: LESSKEY
-        value: ${XDG_CONFIG_HOME}/less/lesskey
+      - type: migrate
+        key: ${HOME}/.lesskey
+        dest: ${XDG_CONFIG_HOME}/less/lesskey
 
   - name: libx11-xcompose
     dotfile:
