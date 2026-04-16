@@ -423,6 +423,18 @@ rules:
         source: ${HOME}/.httpie
         dest: ${XDG_CONFIG_HOME}/httpie
 
+  - name: icons
+    dotfile:
+      name: .icons
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.icons
+        dest: ${XDG_DATA_HOME}/icons
+      - type: export
+        key: XCURSOR_PATH
+        value: /usr/share/icons:${XDG_DATA_HOME}/icons
+
   - name: imapfilter
     dotfile:
       name: .imapfilter
@@ -973,6 +985,15 @@ rules:
       - type: export
         key: TASKRC
         value: ${XDG_CONFIG_HOME}/task/taskrc
+
+  - name: themes
+    dotfile:
+      is_dir: true
+      name: .themes
+    actions:
+      - type: migrate
+        source: ${HOME}/.themes
+        dest: ${XDG_DATA_HOME}/themes
 
   - name: tig-history
     description: tig git explorer history file
