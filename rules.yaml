@@ -885,6 +885,23 @@ rules:
         key: PYLINTHOME
         value: ${XDG_CACHE_HOME}/pylint
 
+  - name: python
+    dotfile:
+      name: .python_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.python_history
+        dest: ${XDG_STATE_HOME}/python_history
+      - type: export
+        key: PYTHON_HISTORY
+        value: ${XDG_STATE_HOME}/python_history
+      - type: export
+        key: PYTHONPYCACHEPREFIX
+        value: ${XDG_CACHE_HOME}/python
+      - type: export
+        key: PYTHONUSERBASE
+        value: ${XDG_DATA_HOME}/python
+
   - name: racket
     dotfile:
       name: .racket
