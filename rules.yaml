@@ -435,6 +435,14 @@ rules:
         key: XCURSOR_PATH
         value: /usr/share/icons:${XDG_DATA_HOME}/icons
 
+  - name: ideavimrc
+    dotfile:
+      name: .ideavimrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.ideavimrc
+        dest: ${XDG_CONFIG_HOME}/ideavim/ideavimrc
+
   - name: imapfilter
     dotfile:
       name: .imapfilter
