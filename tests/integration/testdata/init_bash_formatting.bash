@@ -1,6 +1,7 @@
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-/USER_HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-/USER_HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-/USER_HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-/USER_HOME/.local/state}"
 export PATH_VAR="${XDG_CONFIG_HOME}/bin:${PATH}"
 export SPECIAL_CHARS="value with $ and {} and "quotes""
 export DASH_VAR="value-with-dashes"
@@ -27,4 +28,3 @@ alias ALIAS_WITH_VARS="command $XDG_CONFIG_HOME/config"
 alias EMPTY_ALIAS=""
 alias UNDERSCORE_ALIAS="command_with_underscores"
 alias UPPERCASE_ALIAS="UPPERCASE_COMMAND"
-
