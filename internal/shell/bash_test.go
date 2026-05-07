@@ -26,6 +26,7 @@ func TestBashShell(t *testing.T) {
 		assert.Contains(t, result, "export XDG_CONFIG_HOME")
 		assert.Contains(t, result, "export XDG_CACHE_HOME")
 		assert.Contains(t, result, "export XDG_DATA_HOME")
+		assert.Contains(t, result, "export XDG_STATE_HOME")
 
 		// Should not contain any aliases or env vars since kvstore is empty
 		assert.NotContains(t, result, "alias")
@@ -64,6 +65,7 @@ func TestBashShell(t *testing.T) {
 		assert.Contains(t, result, "export XDG_CONFIG_HOME")
 		assert.Contains(t, result, "export XDG_CACHE_HOME")
 		assert.Contains(t, result, "export XDG_DATA_HOME")
+		assert.Contains(t, result, "export XDG_STATE_HOME")
 
 		// Should contain the env vars
 		assert.Contains(t, result, "export TEST_VAR=\"test_value\"")
@@ -90,7 +92,7 @@ func TestBashShell(t *testing.T) {
 			}
 		}
 
-		assert.Equal(t, 3, xdgCount, "Should have 3 XDG exports")
+		assert.Equal(t, 4, xdgCount, "Should have 4 XDG exports")
 		assert.Equal(t, 2, envCount, "Should have 2 env vars")
 		assert.Equal(t, 2, aliasCount, "Should have 2 aliases")
 
