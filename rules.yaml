@@ -15,7 +15,8 @@ rules:
         dest: ${XDG_DATA_HOME}/abook/addressbook
       - type: alias
         alias: abook
-        command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook
+        command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile
+          "$XDG_DATA_HOME"/abook/addressbook
 
   - name: act
     dotfile:
@@ -40,7 +41,8 @@ rules:
     dotfile:
       name: .asoundrc
     notes:
-      - xdg support was added in alsa v1.2.3. Check alsa's version with 'alsactl --version'.
+      - xdg support was added in alsa v1.2.3. Check alsa's version with 'alsactl
+        --version'.
     actions:
       - type: migrate
         source: ${HOME}/.asoundrc
@@ -55,7 +57,9 @@ rules:
         dest: ${XDG_CONFIG_HOME}/aspell/aspell.conf
       - type: export
         key: ASPELL_CONF
-        value: per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl
+        value: per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal
+          ${XDG_CONFIG_HOME}/aspell/en.pws; repl
+          ${XDG_CONFIG_HOME}/aspell/en.prepl
 
   - name: atom
     dotfile:
@@ -525,7 +529,8 @@ rules:
         value: ${XDG_CONFIG_HOME}/kube/config
       - type: alias
         alias: kubectl
-        command: kubectl --cache-dir=${XDG_CACHE_HOME}/kube/cache --kubeconfig ${XDG_CONFIG_HOME}/kube/config
+        command: kubectl --cache-dir=${XDG_CACHE_HOME}/kube/cache --kubeconfig
+          ${XDG_CONFIG_HOME}/kube/config
 
   - name: lein
     dotfile:
@@ -547,7 +552,7 @@ rules:
         source: ${HOME}/.lesshst
         dest: ${XDG_DATA_HOME}/less/history
       - type: migrate
-        key: ${HOME}/.lesskey
+        source: ${HOME}/.lesskey
         dest: ${XDG_CONFIG_HOME}/less/lesskey
 
   - name: libx11-xcompose
@@ -771,13 +776,10 @@ rules:
       name: .npm
       is_dir: true
     notes:
-      - "put the following lines in npmrc:
-        ```
-        prefix=${XDG_DATA_HOME}/npm
+      - "put the following lines in npmrc: ``` prefix=${XDG_DATA_HOME}/npm
         cache=${XDG_CACHE_HOME}/npm
         init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
-        tmp=${XDG_RUNTIME_DIR}/npm
-        ```"
+        tmp=${XDG_RUNTIME_DIR}/npm ```"
     actions:
       - type: migrate
         source: ${HOME}/.npm
@@ -1150,7 +1152,8 @@ rules:
       name: go
       is_dir: true
     notes:
-      - You will need to manually delete the original directory at `~/go` because of permissions.
+      - You will need to manually delete the original directory at `~/go`
+        because of permissions.
     actions:
       - type: migrate
         source: ${HOME}/go/
