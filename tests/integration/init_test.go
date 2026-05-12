@@ -47,6 +47,9 @@ func normalizePaths(output string) string {
 	bashZshDataPattern := regexp.MustCompile(`\$\{XDG_DATA_HOME:-[^}]+\}`)
 	output = bashZshDataPattern.ReplaceAllString(output, "${XDG_DATA_HOME:-/USER_HOME/.local/share}")
 
+	bashZshStatePattern := regexp.MustCompile(`\$\{XDG_STATE_HOME:-[^}]+\}`)
+	output = bashZshStatePattern.ReplaceAllString(output, "${XDG_STATE_HOME:-/USER_HOME/.local/state}")
+
 	// For fish: set -x XDG_VAR "/path/to/fallback"
 	fishCachePattern := regexp.MustCompile(`set -x XDG_CACHE_HOME \"[^\"]*\"`)
 	output = fishCachePattern.ReplaceAllString(output, "set -x XDG_CACHE_HOME \"/USER_HOME/.cache\"")
@@ -56,6 +59,9 @@ func normalizePaths(output string) string {
 
 	fishDataPattern := regexp.MustCompile(`set -x XDG_DATA_HOME \"[^\"]*\"`)
 	output = fishDataPattern.ReplaceAllString(output, "set -x XDG_DATA_HOME \"/USER_HOME/.local/share\"")
+
+	fishStatePattern := regexp.MustCompile(`set -x XDG_STATE_HOME \"[^\"]*\"`)
+	output = fishStatePattern.ReplaceAllString(output, "set -x XDG_STATE_HOME \"/USER_HOME/.local/state\"")
 
 	// Replace any remaining temporary directory paths with placeholders
 	output = strings.ReplaceAll(output, "/var/folders/", "/TEMP_DIR/")

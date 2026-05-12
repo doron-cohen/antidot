@@ -15,7 +15,8 @@ rules:
         dest: ${XDG_DATA_HOME}/abook/addressbook
       - type: alias
         alias: abook
-        command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook
+        command: abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile
+          "$XDG_DATA_HOME"/abook/addressbook
 
   - name: act
     dotfile:
@@ -40,15 +41,8 @@ rules:
     dotfile:
       name: .asoundrc
     notes:
-      - xdg support was added in alsa v1.2.3. Check alsa's version with 'alsactl --version'.
-    actions:
-      - type: migrate
-        source: ${HOME}/.asoundrc
-        dest: ${XDG_CONFIG_HOME}/alsa/asoundrc
-
-  - name: alsa
-    dotfile:
-      name: .asoundrc
+      - xdg support was added in alsa v1.2.3. Check alsa's version with 'alsactl
+        --version'.
     actions:
       - type: migrate
         source: ${HOME}/.asoundrc
@@ -63,7 +57,9 @@ rules:
         dest: ${XDG_CONFIG_HOME}/aspell/aspell.conf
       - type: export
         key: ASPELL_CONF
-        value: per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl
+        value: per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal
+          ${XDG_CONFIG_HOME}/aspell/en.pws; repl
+          ${XDG_CONFIG_HOME}/aspell/en.prepl
 
   - name: atom
     dotfile:
@@ -299,6 +295,15 @@ rules:
         key: ELINKS_CONFDIR
         value: ${XDG_CONFIG_HOME}/elinks
 
+  - name: emacs
+    dotfile:
+      name: .emacs.d
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.emacs.d
+        dest: ${XDG_CONFIG_HOME}/emacs
+
   - name: fontconfig
     dotfile:
       name: .fontconfig
@@ -422,6 +427,26 @@ rules:
         source: ${HOME}/.httpie
         dest: ${XDG_CONFIG_HOME}/httpie
 
+  - name: icons
+    dotfile:
+      name: .icons
+      is_dir: true
+    actions:
+      - type: migrate
+        source: ${HOME}/.icons
+        dest: ${XDG_DATA_HOME}/icons
+      - type: export
+        key: XCURSOR_PATH
+        value: /usr/share/icons:${XDG_DATA_HOME}/icons
+
+  - name: ideavimrc
+    dotfile:
+      name: .ideavimrc
+    actions:
+      - type: migrate
+        source: ${HOME}/.ideavimrc
+        dest: ${XDG_CONFIG_HOME}/ideavim/ideavimrc
+
   - name: imapfilter
     dotfile:
       name: .imapfilter
@@ -504,7 +529,8 @@ rules:
         value: ${XDG_CONFIG_HOME}/kube/config
       - type: alias
         alias: kubectl
-        command: kubectl --cache-dir=${XDG_CACHE_HOME}/kube/cache --kubeconfig ${XDG_CONFIG_HOME}/kube/config
+        command: kubectl --cache-dir=${XDG_CACHE_HOME}/kube/cache --kubeconfig
+          ${XDG_CONFIG_HOME}/kube/config
 
   - name: lein
     dotfile:
@@ -525,12 +551,9 @@ rules:
       - type: migrate
         source: ${HOME}/.lesshst
         dest: ${XDG_DATA_HOME}/less/history
-      - type: export
-        key: LESSHISTFILE
-        value: ${XDG_DATA_HOME}/less/history
-      - type: export
-        key: LESSKEY
-        value: ${XDG_CONFIG_HOME}/less/lesskey
+      - type: migrate
+        source: ${HOME}/.lesskey
+        dest: ${XDG_CONFIG_HOME}/less/lesskey
 
   - name: libx11-xcompose
     dotfile:
@@ -752,13 +775,15 @@ rules:
     dotfile:
       name: .npm
       is_dir: true
+    notes:
+      - "put the following lines in npmrc: ``` prefix=${XDG_DATA_HOME}/npm
+        cache=${XDG_CACHE_HOME}/npm
+        init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
+        tmp=${XDG_RUNTIME_DIR}/npm ```"
     actions:
       - type: migrate
         source: ${HOME}/.npm
         dest: ${XDG_CACHE_HOME}/npm
-      - type: export
-        key: npm_config_cache
-        value: ${XDG_CACHE_HOME}/npm
 
   - name: npmrc
     dotfile:
@@ -861,6 +886,23 @@ rules:
       - type: export
         key: PYLINTHOME
         value: ${XDG_CACHE_HOME}/pylint
+
+  - name: python
+    dotfile:
+      name: .python_history
+    actions:
+      - type: migrate
+        source: ${HOME}/.python_history
+        dest: ${XDG_STATE_HOME}/python_history
+      - type: export
+        key: PYTHON_HISTORY
+        value: ${XDG_STATE_HOME}/python_history
+      - type: export
+        key: PYTHONPYCACHEPREFIX
+        value: ${XDG_CACHE_HOME}/python
+      - type: export
+        key: PYTHONUSERBASE
+        value: ${XDG_DATA_HOME}/python
 
   - name: racket
     dotfile:
@@ -972,6 +1014,15 @@ rules:
       - type: export
         key: TASKRC
         value: ${XDG_CONFIG_HOME}/task/taskrc
+
+  - name: themes
+    dotfile:
+      is_dir: true
+      name: .themes
+    actions:
+      - type: migrate
+        source: ${HOME}/.themes
+        dest: ${XDG_DATA_HOME}/themes
 
   - name: tig-history
     description: tig git explorer history file
@@ -1101,7 +1152,8 @@ rules:
       name: go
       is_dir: true
     notes:
-      - You will need to manually delete the original directory at `~/go` because of permissions.
+      - You will need to manually delete the original directory at `~/go`
+        because of permissions.
     actions:
       - type: migrate
         source: ${HOME}/go/
@@ -1191,10 +1243,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.wget-hsts
-        dest: ${XDG_CACHE_HOME}/wget-hsts
+        dest: ${XDG_STATE_HOME}/wget-hsts
       - type: alias
         alias: wget
-        command: wget --hsts-file="${XDG_CACHE_HOME}/wget-hsts"
+        command: wget --hsts-file="${XDG_STATE_HOME}/wget-hsts"
 
   - name: wgetrc
     dotfile:
@@ -1213,10 +1265,10 @@ rules:
     actions:
       - type: migrate
         source: ${HOME}/.psql_history
-        dest: ${XDG_DATA_HOME}/psql_history
+        dest: ${XDG_STATE_HOME}/psql_history
       - type: export
         key: PSQL_HISTORY
-        value: ${XDG_DATA_HOME}/psql_history
+        value: ${XDG_STATE_HOME}/psql_history
 
   - name: psqlrc
     dotfile:

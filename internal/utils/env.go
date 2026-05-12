@@ -28,6 +28,7 @@ func XdgDefaults() map[string]string {
 		"XDG_CONFIG_HOME": xdg.ConfigHome,
 		"XDG_CACHE_HOME":  xdg.CacheHome,
 		"XDG_DATA_HOME":   xdg.DataHome,
+		"XDG_STATE_HOME":  xdg.StateHome,
 	}
 }
 

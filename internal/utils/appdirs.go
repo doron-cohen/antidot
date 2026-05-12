@@ -23,6 +23,10 @@ func (a appDirs) DataHome() string {
 	return filepath.Join(xdg.DataHome, a.AppName)
 }
 
+func (a appDirs) StateHome() string {
+	return filepath.Join(xdg.StateHome, a.AppName)
+}
+
 func (a appDirs) GetDataFilePath(fileName string) string {
 	return filepath.Join(a.DataHome(), fileName)
 }
