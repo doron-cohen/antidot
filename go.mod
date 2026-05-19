@@ -8,7 +8,7 @@ require (
 	github.com/google/go-cmp v0.5.9
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/otiai10/copy v1.7.0
+	github.com/otiai10/copy v1.14.0
 	github.com/spf13/cobra v1.6.0
 	github.com/stretchr/testify v1.10.0
 	github.com/wzshiming/ctc v1.2.3
