@@ -29,6 +29,6 @@ jobs:
 
       - name: Annotate Tests
         if: always()
-        uses: guyarb/golang-test-annoations@v0.6.0
+        uses: guyarb/golang-test-annoations@v0.8.0
         with:
           test-results: test_results.json
